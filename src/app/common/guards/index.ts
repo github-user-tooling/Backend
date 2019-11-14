@@ -1,3 +1,3 @@
 export * from './local.guard';
 export * from './login.guard';
-export * from './roles.guard';
+export * from './role.guard';

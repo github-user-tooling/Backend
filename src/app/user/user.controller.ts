@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 
 import { User as UserEntity } from 'prisma';
-import { Roles, User } from 'app/common/decorators';
+import { Role, User } from 'app/common/decorators';
 import { UserService } from './user.service';
 
 export enum UserRole {
@@ -19,7 +19,7 @@ export class UserController {
   }
 
   @Get('/list')
-  @Roles(UserRole.Admin)
+  @Role(UserRole.Admin)
   public async findAll(): Promise<{ list: UserEntity[]; count: number }> {
     const [list, count] = await this.userService.findAndCount();
     return { list, count };

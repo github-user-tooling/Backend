@@ -10,7 +10,7 @@ import * as pg from 'pg';
 
 import { environment } from './environment';
 import { AppModule } from './app/app.module';
-import { LocalGuard, RolesGuard } from './app/common/guards';
+import { LocalGuard, RoleGuard } from './app/common/guards';
 
 const pgSession = pgSessionFactory(session);
 const pgPool = environment.database
@@ -45,7 +45,7 @@ async function bootstrap() {
 
   const reflector = app.get(Reflector);
   app.useGlobalGuards(new LocalGuard(reflector));
-  app.useGlobalGuards(new RolesGuard(reflector));
+  app.useGlobalGuards(new RoleGuard(reflector));
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
