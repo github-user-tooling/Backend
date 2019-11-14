@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { environment } from '@bw/environment';
-import { Prisma } from '@bw/prisma';
+import { environment } from 'environment';
+import { Prisma } from 'prisma';
 
 @Injectable()
 export class PrismaService {

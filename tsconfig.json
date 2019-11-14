@@ -9,13 +9,7 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./src",
-    "incremental": true,
-    "paths": {
-      "@bw/*": ["app/*"],
-      "@bw/environment": ["environment"],
-      "@bw/prisma": ["prisma"],
-      "@bw/services": ["app/services/*"]
-    }
+    "incremental": true
   },
   "exclude": ["node_modules", "dist"]
 }

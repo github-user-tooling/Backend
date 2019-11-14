@@ -2,13 +2,13 @@
 // Please don't change this file manually but run `prisma generate` to update it.
 // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-import { DocumentNode } from 'graphql';
+import { DocumentNode } from "graphql";
 import {
   makePrismaClientClass,
   BaseClientOptions,
-  Model,
-} from 'prisma-client-lib';
-import { typeDefs } from './prisma-schema';
+  Model
+} from "prisma-client-lib";
+import { typeDefs } from "./prisma-schema";
 
 export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
@@ -21,7 +21,7 @@ export interface Exists {
 
 export interface Node {}
 
-export type FragmentableArray<T> = Promise<T[]> & Fragmentable;
+export type FragmentableArray<T> = Promise<Array<T>> & Fragmentable;
 
 export interface Fragmentable {
   $fragment<T>(fragment: string | DocumentNode): Promise<T>;
@@ -31,7 +31,7 @@ export interface Prisma {
   $exists: Exists;
   $graphql: <T = any>(
     query: string,
-    variables?: { [key: string]: any },
+    variables?: { [key: string]: any }
   ) => Promise<T>;
 
   /**
@@ -89,22 +89,38 @@ export interface Prisma {
 
 export interface Subscription {
   user: (
-    where?: UserSubscriptionWhereInput,
+    where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
 }
 
-export type ClientConstructor<T> = new (options?: BaseClientOptions) => T;
+export interface ClientConstructor<T> {
+  new (options?: BaseClientOptions): T;
+}
 
 /**
  * Types
  */
 
-export type UserOrderByInput = 'id_ASC' | 'id_DESC' | 'name_ASC' | 'name_DESC';
+export type Roles = "User" | "Admin";
 
-export type MutationType = 'CREATED' | 'UPDATED' | 'DELETED';
+export type UserOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "username_ASC"
+  | "username_DESC"
+  | "email_ASC"
+  | "email_DESC"
+  | "password_ASC"
+  | "password_DESC"
+  | "role_ASC"
+  | "role_DESC";
+
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  username?: Maybe<String>;
+  email?: Maybe<String>;
 }>;
 
 export interface UserWhereInput {
@@ -122,20 +138,52 @@ export interface UserWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
+  username?: Maybe<String>;
+  username_not?: Maybe<String>;
+  username_in?: Maybe<String[] | String>;
+  username_not_in?: Maybe<String[] | String>;
+  username_lt?: Maybe<String>;
+  username_lte?: Maybe<String>;
+  username_gt?: Maybe<String>;
+  username_gte?: Maybe<String>;
+  username_contains?: Maybe<String>;
+  username_not_contains?: Maybe<String>;
+  username_starts_with?: Maybe<String>;
+  username_not_starts_with?: Maybe<String>;
+  username_ends_with?: Maybe<String>;
+  username_not_ends_with?: Maybe<String>;
+  email?: Maybe<String>;
+  email_not?: Maybe<String>;
+  email_in?: Maybe<String[] | String>;
+  email_not_in?: Maybe<String[] | String>;
+  email_lt?: Maybe<String>;
+  email_lte?: Maybe<String>;
+  email_gt?: Maybe<String>;
+  email_gte?: Maybe<String>;
+  email_contains?: Maybe<String>;
+  email_not_contains?: Maybe<String>;
+  email_starts_with?: Maybe<String>;
+  email_not_starts_with?: Maybe<String>;
+  email_ends_with?: Maybe<String>;
+  email_not_ends_with?: Maybe<String>;
+  password?: Maybe<String>;
+  password_not?: Maybe<String>;
+  password_in?: Maybe<String[] | String>;
+  password_not_in?: Maybe<String[] | String>;
+  password_lt?: Maybe<String>;
+  password_lte?: Maybe<String>;
+  password_gt?: Maybe<String>;
+  password_gte?: Maybe<String>;
+  password_contains?: Maybe<String>;
+  password_not_contains?: Maybe<String>;
+  password_starts_with?: Maybe<String>;
+  password_not_starts_with?: Maybe<String>;
+  password_ends_with?: Maybe<String>;
+  password_not_ends_with?: Maybe<String>;
+  role?: Maybe<Roles>;
+  role_not?: Maybe<Roles>;
+  role_in?: Maybe<Roles[] | Roles>;
+  role_not_in?: Maybe<Roles[] | Roles>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
@@ -143,15 +191,24 @@ export interface UserWhereInput {
 
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
-  name: String;
+  username: String;
+  email: String;
+  password: String;
+  role: Roles;
 }
 
 export interface UserUpdateInput {
-  name?: Maybe<String>;
+  username?: Maybe<String>;
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+  role?: Maybe<Roles>;
 }
 
 export interface UserUpdateManyMutationInput {
-  name?: Maybe<String>;
+  username?: Maybe<String>;
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+  role?: Maybe<Roles>;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -171,26 +228,38 @@ export interface NodeNode {
 
 export interface User {
   id: ID_Output;
-  name: String;
+  username: String;
+  email: String;
+  password: String;
+  role: Roles;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  username: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  role: () => Promise<Roles>;
 }
 
 export interface UserSubscription
   extends Promise<AsyncIterator<User>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
+  username: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  role: () => Promise<AsyncIterator<Roles>>;
 }
 
 export interface UserNullablePromise
   extends Promise<User | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  username: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  role: () => Promise<Roles>;
 }
 
 export interface UserConnection {
@@ -313,21 +382,30 @@ export interface UserSubscriptionPayloadSubscription
 
 export interface UserPreviousValues {
   id: ID_Output;
-  name: String;
+  username: String;
+  email: String;
+  password: String;
+  role: Roles;
 }
 
 export interface UserPreviousValuesPromise
   extends Promise<UserPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  username: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  role: () => Promise<Roles>;
 }
 
 export interface UserPreviousValuesSubscription
   extends Promise<AsyncIterator<UserPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
+  username: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  role: () => Promise<AsyncIterator<Roles>>;
 }
 
 /*
@@ -359,9 +437,13 @@ export type Long = string;
 
 export const models: Model[] = [
   {
-    name: 'User',
-    embedded: false,
+    name: "User",
+    embedded: false
   },
+  {
+    name: "Roles",
+    embedded: false
+  }
 ];
 
 /**
@@ -371,6 +453,6 @@ export const models: Model[] = [
 export const Prisma = makePrismaClientClass<ClientConstructor<Prisma>>({
   typeDefs,
   models,
-  endpoint: `https://bw-2fcead79a6.herokuapp.com/build-week/dev`,
+  endpoint: `https://bw-2fcead79a6.herokuapp.com/build-week/dev`
 });
 export const prisma = new Prisma();
