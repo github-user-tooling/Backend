@@ -25,8 +25,13 @@ export class AuthController {
     return user;
   }
 
+  @Get('/active')
+  public activeSession(): boolean {
+    return true;
+  }
+
   @Public()
-  @Get('/logout')
+  @Post('/logout')
   public logout(@Req() req: Request): void {
     req.logout();
   }
