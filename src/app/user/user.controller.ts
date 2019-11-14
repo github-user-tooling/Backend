@@ -4,11 +4,6 @@ import { User as UserEntity } from 'prisma';
 import { Role, User } from 'app/common/decorators';
 import { UserService } from './user.service';
 
-export enum UserRole {
-  User = 'User',
-  Admin = 'Admin',
-}
-
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -19,7 +14,7 @@ export class UserController {
   }
 
   @Get('/list')
-  @Role(UserRole.Admin)
+  @Role('Admin')
   public async findAll(): Promise<{ list: UserEntity[]; count: number }> {
     const [list, count] = await this.userService.findAndCount();
     return { list, count };

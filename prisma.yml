@@ -1,5 +1,6 @@
-endpoint: https://bw-2fcead79a6.herokuapp.com/build-week/dev
+endpoint: ${env:PRISMA}
 datamodel: datamodel.graphql
+secret: ${env:SECRET}
 
 generate:
   - generator: typescript-client

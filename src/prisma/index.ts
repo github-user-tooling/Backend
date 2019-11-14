@@ -453,6 +453,7 @@ export const models: Model[] = [
 export const Prisma = makePrismaClientClass<ClientConstructor<Prisma>>({
   typeDefs,
   models,
-  endpoint: `https://bw-2fcead79a6.herokuapp.com/build-week/dev`
+  endpoint: `${process.env["PRISMA"]}`,
+  secret: `${process.env["SECRET"]}`
 });
 export const prisma = new Prisma();
