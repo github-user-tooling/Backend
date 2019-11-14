@@ -22,7 +22,7 @@ export class AuthService {
 
   public async validateUser(username: string, pass: string): Promise<Partial<User> | null> {
     const user = await this.userService.findOne({ username });
-    if (!user || !compare(pass, user.password)) return null;
+    if (!user || !(await compare(pass, user.password))) return null;
     const { password, ...result } = user;
     return result;
   }
