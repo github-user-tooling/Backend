@@ -21,13 +21,12 @@ export class AuthController {
   @Public()
   @UseGuards(LoginGuard)
   @Post('/login')
-  public login(@User() user: UserEntity): UserEntity {
-    return user;
-  }
+  @Redirect('./active')
+  public login(): void {}
 
   @Get('/active')
-  public activeSession(): boolean {
-    return true;
+  public activeSession(@User() user: UserEntity): UserEntity {
+    return user;
   }
 
   @Public()
