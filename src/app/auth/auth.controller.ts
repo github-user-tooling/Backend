@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req, UseGuards, Body } from '@nestjs/common';
+import { Controller, UseGuards, Redirect, Get, Post, Req, Body } from '@nestjs/common';
 import { Request } from 'express';
 
 import { User as UserEntity } from 'prisma';
@@ -13,9 +13,9 @@ export class AuthController {
 
   @Public()
   @Post('/register')
+  @Redirect('./login', 307)
   public async register(@Body() signup: CreateUserDTO) {
-    const user = await this.authService.register(signup);
-    return user;
+    await this.authService.register(signup);
   }
 
   @Public()
