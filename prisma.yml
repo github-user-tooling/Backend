@@ -1,0 +1,6 @@
+endpoint: https://bw-2fcead79a6.herokuapp.com/build-week/dev
+datamodel: datamodel.graphql
+
+generate:
+  - generator: typescript-client
+    output: ./src/app/models/generated/prisma
