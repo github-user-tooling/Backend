@@ -14,10 +14,10 @@ export class SessionSerializer extends PassportSerializer {
     done(null, user.id);
   }
 
-  public deserializeUser(id: string, done: (err: Error, user?: User) => void): void {
+  public deserializeUser(id: string, done: (err: Error, user?: Partial<User>) => void): void {
     this.userService
       .findOne({ id })
-      .then((user) => done(null, user))
+      .then(({ password, ...user }) => done(null, user))
       .catch((err) => done(err));
   }
 }
