@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { UserNullablePromise, User } from 'prisma';
-import { PrismaService } from '../prisma/prisma.service';
+import { UserNullablePromise, User } from '@prisma';
+import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class UserService {

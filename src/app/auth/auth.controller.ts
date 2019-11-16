@@ -1,18 +1,18 @@
 import { Controller, UseGuards, Get, Post, Req, Redirect } from '@nestjs/common';
 import { Request } from 'express';
 
-import { Public } from 'app/common/decorators';
-import { GitHubGuard } from 'app/common/guards';
+import { Public } from 'common/decorators';
+import { GithubGuard } from 'common/guards';
 
 @Controller('auth')
 export class AuthController {
   @Public()
-  @UseGuards(GitHubGuard)
+  @UseGuards(GithubGuard)
   @Get()
   public login() {}
 
   @Public()
-  @UseGuards(GitHubGuard)
+  @UseGuards(GithubGuard)
   @Get('/callback')
   @Redirect('./active')
   public callback() {}
