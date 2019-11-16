@@ -6,7 +6,7 @@ import { Request } from 'express';
 export class GithubGuard extends AuthGuard('github') implements CanActivate {
   public async canActivate(context: ExecutionContext): Promise<boolean> {
     const result = (await super.canActivate(context)) as boolean;
-    const request = context.switchToHttp().getRequest() as Request;
+    const request = context.switchToHttp().getRequest<Request>();
     await super.logIn(request);
     return result;
   }

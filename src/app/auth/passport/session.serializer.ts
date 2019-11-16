@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 
 import { IActiveUser } from 'models';
 import { GithubService } from 'github/github.service';
+import { LoginException } from 'common/errors/login.error';
 import { AuthService } from '../auth.service';
 
 @Injectable()
@@ -24,7 +25,7 @@ export class SessionSerializer extends PassportSerializer {
       const user = await this.authService.findUser({ id });
       done(null, { ...user, accessToken });
     } catch (err) {
-      done(err);
+      done(new LoginException());
     }
   }
 }

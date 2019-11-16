@@ -11,6 +11,7 @@ import * as pg from 'pg';
 import { environment } from '@env';
 import { AppModule } from 'app.module';
 import { LocalGuard } from 'common/guards';
+import { LoginExceptionFilter } from 'common/errors/login.filter';
 
 const pgSession = pgSessionFactory(session);
 const pgPool = environment.database
@@ -51,6 +52,7 @@ async function bootstrap() {
 
   const reflector = app.get(Reflector);
   app.useGlobalGuards(new LocalGuard(reflector));
+  app.useGlobalFilters(new LoginExceptionFilter());
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
