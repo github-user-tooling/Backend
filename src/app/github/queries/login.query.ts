@@ -1,12 +1,12 @@
 import { identityTag as gql } from 'identity-tag';
 
-export interface IAuth {
+export interface ILogon {
   viewer: {
     login: string;
   };
 }
 
-export const auth = gql`
+export const logon = gql`
   {
     viewer {
       login
