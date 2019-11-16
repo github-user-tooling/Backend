@@ -469,7 +469,6 @@ type Subscription {
 type User {
   id: ID!
   login: String!
-  accessToken: String!
   favorites(where: FavoriteWhereInput, orderBy: FavoriteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Favorite!]
 }
 
@@ -482,7 +481,6 @@ type UserConnection {
 input UserCreateInput {
   id: ID
   login: String!
-  accessToken: String!
   favorites: FavoriteCreateManyInput
 }
 
@@ -496,14 +494,11 @@ enum UserOrderByInput {
   id_DESC
   login_ASC
   login_DESC
-  accessToken_ASC
-  accessToken_DESC
 }
 
 type UserPreviousValues {
   id: ID!
   login: String!
-  accessToken: String!
 }
 
 type UserSubscriptionPayload {
@@ -526,13 +521,11 @@ input UserSubscriptionWhereInput {
 
 input UserUpdateInput {
   login: String
-  accessToken: String
   favorites: FavoriteUpdateManyInput
 }
 
 input UserUpdateManyMutationInput {
   login: String
-  accessToken: String
 }
 
 input UserWhereInput {
@@ -564,20 +557,6 @@ input UserWhereInput {
   login_not_starts_with: String
   login_ends_with: String
   login_not_ends_with: String
-  accessToken: String
-  accessToken_not: String
-  accessToken_in: [String!]
-  accessToken_not_in: [String!]
-  accessToken_lt: String
-  accessToken_lte: String
-  accessToken_gt: String
-  accessToken_gte: String
-  accessToken_contains: String
-  accessToken_not_contains: String
-  accessToken_starts_with: String
-  accessToken_not_starts_with: String
-  accessToken_ends_with: String
-  accessToken_not_ends_with: String
   favorites_every: FavoriteWhereInput
   favorites_some: FavoriteWhereInput
   favorites_none: FavoriteWhereInput
@@ -589,6 +568,5 @@ input UserWhereInput {
 input UserWhereUniqueInput {
   id: ID
   login: String
-  accessToken: String
 }
 `

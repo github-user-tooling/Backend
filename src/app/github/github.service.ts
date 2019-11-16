@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { request } from 'graphql-request';
 
-import { IProfile } from 'models/Profile';
-import { profile } from './queries/profile.query';
+import { IAuth, auth } from './queries';
+import { IProfile, profile } from './queries';
 
 @Injectable()
 export class GithubService {
@@ -13,8 +13,16 @@ export class GithubService {
     return data;
   }
 
-  public async profile(accessToken: string): Promise<IProfile> {
-    const response = await this.request<IProfile>(accessToken, profile);
-    return response;
+  public async login(accessToken: string): Promise<string> {
+    const {
+      viewer: { login },
+    } = await this.request<IAuth>(accessToken, auth);
+
+    return login;
+  }
+
+  public async profile(accessToken: string): Promise<IProfile['viewer']> {
+    const { viewer } = await this.request<IProfile>(accessToken, profile);
+    return viewer;
   }
 }

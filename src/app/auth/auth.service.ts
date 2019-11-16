@@ -7,14 +7,12 @@ import { PrismaService } from 'prisma/prisma.service';
 export class AuthService {
   constructor(private readonly prisma: PrismaService) {}
 
-  public async upsertUser({ login, accessToken }: Partial<User>) {
+  public async upsertUser({ login }: Partial<User>) {
     const user =
       (await this.prisma.client.user({ login })) ||
-      (await this.prisma.client.createUser({ login, accessToken }));
-    if (user.accessToken !== accessToken)
-      await this.prisma.client.updateUser({ where: { login }, data: { accessToken } });
+      (await this.prisma.client.createUser({ login }));
 
-    return { ...user, accessToken };
+    return { ...user };
   }
 
   public findUser(where: Partial<User>): Promise<User | null> {

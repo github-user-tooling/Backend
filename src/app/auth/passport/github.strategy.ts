@@ -3,7 +3,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Strategy, Profile } from 'passport-github2';
 
 import { environment } from '@env';
-import { User } from '@prisma';
+import { IActiveUser } from 'models';
 import { AuthService } from '../auth.service';
 
 @Injectable()
@@ -20,8 +20,8 @@ export class GitHubStrategy extends PassportStrategy(Strategy) {
     accessToken: string,
     refreshToken: string,
     { username }: Profile
-  ): Promise<User> {
-    const user = await this.authService.upsertUser({ login: username, accessToken });
+  ): Promise<IActiveUser> {
+    const user = await this.authService.upsertUser({ login: username });
     if (!user) throw new UnauthorizedException();
     return { ...user, accessToken };
   }

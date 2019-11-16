@@ -197,9 +197,7 @@ export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "login_ASC"
-  | "login_DESC"
-  | "accessToken_ASC"
-  | "accessToken_DESC";
+  | "login_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
@@ -300,7 +298,6 @@ export type NotesWhereUniqueInput = AtLeastOne<{
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
   login?: Maybe<String>;
-  accessToken?: Maybe<String>;
 }>;
 
 export interface UserWhereInput {
@@ -332,20 +329,6 @@ export interface UserWhereInput {
   login_not_starts_with?: Maybe<String>;
   login_ends_with?: Maybe<String>;
   login_not_ends_with?: Maybe<String>;
-  accessToken?: Maybe<String>;
-  accessToken_not?: Maybe<String>;
-  accessToken_in?: Maybe<String[] | String>;
-  accessToken_not_in?: Maybe<String[] | String>;
-  accessToken_lt?: Maybe<String>;
-  accessToken_lte?: Maybe<String>;
-  accessToken_gt?: Maybe<String>;
-  accessToken_gte?: Maybe<String>;
-  accessToken_contains?: Maybe<String>;
-  accessToken_not_contains?: Maybe<String>;
-  accessToken_starts_with?: Maybe<String>;
-  accessToken_not_starts_with?: Maybe<String>;
-  accessToken_ends_with?: Maybe<String>;
-  accessToken_not_ends_with?: Maybe<String>;
   favorites_every?: Maybe<FavoriteWhereInput>;
   favorites_some?: Maybe<FavoriteWhereInput>;
   favorites_none?: Maybe<FavoriteWhereInput>;
@@ -487,7 +470,6 @@ export interface NotesUpdateManyMutationInput {
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
   login: String;
-  accessToken: String;
   favorites?: Maybe<FavoriteCreateManyInput>;
 }
 
@@ -498,7 +480,6 @@ export interface FavoriteCreateManyInput {
 
 export interface UserUpdateInput {
   login?: Maybe<String>;
-  accessToken?: Maybe<String>;
   favorites?: Maybe<FavoriteUpdateManyInput>;
 }
 
@@ -584,7 +565,6 @@ export interface FavoriteUpdateManyDataInput {
 
 export interface UserUpdateManyMutationInput {
   login?: Maybe<String>;
-  accessToken?: Maybe<String>;
 }
 
 export interface FavoriteSubscriptionWhereInput {
@@ -843,13 +823,11 @@ export interface AggregateNotesSubscription
 export interface User {
   id: ID_Output;
   login: String;
-  accessToken: String;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
   login: () => Promise<String>;
-  accessToken: () => Promise<String>;
   favorites: <T = FragmentableArray<Favorite>>(args?: {
     where?: FavoriteWhereInput;
     orderBy?: FavoriteOrderByInput;
@@ -866,7 +844,6 @@ export interface UserSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   login: () => Promise<AsyncIterator<String>>;
-  accessToken: () => Promise<AsyncIterator<String>>;
   favorites: <T = Promise<AsyncIterator<FavoriteSubscription>>>(args?: {
     where?: FavoriteWhereInput;
     orderBy?: FavoriteOrderByInput;
@@ -883,7 +860,6 @@ export interface UserNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   login: () => Promise<String>;
-  accessToken: () => Promise<String>;
   favorites: <T = FragmentableArray<Favorite>>(args?: {
     where?: FavoriteWhereInput;
     orderBy?: FavoriteOrderByInput;
@@ -1084,7 +1060,6 @@ export interface UserSubscriptionPayloadSubscription
 export interface UserPreviousValues {
   id: ID_Output;
   login: String;
-  accessToken: String;
 }
 
 export interface UserPreviousValuesPromise
@@ -1092,7 +1067,6 @@ export interface UserPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   login: () => Promise<String>;
-  accessToken: () => Promise<String>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -1100,7 +1074,6 @@ export interface UserPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   login: () => Promise<AsyncIterator<String>>;
-  accessToken: () => Promise<AsyncIterator<String>>;
 }
 
 /*
