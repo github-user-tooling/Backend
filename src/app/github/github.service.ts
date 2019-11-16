@@ -3,7 +3,7 @@ import { request } from 'graphql-request';
 
 import { ILogon, logon } from './queries';
 import { IProfile, profile } from './queries';
-import { ICalendar, IDay, calendar } from './queries';
+import { ICalendar, ICalendarPayload, IDay, calendar } from './queries';
 import { ICalendarDTO } from '../models/CalendarDTO';
 
 @Injectable()
@@ -26,14 +26,17 @@ export class GithubService {
 
   public async calendar(accessToken: string): Promise<ICalendarDTO> {
     const { viewer } = await this.request<ICalendar>(accessToken, calendar);
-    const payload = {
-      colors: viewer.contributionsCollection.contributionCalendar.colors,
-      data: viewer.contributionsCollection.contributionCalendar.weeks.reduce(
+    const payload = this.formatCalendar(viewer.contributionsCollection.contributionCalendar);
+    return payload;
+  }
+
+  private formatCalendar(contributionCalendar: ICalendarPayload): ICalendarDTO {
+    return {
+      colors: contributionCalendar.colors,
+      data: contributionCalendar.weeks.reduce(
         (days, week) => days.concat(...week.contributionDays),
         new Array<IDay>()
       ),
     };
-
-    return payload;
   }
 }
