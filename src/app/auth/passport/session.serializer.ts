@@ -1,24 +1,28 @@
 import { PassportSerializer } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 
-import { User } from '@prisma';
-import { UserService } from 'user/user.service';
-import { IAuth } from 'models/Auth';
+import { IActiveUser } from 'models';
+import { GithubService } from 'github/github.service';
+import { AuthService } from '../auth.service';
 
 @Injectable()
 export class SessionSerializer extends PassportSerializer {
-  constructor(private readonly userService: UserService) {
+  constructor(private readonly authService: AuthService, private readonly github: GithubService) {
     super();
   }
 
-  public serializeUser(user: IAuth, done: (err: Error, id?: string) => void) {
-    done(null, user.id);
+  public serializeUser(user: IActiveUser, done: (err: Error, id?: string) => void) {
+    done(null, user.accessToken);
   }
 
-  public async deserializeUser(id: string, done: (err: Error, user?: User) => void) {
+  public async deserializeUser(
+    accessToken: string,
+    done: (err: Error, user?: IActiveUser) => void
+  ) {
     try {
-      const user = await this.userService.findOne({ id });
-      done(null, user);
+      const id = await this.github.login(accessToken);
+      const user = await this.authService.findUser({ id });
+      done(null, { ...user, accessToken });
     } catch (err) {
       done(err);
     }

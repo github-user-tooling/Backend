@@ -9,11 +9,9 @@ export class LocalGuard extends AuthGuard('github') implements CanActivate {
     super();
   }
 
-  public canActivate(context: ExecutionContext): boolean {
+  public async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.get<boolean>('isPublic', context.getHandler());
     const request = context.switchToHttp().getRequest() as Request;
-
-    const auth = request.isAuthenticated();
-    return isPublic || auth;
+    return isPublic || request.isAuthenticated();
   }
 }

@@ -1,5 +1,5 @@
 import { User } from '@prisma';
 
-export interface IAuth extends User {
+export interface IActiveUser extends User {
   accessToken: string;
 }
