@@ -4,7 +4,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 
 @Injectable()
-export class LocalGuard extends AuthGuard('local') implements CanActivate {
+export class LocalGuard extends AuthGuard('github') implements CanActivate {
   constructor(private readonly reflector: Reflector) {
     super();
   }
@@ -12,6 +12,7 @@ export class LocalGuard extends AuthGuard('local') implements CanActivate {
   public canActivate(context: ExecutionContext): boolean {
     const isPublic = this.reflector.get<boolean>('isPublic', context.getHandler());
     const request = context.switchToHttp().getRequest() as Request;
+
     const auth = request.isAuthenticated();
     return isPublic || auth;
   }

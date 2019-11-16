@@ -1,12 +1,18 @@
 type User {
   id: ID! @id
-  username: String! @unique
-  email: String! @unique
-  password: String!
-  role: Roles!
+  login: String! @unique
+  accessToken: String! @unique
+  favorites: [Favorite]
 }
 
-enum Roles {
-  User
-  Admin
+type Favorite {
+  id: ID! @id
+  login: String! @unique
+  notes: [Notes]
+}
+
+type Notes {
+  id: ID! @id
+  title: String!
+  body: String!
 }

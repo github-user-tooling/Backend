@@ -16,6 +16,8 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
+  favorite: (where?: FavoriteWhereInput) => Promise<boolean>;
+  notes: (where?: NotesWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
@@ -38,6 +40,44 @@ export interface Prisma {
    * Queries
    */
 
+  favorite: (where: FavoriteWhereUniqueInput) => FavoriteNullablePromise;
+  favorites: (args?: {
+    where?: FavoriteWhereInput;
+    orderBy?: FavoriteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Favorite>;
+  favoritesConnection: (args?: {
+    where?: FavoriteWhereInput;
+    orderBy?: FavoriteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FavoriteConnectionPromise;
+  notes: (where: NotesWhereUniqueInput) => NotesNullablePromise;
+  noteses: (args?: {
+    where?: NotesWhereInput;
+    orderBy?: NotesOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Notes>;
+  notesesConnection: (args?: {
+    where?: NotesWhereInput;
+    orderBy?: NotesOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => NotesConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserNullablePromise;
   users: (args?: {
     where?: UserWhereInput;
@@ -63,6 +103,38 @@ export interface Prisma {
    * Mutations
    */
 
+  createFavorite: (data: FavoriteCreateInput) => FavoritePromise;
+  updateFavorite: (args: {
+    data: FavoriteUpdateInput;
+    where: FavoriteWhereUniqueInput;
+  }) => FavoritePromise;
+  updateManyFavorites: (args: {
+    data: FavoriteUpdateManyMutationInput;
+    where?: FavoriteWhereInput;
+  }) => BatchPayloadPromise;
+  upsertFavorite: (args: {
+    where: FavoriteWhereUniqueInput;
+    create: FavoriteCreateInput;
+    update: FavoriteUpdateInput;
+  }) => FavoritePromise;
+  deleteFavorite: (where: FavoriteWhereUniqueInput) => FavoritePromise;
+  deleteManyFavorites: (where?: FavoriteWhereInput) => BatchPayloadPromise;
+  createNotes: (data: NotesCreateInput) => NotesPromise;
+  updateNotes: (args: {
+    data: NotesUpdateInput;
+    where: NotesWhereUniqueInput;
+  }) => NotesPromise;
+  updateManyNoteses: (args: {
+    data: NotesUpdateManyMutationInput;
+    where?: NotesWhereInput;
+  }) => BatchPayloadPromise;
+  upsertNotes: (args: {
+    where: NotesWhereUniqueInput;
+    create: NotesCreateInput;
+    update: NotesUpdateInput;
+  }) => NotesPromise;
+  deleteNotes: (where: NotesWhereUniqueInput) => NotesPromise;
+  deleteManyNoteses: (where?: NotesWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (args: {
     data: UserUpdateInput;
@@ -88,6 +160,12 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  favorite: (
+    where?: FavoriteSubscriptionWhereInput
+  ) => FavoriteSubscriptionPayloadSubscription;
+  notes: (
+    where?: NotesSubscriptionWhereInput
+  ) => NotesSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -101,26 +179,128 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type Roles = "User" | "Admin";
+export type NotesOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "title_ASC"
+  | "title_DESC"
+  | "body_ASC"
+  | "body_DESC";
+
+export type FavoriteOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "login_ASC"
+  | "login_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "username_ASC"
-  | "username_DESC"
-  | "email_ASC"
-  | "email_DESC"
-  | "password_ASC"
-  | "password_DESC"
-  | "role_ASC"
-  | "role_DESC";
+  | "login_ASC"
+  | "login_DESC"
+  | "accessToken_ASC"
+  | "accessToken_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
+export type FavoriteWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  login?: Maybe<String>;
+}>;
+
+export interface NotesWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  body?: Maybe<String>;
+  body_not?: Maybe<String>;
+  body_in?: Maybe<String[] | String>;
+  body_not_in?: Maybe<String[] | String>;
+  body_lt?: Maybe<String>;
+  body_lte?: Maybe<String>;
+  body_gt?: Maybe<String>;
+  body_gte?: Maybe<String>;
+  body_contains?: Maybe<String>;
+  body_not_contains?: Maybe<String>;
+  body_starts_with?: Maybe<String>;
+  body_not_starts_with?: Maybe<String>;
+  body_ends_with?: Maybe<String>;
+  body_not_ends_with?: Maybe<String>;
+  AND?: Maybe<NotesWhereInput[] | NotesWhereInput>;
+  OR?: Maybe<NotesWhereInput[] | NotesWhereInput>;
+  NOT?: Maybe<NotesWhereInput[] | NotesWhereInput>;
+}
+
+export interface FavoriteWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  login?: Maybe<String>;
+  login_not?: Maybe<String>;
+  login_in?: Maybe<String[] | String>;
+  login_not_in?: Maybe<String[] | String>;
+  login_lt?: Maybe<String>;
+  login_lte?: Maybe<String>;
+  login_gt?: Maybe<String>;
+  login_gte?: Maybe<String>;
+  login_contains?: Maybe<String>;
+  login_not_contains?: Maybe<String>;
+  login_starts_with?: Maybe<String>;
+  login_not_starts_with?: Maybe<String>;
+  login_ends_with?: Maybe<String>;
+  login_not_ends_with?: Maybe<String>;
+  notes_every?: Maybe<NotesWhereInput>;
+  notes_some?: Maybe<NotesWhereInput>;
+  notes_none?: Maybe<NotesWhereInput>;
+  AND?: Maybe<FavoriteWhereInput[] | FavoriteWhereInput>;
+  OR?: Maybe<FavoriteWhereInput[] | FavoriteWhereInput>;
+  NOT?: Maybe<FavoriteWhereInput[] | FavoriteWhereInput>;
+}
+
+export type NotesWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
-  username?: Maybe<String>;
-  email?: Maybe<String>;
+  login?: Maybe<String>;
+  accessToken?: Maybe<String>;
 }>;
 
 export interface UserWhereInput {
@@ -138,77 +318,299 @@ export interface UserWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  username?: Maybe<String>;
-  username_not?: Maybe<String>;
-  username_in?: Maybe<String[] | String>;
-  username_not_in?: Maybe<String[] | String>;
-  username_lt?: Maybe<String>;
-  username_lte?: Maybe<String>;
-  username_gt?: Maybe<String>;
-  username_gte?: Maybe<String>;
-  username_contains?: Maybe<String>;
-  username_not_contains?: Maybe<String>;
-  username_starts_with?: Maybe<String>;
-  username_not_starts_with?: Maybe<String>;
-  username_ends_with?: Maybe<String>;
-  username_not_ends_with?: Maybe<String>;
-  email?: Maybe<String>;
-  email_not?: Maybe<String>;
-  email_in?: Maybe<String[] | String>;
-  email_not_in?: Maybe<String[] | String>;
-  email_lt?: Maybe<String>;
-  email_lte?: Maybe<String>;
-  email_gt?: Maybe<String>;
-  email_gte?: Maybe<String>;
-  email_contains?: Maybe<String>;
-  email_not_contains?: Maybe<String>;
-  email_starts_with?: Maybe<String>;
-  email_not_starts_with?: Maybe<String>;
-  email_ends_with?: Maybe<String>;
-  email_not_ends_with?: Maybe<String>;
-  password?: Maybe<String>;
-  password_not?: Maybe<String>;
-  password_in?: Maybe<String[] | String>;
-  password_not_in?: Maybe<String[] | String>;
-  password_lt?: Maybe<String>;
-  password_lte?: Maybe<String>;
-  password_gt?: Maybe<String>;
-  password_gte?: Maybe<String>;
-  password_contains?: Maybe<String>;
-  password_not_contains?: Maybe<String>;
-  password_starts_with?: Maybe<String>;
-  password_not_starts_with?: Maybe<String>;
-  password_ends_with?: Maybe<String>;
-  password_not_ends_with?: Maybe<String>;
-  role?: Maybe<Roles>;
-  role_not?: Maybe<Roles>;
-  role_in?: Maybe<Roles[] | Roles>;
-  role_not_in?: Maybe<Roles[] | Roles>;
+  login?: Maybe<String>;
+  login_not?: Maybe<String>;
+  login_in?: Maybe<String[] | String>;
+  login_not_in?: Maybe<String[] | String>;
+  login_lt?: Maybe<String>;
+  login_lte?: Maybe<String>;
+  login_gt?: Maybe<String>;
+  login_gte?: Maybe<String>;
+  login_contains?: Maybe<String>;
+  login_not_contains?: Maybe<String>;
+  login_starts_with?: Maybe<String>;
+  login_not_starts_with?: Maybe<String>;
+  login_ends_with?: Maybe<String>;
+  login_not_ends_with?: Maybe<String>;
+  accessToken?: Maybe<String>;
+  accessToken_not?: Maybe<String>;
+  accessToken_in?: Maybe<String[] | String>;
+  accessToken_not_in?: Maybe<String[] | String>;
+  accessToken_lt?: Maybe<String>;
+  accessToken_lte?: Maybe<String>;
+  accessToken_gt?: Maybe<String>;
+  accessToken_gte?: Maybe<String>;
+  accessToken_contains?: Maybe<String>;
+  accessToken_not_contains?: Maybe<String>;
+  accessToken_starts_with?: Maybe<String>;
+  accessToken_not_starts_with?: Maybe<String>;
+  accessToken_ends_with?: Maybe<String>;
+  accessToken_not_ends_with?: Maybe<String>;
+  favorites_every?: Maybe<FavoriteWhereInput>;
+  favorites_some?: Maybe<FavoriteWhereInput>;
+  favorites_none?: Maybe<FavoriteWhereInput>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
+export interface FavoriteCreateInput {
+  id?: Maybe<ID_Input>;
+  login: String;
+  notes?: Maybe<NotesCreateManyInput>;
+}
+
+export interface NotesCreateManyInput {
+  create?: Maybe<NotesCreateInput[] | NotesCreateInput>;
+  connect?: Maybe<NotesWhereUniqueInput[] | NotesWhereUniqueInput>;
+}
+
+export interface NotesCreateInput {
+  id?: Maybe<ID_Input>;
+  title: String;
+  body: String;
+}
+
+export interface FavoriteUpdateInput {
+  login?: Maybe<String>;
+  notes?: Maybe<NotesUpdateManyInput>;
+}
+
+export interface NotesUpdateManyInput {
+  create?: Maybe<NotesCreateInput[] | NotesCreateInput>;
+  update?: Maybe<
+    | NotesUpdateWithWhereUniqueNestedInput[]
+    | NotesUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | NotesUpsertWithWhereUniqueNestedInput[]
+    | NotesUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<NotesWhereUniqueInput[] | NotesWhereUniqueInput>;
+  connect?: Maybe<NotesWhereUniqueInput[] | NotesWhereUniqueInput>;
+  set?: Maybe<NotesWhereUniqueInput[] | NotesWhereUniqueInput>;
+  disconnect?: Maybe<NotesWhereUniqueInput[] | NotesWhereUniqueInput>;
+  deleteMany?: Maybe<NotesScalarWhereInput[] | NotesScalarWhereInput>;
+  updateMany?: Maybe<
+    NotesUpdateManyWithWhereNestedInput[] | NotesUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface NotesUpdateWithWhereUniqueNestedInput {
+  where: NotesWhereUniqueInput;
+  data: NotesUpdateDataInput;
+}
+
+export interface NotesUpdateDataInput {
+  title?: Maybe<String>;
+  body?: Maybe<String>;
+}
+
+export interface NotesUpsertWithWhereUniqueNestedInput {
+  where: NotesWhereUniqueInput;
+  update: NotesUpdateDataInput;
+  create: NotesCreateInput;
+}
+
+export interface NotesScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  body?: Maybe<String>;
+  body_not?: Maybe<String>;
+  body_in?: Maybe<String[] | String>;
+  body_not_in?: Maybe<String[] | String>;
+  body_lt?: Maybe<String>;
+  body_lte?: Maybe<String>;
+  body_gt?: Maybe<String>;
+  body_gte?: Maybe<String>;
+  body_contains?: Maybe<String>;
+  body_not_contains?: Maybe<String>;
+  body_starts_with?: Maybe<String>;
+  body_not_starts_with?: Maybe<String>;
+  body_ends_with?: Maybe<String>;
+  body_not_ends_with?: Maybe<String>;
+  AND?: Maybe<NotesScalarWhereInput[] | NotesScalarWhereInput>;
+  OR?: Maybe<NotesScalarWhereInput[] | NotesScalarWhereInput>;
+  NOT?: Maybe<NotesScalarWhereInput[] | NotesScalarWhereInput>;
+}
+
+export interface NotesUpdateManyWithWhereNestedInput {
+  where: NotesScalarWhereInput;
+  data: NotesUpdateManyDataInput;
+}
+
+export interface NotesUpdateManyDataInput {
+  title?: Maybe<String>;
+  body?: Maybe<String>;
+}
+
+export interface FavoriteUpdateManyMutationInput {
+  login?: Maybe<String>;
+}
+
+export interface NotesUpdateInput {
+  title?: Maybe<String>;
+  body?: Maybe<String>;
+}
+
+export interface NotesUpdateManyMutationInput {
+  title?: Maybe<String>;
+  body?: Maybe<String>;
+}
+
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
-  username: String;
-  email: String;
-  password: String;
-  role: Roles;
+  login: String;
+  accessToken: String;
+  favorites?: Maybe<FavoriteCreateManyInput>;
+}
+
+export interface FavoriteCreateManyInput {
+  create?: Maybe<FavoriteCreateInput[] | FavoriteCreateInput>;
+  connect?: Maybe<FavoriteWhereUniqueInput[] | FavoriteWhereUniqueInput>;
 }
 
 export interface UserUpdateInput {
-  username?: Maybe<String>;
-  email?: Maybe<String>;
-  password?: Maybe<String>;
-  role?: Maybe<Roles>;
+  login?: Maybe<String>;
+  accessToken?: Maybe<String>;
+  favorites?: Maybe<FavoriteUpdateManyInput>;
+}
+
+export interface FavoriteUpdateManyInput {
+  create?: Maybe<FavoriteCreateInput[] | FavoriteCreateInput>;
+  update?: Maybe<
+    | FavoriteUpdateWithWhereUniqueNestedInput[]
+    | FavoriteUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | FavoriteUpsertWithWhereUniqueNestedInput[]
+    | FavoriteUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<FavoriteWhereUniqueInput[] | FavoriteWhereUniqueInput>;
+  connect?: Maybe<FavoriteWhereUniqueInput[] | FavoriteWhereUniqueInput>;
+  set?: Maybe<FavoriteWhereUniqueInput[] | FavoriteWhereUniqueInput>;
+  disconnect?: Maybe<FavoriteWhereUniqueInput[] | FavoriteWhereUniqueInput>;
+  deleteMany?: Maybe<FavoriteScalarWhereInput[] | FavoriteScalarWhereInput>;
+  updateMany?: Maybe<
+    | FavoriteUpdateManyWithWhereNestedInput[]
+    | FavoriteUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface FavoriteUpdateWithWhereUniqueNestedInput {
+  where: FavoriteWhereUniqueInput;
+  data: FavoriteUpdateDataInput;
+}
+
+export interface FavoriteUpdateDataInput {
+  login?: Maybe<String>;
+  notes?: Maybe<NotesUpdateManyInput>;
+}
+
+export interface FavoriteUpsertWithWhereUniqueNestedInput {
+  where: FavoriteWhereUniqueInput;
+  update: FavoriteUpdateDataInput;
+  create: FavoriteCreateInput;
+}
+
+export interface FavoriteScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  login?: Maybe<String>;
+  login_not?: Maybe<String>;
+  login_in?: Maybe<String[] | String>;
+  login_not_in?: Maybe<String[] | String>;
+  login_lt?: Maybe<String>;
+  login_lte?: Maybe<String>;
+  login_gt?: Maybe<String>;
+  login_gte?: Maybe<String>;
+  login_contains?: Maybe<String>;
+  login_not_contains?: Maybe<String>;
+  login_starts_with?: Maybe<String>;
+  login_not_starts_with?: Maybe<String>;
+  login_ends_with?: Maybe<String>;
+  login_not_ends_with?: Maybe<String>;
+  AND?: Maybe<FavoriteScalarWhereInput[] | FavoriteScalarWhereInput>;
+  OR?: Maybe<FavoriteScalarWhereInput[] | FavoriteScalarWhereInput>;
+  NOT?: Maybe<FavoriteScalarWhereInput[] | FavoriteScalarWhereInput>;
+}
+
+export interface FavoriteUpdateManyWithWhereNestedInput {
+  where: FavoriteScalarWhereInput;
+  data: FavoriteUpdateManyDataInput;
+}
+
+export interface FavoriteUpdateManyDataInput {
+  login?: Maybe<String>;
 }
 
 export interface UserUpdateManyMutationInput {
-  username?: Maybe<String>;
-  email?: Maybe<String>;
-  password?: Maybe<String>;
-  role?: Maybe<Roles>;
+  login?: Maybe<String>;
+  accessToken?: Maybe<String>;
+}
+
+export interface FavoriteSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<FavoriteWhereInput>;
+  AND?: Maybe<
+    FavoriteSubscriptionWhereInput[] | FavoriteSubscriptionWhereInput
+  >;
+  OR?: Maybe<FavoriteSubscriptionWhereInput[] | FavoriteSubscriptionWhereInput>;
+  NOT?: Maybe<
+    FavoriteSubscriptionWhereInput[] | FavoriteSubscriptionWhereInput
+  >;
+}
+
+export interface NotesSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<NotesWhereInput>;
+  AND?: Maybe<NotesSubscriptionWhereInput[] | NotesSubscriptionWhereInput>;
+  OR?: Maybe<NotesSubscriptionWhereInput[] | NotesSubscriptionWhereInput>;
+  NOT?: Maybe<NotesSubscriptionWhereInput[] | NotesSubscriptionWhereInput>;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -226,61 +628,104 @@ export interface NodeNode {
   id: ID_Output;
 }
 
-export interface User {
+export interface Favorite {
   id: ID_Output;
-  username: String;
-  email: String;
-  password: String;
-  role: Roles;
+  login: String;
 }
 
-export interface UserPromise extends Promise<User>, Fragmentable {
+export interface FavoritePromise extends Promise<Favorite>, Fragmentable {
   id: () => Promise<ID_Output>;
-  username: () => Promise<String>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  role: () => Promise<Roles>;
+  login: () => Promise<String>;
+  notes: <T = FragmentableArray<Notes>>(args?: {
+    where?: NotesWhereInput;
+    orderBy?: NotesOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
+export interface FavoriteSubscription
+  extends Promise<AsyncIterator<Favorite>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  username: () => Promise<AsyncIterator<String>>;
-  email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  role: () => Promise<AsyncIterator<Roles>>;
+  login: () => Promise<AsyncIterator<String>>;
+  notes: <T = Promise<AsyncIterator<NotesSubscription>>>(args?: {
+    where?: NotesWhereInput;
+    orderBy?: NotesOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface UserNullablePromise
-  extends Promise<User | null>,
+export interface FavoriteNullablePromise
+  extends Promise<Favorite | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  username: () => Promise<String>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  role: () => Promise<Roles>;
+  login: () => Promise<String>;
+  notes: <T = FragmentableArray<Notes>>(args?: {
+    where?: NotesWhereInput;
+    orderBy?: NotesOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface UserConnection {
+export interface Notes {
+  id: ID_Output;
+  title: String;
+  body: String;
+}
+
+export interface NotesPromise extends Promise<Notes>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  body: () => Promise<String>;
+}
+
+export interface NotesSubscription
+  extends Promise<AsyncIterator<Notes>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  title: () => Promise<AsyncIterator<String>>;
+  body: () => Promise<AsyncIterator<String>>;
+}
+
+export interface NotesNullablePromise
+  extends Promise<Notes | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  body: () => Promise<String>;
+}
+
+export interface FavoriteConnection {
   pageInfo: PageInfo;
-  edges: UserEdge[];
+  edges: FavoriteEdge[];
 }
 
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
+export interface FavoriteConnectionPromise
+  extends Promise<FavoriteConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
+  edges: <T = FragmentableArray<FavoriteEdge>>() => T;
+  aggregate: <T = AggregateFavoritePromise>() => T;
 }
 
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
+export interface FavoriteConnectionSubscription
+  extends Promise<AsyncIterator<FavoriteConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<FavoriteEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateFavoriteSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -304,6 +749,171 @@ export interface PageInfoSubscription
   hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
   startCursor: () => Promise<AsyncIterator<String>>;
   endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface FavoriteEdge {
+  node: Favorite;
+  cursor: String;
+}
+
+export interface FavoriteEdgePromise
+  extends Promise<FavoriteEdge>,
+    Fragmentable {
+  node: <T = FavoritePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface FavoriteEdgeSubscription
+  extends Promise<AsyncIterator<FavoriteEdge>>,
+    Fragmentable {
+  node: <T = FavoriteSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateFavorite {
+  count: Int;
+}
+
+export interface AggregateFavoritePromise
+  extends Promise<AggregateFavorite>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateFavoriteSubscription
+  extends Promise<AsyncIterator<AggregateFavorite>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface NotesConnection {
+  pageInfo: PageInfo;
+  edges: NotesEdge[];
+}
+
+export interface NotesConnectionPromise
+  extends Promise<NotesConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<NotesEdge>>() => T;
+  aggregate: <T = AggregateNotesPromise>() => T;
+}
+
+export interface NotesConnectionSubscription
+  extends Promise<AsyncIterator<NotesConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<NotesEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateNotesSubscription>() => T;
+}
+
+export interface NotesEdge {
+  node: Notes;
+  cursor: String;
+}
+
+export interface NotesEdgePromise extends Promise<NotesEdge>, Fragmentable {
+  node: <T = NotesPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface NotesEdgeSubscription
+  extends Promise<AsyncIterator<NotesEdge>>,
+    Fragmentable {
+  node: <T = NotesSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateNotes {
+  count: Int;
+}
+
+export interface AggregateNotesPromise
+  extends Promise<AggregateNotes>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateNotesSubscription
+  extends Promise<AsyncIterator<AggregateNotes>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface User {
+  id: ID_Output;
+  login: String;
+  accessToken: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  login: () => Promise<String>;
+  accessToken: () => Promise<String>;
+  favorites: <T = FragmentableArray<Favorite>>(args?: {
+    where?: FavoriteWhereInput;
+    orderBy?: FavoriteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  login: () => Promise<AsyncIterator<String>>;
+  accessToken: () => Promise<AsyncIterator<String>>;
+  favorites: <T = Promise<AsyncIterator<FavoriteSubscription>>>(args?: {
+    where?: FavoriteWhereInput;
+    orderBy?: FavoriteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  login: () => Promise<String>;
+  accessToken: () => Promise<String>;
+  favorites: <T = FragmentableArray<Favorite>>(args?: {
+    where?: FavoriteWhereInput;
+    orderBy?: FavoriteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
 }
 
 export interface UserEdge {
@@ -355,6 +965,97 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
+export interface FavoriteSubscriptionPayload {
+  mutation: MutationType;
+  node: Favorite;
+  updatedFields: String[];
+  previousValues: FavoritePreviousValues;
+}
+
+export interface FavoriteSubscriptionPayloadPromise
+  extends Promise<FavoriteSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = FavoritePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = FavoritePreviousValuesPromise>() => T;
+}
+
+export interface FavoriteSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<FavoriteSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = FavoriteSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = FavoritePreviousValuesSubscription>() => T;
+}
+
+export interface FavoritePreviousValues {
+  id: ID_Output;
+  login: String;
+}
+
+export interface FavoritePreviousValuesPromise
+  extends Promise<FavoritePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  login: () => Promise<String>;
+}
+
+export interface FavoritePreviousValuesSubscription
+  extends Promise<AsyncIterator<FavoritePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  login: () => Promise<AsyncIterator<String>>;
+}
+
+export interface NotesSubscriptionPayload {
+  mutation: MutationType;
+  node: Notes;
+  updatedFields: String[];
+  previousValues: NotesPreviousValues;
+}
+
+export interface NotesSubscriptionPayloadPromise
+  extends Promise<NotesSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = NotesPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = NotesPreviousValuesPromise>() => T;
+}
+
+export interface NotesSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<NotesSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = NotesSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = NotesPreviousValuesSubscription>() => T;
+}
+
+export interface NotesPreviousValues {
+  id: ID_Output;
+  title: String;
+  body: String;
+}
+
+export interface NotesPreviousValuesPromise
+  extends Promise<NotesPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  body: () => Promise<String>;
+}
+
+export interface NotesPreviousValuesSubscription
+  extends Promise<AsyncIterator<NotesPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  title: () => Promise<AsyncIterator<String>>;
+  body: () => Promise<AsyncIterator<String>>;
+}
+
 export interface UserSubscriptionPayload {
   mutation: MutationType;
   node: User;
@@ -382,30 +1083,24 @@ export interface UserSubscriptionPayloadSubscription
 
 export interface UserPreviousValues {
   id: ID_Output;
-  username: String;
-  email: String;
-  password: String;
-  role: Roles;
+  login: String;
+  accessToken: String;
 }
 
 export interface UserPreviousValuesPromise
   extends Promise<UserPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  username: () => Promise<String>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  role: () => Promise<Roles>;
+  login: () => Promise<String>;
+  accessToken: () => Promise<String>;
 }
 
 export interface UserPreviousValuesSubscription
   extends Promise<AsyncIterator<UserPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  username: () => Promise<AsyncIterator<String>>;
-  email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  role: () => Promise<AsyncIterator<Roles>>;
+  login: () => Promise<AsyncIterator<String>>;
+  accessToken: () => Promise<AsyncIterator<String>>;
 }
 
 /*
@@ -441,7 +1136,11 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "Roles",
+    name: "Favorite",
+    embedded: false
+  },
+  {
+    name: "Notes",
     embedded: false
   }
 ];
