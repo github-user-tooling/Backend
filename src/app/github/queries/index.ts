@@ -1,2 +1,2 @@
-export * from './login.query';
+export * from './logon.query';
 export * from './profile.query';
