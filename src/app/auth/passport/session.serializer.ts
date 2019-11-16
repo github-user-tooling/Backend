@@ -1,7 +1,6 @@
 import { PassportSerializer } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 
-import { User } from '@prisma';
 import { IActiveUser } from 'models';
 import { GithubService } from 'github/github.service';
 import { AuthService } from '../auth.service';

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 
-import { GithubModule } from '../github/github.module';
+import { GithubModule } from 'github/github.module';
 import { PrismaModule } from 'prisma/prisma.module';
 import { GitHubStrategy } from './passport/github.strategy';
 import { SessionSerializer } from './passport/session.serializer';

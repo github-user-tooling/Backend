@@ -3,9 +3,6 @@ import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 
-import { User } from '@prisma';
-import { IActiveUser } from 'models';
-
 @Injectable()
 export class LocalGuard extends AuthGuard('github') implements CanActivate {
   constructor(private readonly reflector: Reflector) {
