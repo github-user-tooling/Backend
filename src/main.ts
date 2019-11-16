@@ -1,5 +1,6 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 import * as compression from 'compression';
 import * as helmet from 'helmet';
@@ -27,11 +28,12 @@ const store = environment.database
   : undefined;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors();
   app.use(helmet());
   app.use(compression());
 
+  app.set('trust proxy', 1);
   app.use(
     session({
       secret: environment.secret,
