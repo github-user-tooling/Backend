@@ -16,7 +16,7 @@ export class UserController {
   }
 
   @Get('calendar')
-  public async getCalendar(@User() { accessToken }: IActiveUser): Promise<ICalendarDTO> {
-    return await this.github.calendar(accessToken);
+  public async getCalendar(@User() { accessToken, id }: IActiveUser): Promise<ICalendarDTO> {
+    return await this.github.calendar(accessToken, id);
   }
 }

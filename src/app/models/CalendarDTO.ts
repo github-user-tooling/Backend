@@ -1,4 +1,4 @@
-import { IDay } from 'github/queries/calendar.query';
+import { IDay } from 'github/queries';
 
 export interface ICalendarDTO {
   colors: string[];
