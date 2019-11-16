@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 
-import { UserNullablePromise, User } from '@prisma';
+import { User } from '@prisma';
 import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
-export class UserService {
+export class AuthService {
   constructor(private readonly prisma: PrismaService) {}
 
-  public async findOrCreate({ login, accessToken }: Partial<User>) {
+  public async upsertUser({ login, accessToken }: Partial<User>) {
     const user =
       (await this.prisma.client.user({ login })) ||
       (await this.prisma.client.createUser({ login, accessToken }));
@@ -17,7 +17,7 @@ export class UserService {
     return { ...user, accessToken };
   }
 
-  public findOne(where: Partial<User>): UserNullablePromise {
+  public findUser(where: Partial<User>): Promise<User | null> {
     return this.prisma.client.user(where);
   }
 }

@@ -5,11 +5,9 @@ import { User } from 'common/decorators';
 import { IProfile } from 'models/Profile';
 import { GithubService } from 'github/github.service';
 
-import { UserService } from './user.service';
-
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService, private readonly github: GithubService) {}
+  constructor(private readonly github: GithubService) {}
 
   @Get('profile')
   public async getUser(@User() { accessToken }: UserEntity): Promise<IProfile> {
