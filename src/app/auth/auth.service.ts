@@ -7,10 +7,9 @@ import { PrismaService } from 'prisma/prisma.service';
 export class AuthService {
   constructor(private readonly prisma: PrismaService) {}
 
-  public async upsertUser({ login }: Partial<User>) {
+  public async upsertUser(payload: Omit<User, 'id'>) {
     const user =
-      (await this.prisma.client.user({ login })) ||
-      (await this.prisma.client.createUser({ login }));
+      (await this.prisma.client.user(payload)) || (await this.prisma.client.createUser(payload));
 
     return { ...user };
   }

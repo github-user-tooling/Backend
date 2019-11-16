@@ -19,9 +19,9 @@ export class GitHubStrategy extends PassportStrategy(Strategy) {
   public async validate(
     accessToken: string,
     refreshToken: string,
-    { username }: Profile
+    { id }: Profile
   ): Promise<IActiveUser> {
-    const user = await this.authService.upsertUser({ login: username });
+    const user = await this.authService.upsertUser({ githubID: id });
     if (!user) throw new UnauthorizedException();
     return { ...user, accessToken };
   }

@@ -14,7 +14,7 @@ export class GithubService {
 
   public async login(accessToken: string): Promise<string> {
     const { viewer } = await this.request<ILogon>(accessToken, logon);
-    return viewer.login;
+    return viewer.id;
   }
 
   public async profile(accessToken: string): Promise<IProfile['viewer']> {

@@ -2,14 +2,14 @@ import { identityTag as gql } from 'identity-tag';
 
 export interface ILogon {
   viewer: {
-    login: string;
+    id: string;
   };
 }
 
 export const logon = gql`
   {
     viewer {
-      login
+      id
     }
   }
 `;

@@ -196,8 +196,8 @@ export type FavoriteOrderByInput =
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "login_ASC"
-  | "login_DESC";
+  | "githubID_ASC"
+  | "githubID_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
@@ -297,7 +297,7 @@ export type NotesWhereUniqueInput = AtLeastOne<{
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
-  login?: Maybe<String>;
+  githubID?: Maybe<String>;
 }>;
 
 export interface UserWhereInput {
@@ -315,20 +315,20 @@ export interface UserWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  login?: Maybe<String>;
-  login_not?: Maybe<String>;
-  login_in?: Maybe<String[] | String>;
-  login_not_in?: Maybe<String[] | String>;
-  login_lt?: Maybe<String>;
-  login_lte?: Maybe<String>;
-  login_gt?: Maybe<String>;
-  login_gte?: Maybe<String>;
-  login_contains?: Maybe<String>;
-  login_not_contains?: Maybe<String>;
-  login_starts_with?: Maybe<String>;
-  login_not_starts_with?: Maybe<String>;
-  login_ends_with?: Maybe<String>;
-  login_not_ends_with?: Maybe<String>;
+  githubID?: Maybe<String>;
+  githubID_not?: Maybe<String>;
+  githubID_in?: Maybe<String[] | String>;
+  githubID_not_in?: Maybe<String[] | String>;
+  githubID_lt?: Maybe<String>;
+  githubID_lte?: Maybe<String>;
+  githubID_gt?: Maybe<String>;
+  githubID_gte?: Maybe<String>;
+  githubID_contains?: Maybe<String>;
+  githubID_not_contains?: Maybe<String>;
+  githubID_starts_with?: Maybe<String>;
+  githubID_not_starts_with?: Maybe<String>;
+  githubID_ends_with?: Maybe<String>;
+  githubID_not_ends_with?: Maybe<String>;
   favorites_every?: Maybe<FavoriteWhereInput>;
   favorites_some?: Maybe<FavoriteWhereInput>;
   favorites_none?: Maybe<FavoriteWhereInput>;
@@ -469,7 +469,7 @@ export interface NotesUpdateManyMutationInput {
 
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
-  login: String;
+  githubID: String;
   favorites?: Maybe<FavoriteCreateManyInput>;
 }
 
@@ -479,7 +479,7 @@ export interface FavoriteCreateManyInput {
 }
 
 export interface UserUpdateInput {
-  login?: Maybe<String>;
+  githubID?: Maybe<String>;
   favorites?: Maybe<FavoriteUpdateManyInput>;
 }
 
@@ -564,7 +564,7 @@ export interface FavoriteUpdateManyDataInput {
 }
 
 export interface UserUpdateManyMutationInput {
-  login?: Maybe<String>;
+  githubID?: Maybe<String>;
 }
 
 export interface FavoriteSubscriptionWhereInput {
@@ -822,12 +822,12 @@ export interface AggregateNotesSubscription
 
 export interface User {
   id: ID_Output;
-  login: String;
+  githubID: String;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
-  login: () => Promise<String>;
+  githubID: () => Promise<String>;
   favorites: <T = FragmentableArray<Favorite>>(args?: {
     where?: FavoriteWhereInput;
     orderBy?: FavoriteOrderByInput;
@@ -843,7 +843,7 @@ export interface UserSubscription
   extends Promise<AsyncIterator<User>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  login: () => Promise<AsyncIterator<String>>;
+  githubID: () => Promise<AsyncIterator<String>>;
   favorites: <T = Promise<AsyncIterator<FavoriteSubscription>>>(args?: {
     where?: FavoriteWhereInput;
     orderBy?: FavoriteOrderByInput;
@@ -859,7 +859,7 @@ export interface UserNullablePromise
   extends Promise<User | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  login: () => Promise<String>;
+  githubID: () => Promise<String>;
   favorites: <T = FragmentableArray<Favorite>>(args?: {
     where?: FavoriteWhereInput;
     orderBy?: FavoriteOrderByInput;
@@ -1059,21 +1059,21 @@ export interface UserSubscriptionPayloadSubscription
 
 export interface UserPreviousValues {
   id: ID_Output;
-  login: String;
+  githubID: String;
 }
 
 export interface UserPreviousValuesPromise
   extends Promise<UserPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  login: () => Promise<String>;
+  githubID: () => Promise<String>;
 }
 
 export interface UserPreviousValuesSubscription
   extends Promise<AsyncIterator<UserPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  login: () => Promise<AsyncIterator<String>>;
+  githubID: () => Promise<AsyncIterator<String>>;
 }
 
 /*
