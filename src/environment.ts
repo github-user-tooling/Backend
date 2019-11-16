@@ -4,7 +4,7 @@ dotenv.config();
 
 export const environment = {
   port: Number(process.env.PORT) || 3000,
-  production: process.env.NODE_ENV || false,
+  production: process.env.NODE_ENV === 'production' || false,
   prisma: process.env.PRISMA || '',
   secret: process.env.SECRET || '',
   salt: Number(process.env.SALT) || 1,

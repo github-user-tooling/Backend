@@ -8,9 +8,9 @@ import * as session from 'express-session';
 import * as pgSessionFactory from 'connect-pg-simple';
 import * as pg from 'pg';
 
-import { environment } from './environment';
-import { AppModule } from './app/app.module';
-import { LocalGuard } from './app/common/guards';
+import { environment } from '@env';
+import { AppModule } from 'app.module';
+import { LocalGuard } from 'common/guards';
 
 const pgSession = pgSessionFactory(session);
 const pgPool = environment.database

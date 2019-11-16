@@ -2,9 +2,9 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Strategy, Profile } from 'passport-github2';
 
-import { environment } from 'environment';
-import { IAuth } from 'app/models';
-import { UserService } from 'app/user/user.service';
+import { environment } from '@env';
+import { IAuth } from 'models';
+import { UserService } from 'user/user.service';
 
 @Injectable()
 export class GitHubStrategy extends PassportStrategy(Strategy) {
