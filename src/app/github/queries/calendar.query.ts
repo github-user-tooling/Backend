@@ -18,20 +18,26 @@ export interface IWeek {
 }
 
 export interface IDay {
-  count: number;
-  date: string;
+  key: string;
+  data: number;
+}
+
+export interface ICalendarVariables {
+  id: string;
 }
 
 export const calendar = gql`
-  {
-    viewer {
-      contributionsCollection {
-        contributionCalendar {
-          colors
-          weeks {
-            contributionDays {
-              count: contributionCount
-              date
+  query calendar($id: ID!) {
+    node(id: $id) {
+      ... on User {
+        contributionsCollection {
+          contributionCalendar {
+            colors
+            weeks {
+              contributionDays {
+                key: date
+                data: contributionCount
+              }
             }
           }
         }

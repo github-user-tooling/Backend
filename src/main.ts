@@ -40,7 +40,7 @@ async function bootstrap() {
       resave: false,
       saveUninitialized: false,
       cookie: {
-        secure: true,
+        secure: environment.production,
         httpOnly: true,
         maxAge: 1 * 24 * 60 * 60 * 1000,
       },
