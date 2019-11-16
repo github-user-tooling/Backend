@@ -1,32 +1,25 @@
-import { Controller, UseGuards, Redirect, Get, Post, Req, Body } from '@nestjs/common';
+import { Controller, UseGuards, Get, Post, Req, Redirect } from '@nestjs/common';
 import { Request } from 'express';
 
-import { User as UserEntity } from 'prisma';
-import { CreateUserDTO } from 'app/models/create-user.dto';
-import { Public, User } from 'app/common/decorators';
-import { LoginGuard } from 'app/common/guards';
-import { AuthService } from './auth.service';
+import { Public } from 'app/common/decorators';
+import { GitHubGuard } from 'app/common/guards';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  @Public()
+  @UseGuards(GitHubGuard)
+  @Get()
+  public login() {}
 
   @Public()
-  @Post('/register')
-  @Redirect('./login', 307)
-  public async register(@Body() signup: CreateUserDTO) {
-    await this.authService.register(signup);
-  }
-
-  @Public()
-  @UseGuards(LoginGuard)
-  @Post('/login')
+  @UseGuards(GitHubGuard)
+  @Get('/callback')
   @Redirect('./active')
-  public login(): void {}
+  public callback() {}
 
   @Get('/active')
-  public activeSession(@User() user: UserEntity): UserEntity {
-    return user;
+  public activeSession(): boolean {
+    return true;
   }
 
   @Public()

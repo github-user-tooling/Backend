@@ -2,7 +2,15 @@
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-export const typeDefs = /* GraphQL */ `type AggregateUser {
+export const typeDefs = /* GraphQL */ `type AggregateFavorite {
+  count: Int!
+}
+
+type AggregateNotes {
+  count: Int!
+}
+
+type AggregateUser {
   count: Int!
 }
 
@@ -10,9 +18,201 @@ type BatchPayload {
   count: Long!
 }
 
+type Favorite {
+  id: ID!
+  login: String!
+  notes(where: NotesWhereInput, orderBy: NotesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Notes!]
+}
+
+type FavoriteConnection {
+  pageInfo: PageInfo!
+  edges: [FavoriteEdge]!
+  aggregate: AggregateFavorite!
+}
+
+input FavoriteCreateInput {
+  id: ID
+  login: String!
+  notes: NotesCreateManyInput
+}
+
+input FavoriteCreateManyInput {
+  create: [FavoriteCreateInput!]
+  connect: [FavoriteWhereUniqueInput!]
+}
+
+type FavoriteEdge {
+  node: Favorite!
+  cursor: String!
+}
+
+enum FavoriteOrderByInput {
+  id_ASC
+  id_DESC
+  login_ASC
+  login_DESC
+}
+
+type FavoritePreviousValues {
+  id: ID!
+  login: String!
+}
+
+input FavoriteScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  login: String
+  login_not: String
+  login_in: [String!]
+  login_not_in: [String!]
+  login_lt: String
+  login_lte: String
+  login_gt: String
+  login_gte: String
+  login_contains: String
+  login_not_contains: String
+  login_starts_with: String
+  login_not_starts_with: String
+  login_ends_with: String
+  login_not_ends_with: String
+  AND: [FavoriteScalarWhereInput!]
+  OR: [FavoriteScalarWhereInput!]
+  NOT: [FavoriteScalarWhereInput!]
+}
+
+type FavoriteSubscriptionPayload {
+  mutation: MutationType!
+  node: Favorite
+  updatedFields: [String!]
+  previousValues: FavoritePreviousValues
+}
+
+input FavoriteSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: FavoriteWhereInput
+  AND: [FavoriteSubscriptionWhereInput!]
+  OR: [FavoriteSubscriptionWhereInput!]
+  NOT: [FavoriteSubscriptionWhereInput!]
+}
+
+input FavoriteUpdateDataInput {
+  login: String
+  notes: NotesUpdateManyInput
+}
+
+input FavoriteUpdateInput {
+  login: String
+  notes: NotesUpdateManyInput
+}
+
+input FavoriteUpdateManyDataInput {
+  login: String
+}
+
+input FavoriteUpdateManyInput {
+  create: [FavoriteCreateInput!]
+  update: [FavoriteUpdateWithWhereUniqueNestedInput!]
+  upsert: [FavoriteUpsertWithWhereUniqueNestedInput!]
+  delete: [FavoriteWhereUniqueInput!]
+  connect: [FavoriteWhereUniqueInput!]
+  set: [FavoriteWhereUniqueInput!]
+  disconnect: [FavoriteWhereUniqueInput!]
+  deleteMany: [FavoriteScalarWhereInput!]
+  updateMany: [FavoriteUpdateManyWithWhereNestedInput!]
+}
+
+input FavoriteUpdateManyMutationInput {
+  login: String
+}
+
+input FavoriteUpdateManyWithWhereNestedInput {
+  where: FavoriteScalarWhereInput!
+  data: FavoriteUpdateManyDataInput!
+}
+
+input FavoriteUpdateWithWhereUniqueNestedInput {
+  where: FavoriteWhereUniqueInput!
+  data: FavoriteUpdateDataInput!
+}
+
+input FavoriteUpsertWithWhereUniqueNestedInput {
+  where: FavoriteWhereUniqueInput!
+  update: FavoriteUpdateDataInput!
+  create: FavoriteCreateInput!
+}
+
+input FavoriteWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  login: String
+  login_not: String
+  login_in: [String!]
+  login_not_in: [String!]
+  login_lt: String
+  login_lte: String
+  login_gt: String
+  login_gte: String
+  login_contains: String
+  login_not_contains: String
+  login_starts_with: String
+  login_not_starts_with: String
+  login_ends_with: String
+  login_not_ends_with: String
+  notes_every: NotesWhereInput
+  notes_some: NotesWhereInput
+  notes_none: NotesWhereInput
+  AND: [FavoriteWhereInput!]
+  OR: [FavoriteWhereInput!]
+  NOT: [FavoriteWhereInput!]
+}
+
+input FavoriteWhereUniqueInput {
+  id: ID
+  login: String
+}
+
 scalar Long
 
 type Mutation {
+  createFavorite(data: FavoriteCreateInput!): Favorite!
+  updateFavorite(data: FavoriteUpdateInput!, where: FavoriteWhereUniqueInput!): Favorite
+  updateManyFavorites(data: FavoriteUpdateManyMutationInput!, where: FavoriteWhereInput): BatchPayload!
+  upsertFavorite(where: FavoriteWhereUniqueInput!, create: FavoriteCreateInput!, update: FavoriteUpdateInput!): Favorite!
+  deleteFavorite(where: FavoriteWhereUniqueInput!): Favorite
+  deleteManyFavorites(where: FavoriteWhereInput): BatchPayload!
+  createNotes(data: NotesCreateInput!): Notes!
+  updateNotes(data: NotesUpdateInput!, where: NotesWhereUniqueInput!): Notes
+  updateManyNoteses(data: NotesUpdateManyMutationInput!, where: NotesWhereInput): BatchPayload!
+  upsertNotes(where: NotesWhereUniqueInput!, create: NotesCreateInput!, update: NotesUpdateInput!): Notes!
+  deleteNotes(where: NotesWhereUniqueInput!): Notes
+  deleteManyNoteses(where: NotesWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -31,6 +231,215 @@ interface Node {
   id: ID!
 }
 
+type Notes {
+  id: ID!
+  title: String!
+  body: String!
+}
+
+type NotesConnection {
+  pageInfo: PageInfo!
+  edges: [NotesEdge]!
+  aggregate: AggregateNotes!
+}
+
+input NotesCreateInput {
+  id: ID
+  title: String!
+  body: String!
+}
+
+input NotesCreateManyInput {
+  create: [NotesCreateInput!]
+  connect: [NotesWhereUniqueInput!]
+}
+
+type NotesEdge {
+  node: Notes!
+  cursor: String!
+}
+
+enum NotesOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  body_ASC
+  body_DESC
+}
+
+type NotesPreviousValues {
+  id: ID!
+  title: String!
+  body: String!
+}
+
+input NotesScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  body: String
+  body_not: String
+  body_in: [String!]
+  body_not_in: [String!]
+  body_lt: String
+  body_lte: String
+  body_gt: String
+  body_gte: String
+  body_contains: String
+  body_not_contains: String
+  body_starts_with: String
+  body_not_starts_with: String
+  body_ends_with: String
+  body_not_ends_with: String
+  AND: [NotesScalarWhereInput!]
+  OR: [NotesScalarWhereInput!]
+  NOT: [NotesScalarWhereInput!]
+}
+
+type NotesSubscriptionPayload {
+  mutation: MutationType!
+  node: Notes
+  updatedFields: [String!]
+  previousValues: NotesPreviousValues
+}
+
+input NotesSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: NotesWhereInput
+  AND: [NotesSubscriptionWhereInput!]
+  OR: [NotesSubscriptionWhereInput!]
+  NOT: [NotesSubscriptionWhereInput!]
+}
+
+input NotesUpdateDataInput {
+  title: String
+  body: String
+}
+
+input NotesUpdateInput {
+  title: String
+  body: String
+}
+
+input NotesUpdateManyDataInput {
+  title: String
+  body: String
+}
+
+input NotesUpdateManyInput {
+  create: [NotesCreateInput!]
+  update: [NotesUpdateWithWhereUniqueNestedInput!]
+  upsert: [NotesUpsertWithWhereUniqueNestedInput!]
+  delete: [NotesWhereUniqueInput!]
+  connect: [NotesWhereUniqueInput!]
+  set: [NotesWhereUniqueInput!]
+  disconnect: [NotesWhereUniqueInput!]
+  deleteMany: [NotesScalarWhereInput!]
+  updateMany: [NotesUpdateManyWithWhereNestedInput!]
+}
+
+input NotesUpdateManyMutationInput {
+  title: String
+  body: String
+}
+
+input NotesUpdateManyWithWhereNestedInput {
+  where: NotesScalarWhereInput!
+  data: NotesUpdateManyDataInput!
+}
+
+input NotesUpdateWithWhereUniqueNestedInput {
+  where: NotesWhereUniqueInput!
+  data: NotesUpdateDataInput!
+}
+
+input NotesUpsertWithWhereUniqueNestedInput {
+  where: NotesWhereUniqueInput!
+  update: NotesUpdateDataInput!
+  create: NotesCreateInput!
+}
+
+input NotesWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  body: String
+  body_not: String
+  body_in: [String!]
+  body_not_in: [String!]
+  body_lt: String
+  body_lte: String
+  body_gt: String
+  body_gte: String
+  body_contains: String
+  body_not_contains: String
+  body_starts_with: String
+  body_not_starts_with: String
+  body_ends_with: String
+  body_not_ends_with: String
+  AND: [NotesWhereInput!]
+  OR: [NotesWhereInput!]
+  NOT: [NotesWhereInput!]
+}
+
+input NotesWhereUniqueInput {
+  id: ID
+}
+
 type PageInfo {
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
@@ -39,27 +448,29 @@ type PageInfo {
 }
 
 type Query {
+  favorite(where: FavoriteWhereUniqueInput!): Favorite
+  favorites(where: FavoriteWhereInput, orderBy: FavoriteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Favorite]!
+  favoritesConnection(where: FavoriteWhereInput, orderBy: FavoriteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FavoriteConnection!
+  notes(where: NotesWhereUniqueInput!): Notes
+  noteses(where: NotesWhereInput, orderBy: NotesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Notes]!
+  notesesConnection(where: NotesWhereInput, orderBy: NotesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): NotesConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   node(id: ID!): Node
 }
 
-enum Roles {
-  User
-  Admin
-}
-
 type Subscription {
+  favorite(where: FavoriteSubscriptionWhereInput): FavoriteSubscriptionPayload
+  notes(where: NotesSubscriptionWhereInput): NotesSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
 type User {
   id: ID!
-  username: String!
-  email: String!
-  password: String!
-  role: Roles!
+  login: String!
+  accessToken: String!
+  favorites(where: FavoriteWhereInput, orderBy: FavoriteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Favorite!]
 }
 
 type UserConnection {
@@ -70,10 +481,9 @@ type UserConnection {
 
 input UserCreateInput {
   id: ID
-  username: String!
-  email: String!
-  password: String!
-  role: Roles!
+  login: String!
+  accessToken: String!
+  favorites: FavoriteCreateManyInput
 }
 
 type UserEdge {
@@ -84,22 +494,16 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
-  username_ASC
-  username_DESC
-  email_ASC
-  email_DESC
-  password_ASC
-  password_DESC
-  role_ASC
-  role_DESC
+  login_ASC
+  login_DESC
+  accessToken_ASC
+  accessToken_DESC
 }
 
 type UserPreviousValues {
   id: ID!
-  username: String!
-  email: String!
-  password: String!
-  role: Roles!
+  login: String!
+  accessToken: String!
 }
 
 type UserSubscriptionPayload {
@@ -121,17 +525,14 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateInput {
-  username: String
-  email: String
-  password: String
-  role: Roles
+  login: String
+  accessToken: String
+  favorites: FavoriteUpdateManyInput
 }
 
 input UserUpdateManyMutationInput {
-  username: String
-  email: String
-  password: String
-  role: Roles
+  login: String
+  accessToken: String
 }
 
 input UserWhereInput {
@@ -149,52 +550,37 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  username: String
-  username_not: String
-  username_in: [String!]
-  username_not_in: [String!]
-  username_lt: String
-  username_lte: String
-  username_gt: String
-  username_gte: String
-  username_contains: String
-  username_not_contains: String
-  username_starts_with: String
-  username_not_starts_with: String
-  username_ends_with: String
-  username_not_ends_with: String
-  email: String
-  email_not: String
-  email_in: [String!]
-  email_not_in: [String!]
-  email_lt: String
-  email_lte: String
-  email_gt: String
-  email_gte: String
-  email_contains: String
-  email_not_contains: String
-  email_starts_with: String
-  email_not_starts_with: String
-  email_ends_with: String
-  email_not_ends_with: String
-  password: String
-  password_not: String
-  password_in: [String!]
-  password_not_in: [String!]
-  password_lt: String
-  password_lte: String
-  password_gt: String
-  password_gte: String
-  password_contains: String
-  password_not_contains: String
-  password_starts_with: String
-  password_not_starts_with: String
-  password_ends_with: String
-  password_not_ends_with: String
-  role: Roles
-  role_not: Roles
-  role_in: [Roles!]
-  role_not_in: [Roles!]
+  login: String
+  login_not: String
+  login_in: [String!]
+  login_not_in: [String!]
+  login_lt: String
+  login_lte: String
+  login_gt: String
+  login_gte: String
+  login_contains: String
+  login_not_contains: String
+  login_starts_with: String
+  login_not_starts_with: String
+  login_ends_with: String
+  login_not_ends_with: String
+  accessToken: String
+  accessToken_not: String
+  accessToken_in: [String!]
+  accessToken_not_in: [String!]
+  accessToken_lt: String
+  accessToken_lte: String
+  accessToken_gt: String
+  accessToken_gte: String
+  accessToken_contains: String
+  accessToken_not_contains: String
+  accessToken_starts_with: String
+  accessToken_not_starts_with: String
+  accessToken_ends_with: String
+  accessToken_not_ends_with: String
+  favorites_every: FavoriteWhereInput
+  favorites_some: FavoriteWhereInput
+  favorites_none: FavoriteWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
@@ -202,7 +588,7 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
-  username: String
-  email: String
+  login: String
+  accessToken: String
 }
 `
