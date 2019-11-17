@@ -2,7 +2,7 @@
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-export const typeDefs = /* GraphQL */ `type AggregateFavorite {
+export const typeDefs = /* GraphQL */ `type AggregateFollow {
   count: Int!
 }
 
@@ -18,47 +18,66 @@ type BatchPayload {
   count: Long!
 }
 
-type Favorite {
+type Follow {
   id: ID!
-  login: String!
+  followed: User!
+  githubID: String!
   notes(where: NotesWhereInput, orderBy: NotesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Notes!]
 }
 
-type FavoriteConnection {
+type FollowConnection {
   pageInfo: PageInfo!
-  edges: [FavoriteEdge]!
-  aggregate: AggregateFavorite!
+  edges: [FollowEdge]!
+  aggregate: AggregateFollow!
 }
 
-input FavoriteCreateInput {
+input FollowCreateInput {
   id: ID
-  login: String!
-  notes: NotesCreateManyInput
+  followed: UserCreateOneWithoutFollowingInput!
+  githubID: String!
+  notes: NotesCreateManyWithoutForInput
 }
 
-input FavoriteCreateManyInput {
-  create: [FavoriteCreateInput!]
-  connect: [FavoriteWhereUniqueInput!]
+input FollowCreateManyWithoutFollowedInput {
+  create: [FollowCreateWithoutFollowedInput!]
+  connect: [FollowWhereUniqueInput!]
 }
 
-type FavoriteEdge {
-  node: Favorite!
+input FollowCreateOneWithoutNotesInput {
+  create: FollowCreateWithoutNotesInput
+  connect: FollowWhereUniqueInput
+}
+
+input FollowCreateWithoutFollowedInput {
+  id: ID
+  githubID: String!
+  notes: NotesCreateManyWithoutForInput
+}
+
+input FollowCreateWithoutNotesInput {
+  id: ID
+  followed: UserCreateOneWithoutFollowingInput!
+  githubID: String!
+}
+
+type FollowEdge {
+  node: Follow!
   cursor: String!
 }
 
-enum FavoriteOrderByInput {
+enum FollowOrderByInput {
   id_ASC
   id_DESC
-  login_ASC
-  login_DESC
+  githubID_ASC
+  githubID_DESC
 }
 
-type FavoritePreviousValues {
+type FollowPreviousValues {
   id: ID!
-  login: String!
+  githubID: String!
 }
 
-input FavoriteScalarWhereInput {
+input FollowScalarWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -73,90 +92,108 @@ input FavoriteScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  login: String
-  login_not: String
-  login_in: [String!]
-  login_not_in: [String!]
-  login_lt: String
-  login_lte: String
-  login_gt: String
-  login_gte: String
-  login_contains: String
-  login_not_contains: String
-  login_starts_with: String
-  login_not_starts_with: String
-  login_ends_with: String
-  login_not_ends_with: String
-  AND: [FavoriteScalarWhereInput!]
-  OR: [FavoriteScalarWhereInput!]
-  NOT: [FavoriteScalarWhereInput!]
+  githubID: String
+  githubID_not: String
+  githubID_in: [String!]
+  githubID_not_in: [String!]
+  githubID_lt: String
+  githubID_lte: String
+  githubID_gt: String
+  githubID_gte: String
+  githubID_contains: String
+  githubID_not_contains: String
+  githubID_starts_with: String
+  githubID_not_starts_with: String
+  githubID_ends_with: String
+  githubID_not_ends_with: String
+  AND: [FollowScalarWhereInput!]
+  OR: [FollowScalarWhereInput!]
+  NOT: [FollowScalarWhereInput!]
 }
 
-type FavoriteSubscriptionPayload {
+type FollowSubscriptionPayload {
   mutation: MutationType!
-  node: Favorite
+  node: Follow
   updatedFields: [String!]
-  previousValues: FavoritePreviousValues
+  previousValues: FollowPreviousValues
 }
 
-input FavoriteSubscriptionWhereInput {
+input FollowSubscriptionWhereInput {
   mutation_in: [MutationType!]
   updatedFields_contains: String
   updatedFields_contains_every: [String!]
   updatedFields_contains_some: [String!]
-  node: FavoriteWhereInput
-  AND: [FavoriteSubscriptionWhereInput!]
-  OR: [FavoriteSubscriptionWhereInput!]
-  NOT: [FavoriteSubscriptionWhereInput!]
+  node: FollowWhereInput
+  AND: [FollowSubscriptionWhereInput!]
+  OR: [FollowSubscriptionWhereInput!]
+  NOT: [FollowSubscriptionWhereInput!]
 }
 
-input FavoriteUpdateDataInput {
-  login: String
-  notes: NotesUpdateManyInput
+input FollowUpdateInput {
+  followed: UserUpdateOneRequiredWithoutFollowingInput
+  githubID: String
+  notes: NotesUpdateManyWithoutForInput
 }
 
-input FavoriteUpdateInput {
-  login: String
-  notes: NotesUpdateManyInput
+input FollowUpdateManyDataInput {
+  githubID: String
 }
 
-input FavoriteUpdateManyDataInput {
-  login: String
+input FollowUpdateManyMutationInput {
+  githubID: String
 }
 
-input FavoriteUpdateManyInput {
-  create: [FavoriteCreateInput!]
-  update: [FavoriteUpdateWithWhereUniqueNestedInput!]
-  upsert: [FavoriteUpsertWithWhereUniqueNestedInput!]
-  delete: [FavoriteWhereUniqueInput!]
-  connect: [FavoriteWhereUniqueInput!]
-  set: [FavoriteWhereUniqueInput!]
-  disconnect: [FavoriteWhereUniqueInput!]
-  deleteMany: [FavoriteScalarWhereInput!]
-  updateMany: [FavoriteUpdateManyWithWhereNestedInput!]
+input FollowUpdateManyWithoutFollowedInput {
+  create: [FollowCreateWithoutFollowedInput!]
+  delete: [FollowWhereUniqueInput!]
+  connect: [FollowWhereUniqueInput!]
+  set: [FollowWhereUniqueInput!]
+  disconnect: [FollowWhereUniqueInput!]
+  update: [FollowUpdateWithWhereUniqueWithoutFollowedInput!]
+  upsert: [FollowUpsertWithWhereUniqueWithoutFollowedInput!]
+  deleteMany: [FollowScalarWhereInput!]
+  updateMany: [FollowUpdateManyWithWhereNestedInput!]
 }
 
-input FavoriteUpdateManyMutationInput {
-  login: String
+input FollowUpdateManyWithWhereNestedInput {
+  where: FollowScalarWhereInput!
+  data: FollowUpdateManyDataInput!
 }
 
-input FavoriteUpdateManyWithWhereNestedInput {
-  where: FavoriteScalarWhereInput!
-  data: FavoriteUpdateManyDataInput!
+input FollowUpdateOneRequiredWithoutNotesInput {
+  create: FollowCreateWithoutNotesInput
+  update: FollowUpdateWithoutNotesDataInput
+  upsert: FollowUpsertWithoutNotesInput
+  connect: FollowWhereUniqueInput
 }
 
-input FavoriteUpdateWithWhereUniqueNestedInput {
-  where: FavoriteWhereUniqueInput!
-  data: FavoriteUpdateDataInput!
+input FollowUpdateWithoutFollowedDataInput {
+  githubID: String
+  notes: NotesUpdateManyWithoutForInput
 }
 
-input FavoriteUpsertWithWhereUniqueNestedInput {
-  where: FavoriteWhereUniqueInput!
-  update: FavoriteUpdateDataInput!
-  create: FavoriteCreateInput!
+input FollowUpdateWithoutNotesDataInput {
+  followed: UserUpdateOneRequiredWithoutFollowingInput
+  githubID: String
 }
 
-input FavoriteWhereInput {
+input FollowUpdateWithWhereUniqueWithoutFollowedInput {
+  where: FollowWhereUniqueInput!
+  data: FollowUpdateWithoutFollowedDataInput!
+}
+
+input FollowUpsertWithoutNotesInput {
+  update: FollowUpdateWithoutNotesDataInput!
+  create: FollowCreateWithoutNotesInput!
+}
+
+input FollowUpsertWithWhereUniqueWithoutFollowedInput {
+  where: FollowWhereUniqueInput!
+  update: FollowUpdateWithoutFollowedDataInput!
+  create: FollowCreateWithoutFollowedInput!
+}
+
+input FollowWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -171,42 +208,43 @@ input FavoriteWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  login: String
-  login_not: String
-  login_in: [String!]
-  login_not_in: [String!]
-  login_lt: String
-  login_lte: String
-  login_gt: String
-  login_gte: String
-  login_contains: String
-  login_not_contains: String
-  login_starts_with: String
-  login_not_starts_with: String
-  login_ends_with: String
-  login_not_ends_with: String
+  followed: UserWhereInput
+  githubID: String
+  githubID_not: String
+  githubID_in: [String!]
+  githubID_not_in: [String!]
+  githubID_lt: String
+  githubID_lte: String
+  githubID_gt: String
+  githubID_gte: String
+  githubID_contains: String
+  githubID_not_contains: String
+  githubID_starts_with: String
+  githubID_not_starts_with: String
+  githubID_ends_with: String
+  githubID_not_ends_with: String
   notes_every: NotesWhereInput
   notes_some: NotesWhereInput
   notes_none: NotesWhereInput
-  AND: [FavoriteWhereInput!]
-  OR: [FavoriteWhereInput!]
-  NOT: [FavoriteWhereInput!]
+  AND: [FollowWhereInput!]
+  OR: [FollowWhereInput!]
+  NOT: [FollowWhereInput!]
 }
 
-input FavoriteWhereUniqueInput {
+input FollowWhereUniqueInput {
   id: ID
-  login: String
+  githubID: String
 }
 
 scalar Long
 
 type Mutation {
-  createFavorite(data: FavoriteCreateInput!): Favorite!
-  updateFavorite(data: FavoriteUpdateInput!, where: FavoriteWhereUniqueInput!): Favorite
-  updateManyFavorites(data: FavoriteUpdateManyMutationInput!, where: FavoriteWhereInput): BatchPayload!
-  upsertFavorite(where: FavoriteWhereUniqueInput!, create: FavoriteCreateInput!, update: FavoriteUpdateInput!): Favorite!
-  deleteFavorite(where: FavoriteWhereUniqueInput!): Favorite
-  deleteManyFavorites(where: FavoriteWhereInput): BatchPayload!
+  createFollow(data: FollowCreateInput!): Follow!
+  updateFollow(data: FollowUpdateInput!, where: FollowWhereUniqueInput!): Follow
+  updateManyFollows(data: FollowUpdateManyMutationInput!, where: FollowWhereInput): BatchPayload!
+  upsertFollow(where: FollowWhereUniqueInput!, create: FollowCreateInput!, update: FollowUpdateInput!): Follow!
+  deleteFollow(where: FollowWhereUniqueInput!): Follow
+  deleteManyFollows(where: FollowWhereInput): BatchPayload!
   createNotes(data: NotesCreateInput!): Notes!
   updateNotes(data: NotesUpdateInput!, where: NotesWhereUniqueInput!): Notes
   updateManyNoteses(data: NotesUpdateManyMutationInput!, where: NotesWhereInput): BatchPayload!
@@ -233,6 +271,7 @@ interface Node {
 
 type Notes {
   id: ID!
+  for: Follow!
   title: String!
   body: String!
 }
@@ -245,13 +284,20 @@ type NotesConnection {
 
 input NotesCreateInput {
   id: ID
+  for: FollowCreateOneWithoutNotesInput!
   title: String!
   body: String!
 }
 
-input NotesCreateManyInput {
-  create: [NotesCreateInput!]
+input NotesCreateManyWithoutForInput {
+  create: [NotesCreateWithoutForInput!]
   connect: [NotesWhereUniqueInput!]
+}
+
+input NotesCreateWithoutForInput {
+  id: ID
+  title: String!
+  body: String!
 }
 
 type NotesEdge {
@@ -340,12 +386,8 @@ input NotesSubscriptionWhereInput {
   NOT: [NotesSubscriptionWhereInput!]
 }
 
-input NotesUpdateDataInput {
-  title: String
-  body: String
-}
-
 input NotesUpdateInput {
+  for: FollowUpdateOneRequiredWithoutNotesInput
   title: String
   body: String
 }
@@ -355,21 +397,21 @@ input NotesUpdateManyDataInput {
   body: String
 }
 
-input NotesUpdateManyInput {
-  create: [NotesCreateInput!]
-  update: [NotesUpdateWithWhereUniqueNestedInput!]
-  upsert: [NotesUpsertWithWhereUniqueNestedInput!]
+input NotesUpdateManyMutationInput {
+  title: String
+  body: String
+}
+
+input NotesUpdateManyWithoutForInput {
+  create: [NotesCreateWithoutForInput!]
   delete: [NotesWhereUniqueInput!]
   connect: [NotesWhereUniqueInput!]
   set: [NotesWhereUniqueInput!]
   disconnect: [NotesWhereUniqueInput!]
+  update: [NotesUpdateWithWhereUniqueWithoutForInput!]
+  upsert: [NotesUpsertWithWhereUniqueWithoutForInput!]
   deleteMany: [NotesScalarWhereInput!]
   updateMany: [NotesUpdateManyWithWhereNestedInput!]
-}
-
-input NotesUpdateManyMutationInput {
-  title: String
-  body: String
 }
 
 input NotesUpdateManyWithWhereNestedInput {
@@ -377,15 +419,20 @@ input NotesUpdateManyWithWhereNestedInput {
   data: NotesUpdateManyDataInput!
 }
 
-input NotesUpdateWithWhereUniqueNestedInput {
-  where: NotesWhereUniqueInput!
-  data: NotesUpdateDataInput!
+input NotesUpdateWithoutForDataInput {
+  title: String
+  body: String
 }
 
-input NotesUpsertWithWhereUniqueNestedInput {
+input NotesUpdateWithWhereUniqueWithoutForInput {
   where: NotesWhereUniqueInput!
-  update: NotesUpdateDataInput!
-  create: NotesCreateInput!
+  data: NotesUpdateWithoutForDataInput!
+}
+
+input NotesUpsertWithWhereUniqueWithoutForInput {
+  where: NotesWhereUniqueInput!
+  update: NotesUpdateWithoutForDataInput!
+  create: NotesCreateWithoutForInput!
 }
 
 input NotesWhereInput {
@@ -403,6 +450,7 @@ input NotesWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  for: FollowWhereInput
   title: String
   title_not: String
   title_in: [String!]
@@ -448,9 +496,9 @@ type PageInfo {
 }
 
 type Query {
-  favorite(where: FavoriteWhereUniqueInput!): Favorite
-  favorites(where: FavoriteWhereInput, orderBy: FavoriteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Favorite]!
-  favoritesConnection(where: FavoriteWhereInput, orderBy: FavoriteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FavoriteConnection!
+  follow(where: FollowWhereUniqueInput!): Follow
+  follows(where: FollowWhereInput, orderBy: FollowOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Follow]!
+  followsConnection(where: FollowWhereInput, orderBy: FollowOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FollowConnection!
   notes(where: NotesWhereUniqueInput!): Notes
   noteses(where: NotesWhereInput, orderBy: NotesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Notes]!
   notesesConnection(where: NotesWhereInput, orderBy: NotesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): NotesConnection!
@@ -461,7 +509,7 @@ type Query {
 }
 
 type Subscription {
-  favorite(where: FavoriteSubscriptionWhereInput): FavoriteSubscriptionPayload
+  follow(where: FollowSubscriptionWhereInput): FollowSubscriptionPayload
   notes(where: NotesSubscriptionWhereInput): NotesSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
@@ -469,7 +517,7 @@ type Subscription {
 type User {
   id: ID!
   githubID: String!
-  favorites(where: FavoriteWhereInput, orderBy: FavoriteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Favorite!]
+  following(where: FollowWhereInput, orderBy: FollowOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Follow!]
 }
 
 type UserConnection {
@@ -481,7 +529,17 @@ type UserConnection {
 input UserCreateInput {
   id: ID
   githubID: String!
-  favorites: FavoriteCreateManyInput
+  following: FollowCreateManyWithoutFollowedInput
+}
+
+input UserCreateOneWithoutFollowingInput {
+  create: UserCreateWithoutFollowingInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutFollowingInput {
+  id: ID
+  githubID: String!
 }
 
 type UserEdge {
@@ -521,11 +579,27 @@ input UserSubscriptionWhereInput {
 
 input UserUpdateInput {
   githubID: String
-  favorites: FavoriteUpdateManyInput
+  following: FollowUpdateManyWithoutFollowedInput
 }
 
 input UserUpdateManyMutationInput {
   githubID: String
+}
+
+input UserUpdateOneRequiredWithoutFollowingInput {
+  create: UserCreateWithoutFollowingInput
+  update: UserUpdateWithoutFollowingDataInput
+  upsert: UserUpsertWithoutFollowingInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutFollowingDataInput {
+  githubID: String
+}
+
+input UserUpsertWithoutFollowingInput {
+  update: UserUpdateWithoutFollowingDataInput!
+  create: UserCreateWithoutFollowingInput!
 }
 
 input UserWhereInput {
@@ -557,9 +631,9 @@ input UserWhereInput {
   githubID_not_starts_with: String
   githubID_ends_with: String
   githubID_not_ends_with: String
-  favorites_every: FavoriteWhereInput
-  favorites_some: FavoriteWhereInput
-  favorites_none: FavoriteWhereInput
+  following_every: FollowWhereInput
+  following_some: FollowWhereInput
+  following_none: FollowWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

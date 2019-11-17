@@ -14,7 +14,7 @@ export class AuthController {
   @Public()
   @UseGuards(GithubGuard)
   @Get('/callback')
-  @Redirect('./active')
+  @Redirect('/user/profile')
   public callback() {}
 
   @Get('/active')

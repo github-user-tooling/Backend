@@ -3,6 +3,7 @@ import { request } from 'graphql-request';
 
 import { ICalendarDTO, ITendenciesDTO } from 'models';
 import { formatCalendar, calculateLangTendencies, calculateDayTendencies } from 'utils';
+import { NotesService } from 'notes/notes.service';
 
 import { ILogon, logon } from './queries';
 import { IProfile, profile } from './queries';
@@ -15,6 +16,8 @@ import { IUnfollow, unfollow } from './mutations';
 
 @Injectable()
 export class GithubService {
+  constructor(private readonly notes: NotesService) {}
+
   private endpoint = 'https://api.github.com/graphql';
 
   private async request<T = any>(accessToken: string, query: string, variables?: object) {
@@ -31,8 +34,10 @@ export class GithubService {
     return node;
   }
 
-  public async following(accessToken: string, id: string): Promise<IUser[]> {
+  public async following(accessToken: string, id: string, isActiveUser: boolean): Promise<IUser[]> {
     const { node } = await this.request<IFollowing>(accessToken, following, { id });
+    if (isActiveUser) this.notes.syncFollows(id, node.following.nodes);
+
     return node.following.nodes;
   }
 
@@ -55,16 +60,23 @@ export class GithubService {
     };
   }
 
-  public async follow(accessToken: string, id: string): Promise<IFollow['followUser']['user']> {
+  public async follow(
+    accessToken: string,
+    currentUser: string,
+    id: string
+  ): Promise<IFollow['followUser']['user']> {
     const { followUser } = await this.request<IFollow>(accessToken, follow, { id });
+    if (followUser.user.viewerIsFollowing) await this.notes.createFollow(currentUser, id);
     return followUser.user;
   }
 
   public async unfollow(
     accessToken: string,
+    currentUser: string,
     id: string
   ): Promise<IUnfollow['unfollowUser']['user']> {
     const { unfollowUser } = await this.request<IUnfollow>(accessToken, unfollow, { id });
+    if (!unfollowUser.user.viewerIsFollowing) await this.notes.removeFollow(currentUser, id);
     return unfollowUser.user;
   }
 }

@@ -40,7 +40,7 @@ export const tendencies = gql`
   }
 
   fragment reposList on User {
-    repositories(first: 100) {
+    repositories(first: 40, orderBy: { field: UPDATED_AT, direction: DESC }) {
       commits: nodes {
         ...timeOfCommits
       }
@@ -67,7 +67,7 @@ export const tendencies = gql`
 
   fragment commits on GitObject {
     ... on Commit {
-      history(first: 100, author: { id: $id }) {
+      history(first: 40, author: { id: $id }) {
         nodes {
           ...commit
         }

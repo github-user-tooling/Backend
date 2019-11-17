@@ -2,7 +2,7 @@ import { ICalendarDTO } from 'models';
 import { ICalendarPayload, IDay } from 'github/queries';
 import { IRepoCommits, IRepoLang } from 'github/queries';
 
-import { mode } from './math.util';
+import { mode } from './arr.util';
 
 export const formatCalendar: (contributionCalendar: ICalendarPayload) => ICalendarDTO = (
   contributionCalendar
@@ -16,7 +16,9 @@ export const formatCalendar: (contributionCalendar: ICalendarPayload) => ICalend
   };
 };
 
-export const calculateDayTendencies: (commits: IRepoCommits[]) => [number, number] = (commits) => {
+export const calculateDayTendencies: (
+  commits: IRepoCommits[]
+) => [number | string, number | string] = (commits) => {
   const dates = commits.reduce((repos, repo) => {
     if (!repo.defaultBranchRef) return repos;
 
@@ -33,7 +35,7 @@ export const calculateDayTendencies: (commits: IRepoCommits[]) => [number, numbe
   const hours = formatted.map((date) => date.getHours());
   const daysOfWeek = formatted.map((date) => date.getDay());
 
-  return [mode<number>(hours), mode<number>(daysOfWeek)];
+  return [mode(hours) || 'Undetermined', mode(daysOfWeek) || 'Undetermined'];
 };
 
 export const calculateLangTendencies: (langs: IRepoLang[]) => string = (langs) => {
@@ -42,5 +44,5 @@ export const calculateLangTendencies: (langs: IRepoLang[]) => string = (langs) =
     return [...all, lang.primaryLanguage.name];
   }, Array<string>());
 
-  return mode<string>(result);
+  return mode(result) || 'Undetermined';
 };
