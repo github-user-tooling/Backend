@@ -1,5 +1,5 @@
 export interface ITendenciesDTO {
-  mostOftenHour: number;
-  mostOftenDay: number;
+  mostOftenHour: number | string;
+  mostOftenDay: number | string;
   mostUsedLang: string;
 }

@@ -40,7 +40,7 @@ export class UserController {
 
   @Get('/following')
   public async getFollowing(@User() { accessToken, githubID }: IActiveUser): Promise<IUser[]> {
-    return await this.github.following(accessToken, githubID);
+    return await this.github.following(accessToken, githubID, true);
   }
 
   @Get('/:id/following')
@@ -48,7 +48,7 @@ export class UserController {
     @User() { accessToken }: IActiveUser,
     @Param('id') id: string
   ): Promise<IUser[]> {
-    return await this.github.following(accessToken, id);
+    return await this.github.following(accessToken, id, false);
   }
 
   @Get('/tendencies')
@@ -68,17 +68,17 @@ export class UserController {
 
   @Post('/follow/:id')
   public async followUser(
-    @User() { accessToken }: IActiveUser,
+    @User() { accessToken, githubID }: IActiveUser,
     @Param('id') id: string
   ): Promise<IFollow['followUser']['user']> {
-    return await this.github.follow(accessToken, id);
+    return await this.github.follow(accessToken, githubID, id);
   }
 
   @Post('/unfollow/:id')
   public async unfollowUser(
-    @User() { accessToken }: IActiveUser,
+    @User() { accessToken, githubID }: IActiveUser,
     @Param('id') id: string
   ): Promise<IUnfollow['unfollowUser']['user']> {
-    return await this.github.unfollow(accessToken, id);
+    return await this.github.unfollow(accessToken, githubID, id);
   }
 }

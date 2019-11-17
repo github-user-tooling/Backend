@@ -1,17 +1,19 @@
 type User {
   id: ID! @id
   githubID: String! @unique
-  favorites: [Favorite]
+  following: [Follow!]
 }
 
-type Favorite {
+type Follow {
   id: ID! @id
-  login: String! @unique
-  notes: [Notes]
+  followed: User!
+  githubID: String! @unique
+  notes: [Notes!]
 }
 
 type Notes {
   id: ID! @id
+  for: Follow!
   title: String!
   body: String!
 }

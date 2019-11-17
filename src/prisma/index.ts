@@ -16,7 +16,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
-  favorite: (where?: FavoriteWhereInput) => Promise<boolean>;
+  follow: (where?: FollowWhereInput) => Promise<boolean>;
   notes: (where?: NotesWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
@@ -40,25 +40,25 @@ export interface Prisma {
    * Queries
    */
 
-  favorite: (where: FavoriteWhereUniqueInput) => FavoriteNullablePromise;
-  favorites: (args?: {
-    where?: FavoriteWhereInput;
-    orderBy?: FavoriteOrderByInput;
+  follow: (where: FollowWhereUniqueInput) => FollowNullablePromise;
+  follows: (args?: {
+    where?: FollowWhereInput;
+    orderBy?: FollowOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FragmentableArray<Favorite>;
-  favoritesConnection: (args?: {
-    where?: FavoriteWhereInput;
-    orderBy?: FavoriteOrderByInput;
+  }) => FragmentableArray<Follow>;
+  followsConnection: (args?: {
+    where?: FollowWhereInput;
+    orderBy?: FollowOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FavoriteConnectionPromise;
+  }) => FollowConnectionPromise;
   notes: (where: NotesWhereUniqueInput) => NotesNullablePromise;
   noteses: (args?: {
     where?: NotesWhereInput;
@@ -103,22 +103,22 @@ export interface Prisma {
    * Mutations
    */
 
-  createFavorite: (data: FavoriteCreateInput) => FavoritePromise;
-  updateFavorite: (args: {
-    data: FavoriteUpdateInput;
-    where: FavoriteWhereUniqueInput;
-  }) => FavoritePromise;
-  updateManyFavorites: (args: {
-    data: FavoriteUpdateManyMutationInput;
-    where?: FavoriteWhereInput;
+  createFollow: (data: FollowCreateInput) => FollowPromise;
+  updateFollow: (args: {
+    data: FollowUpdateInput;
+    where: FollowWhereUniqueInput;
+  }) => FollowPromise;
+  updateManyFollows: (args: {
+    data: FollowUpdateManyMutationInput;
+    where?: FollowWhereInput;
   }) => BatchPayloadPromise;
-  upsertFavorite: (args: {
-    where: FavoriteWhereUniqueInput;
-    create: FavoriteCreateInput;
-    update: FavoriteUpdateInput;
-  }) => FavoritePromise;
-  deleteFavorite: (where: FavoriteWhereUniqueInput) => FavoritePromise;
-  deleteManyFavorites: (where?: FavoriteWhereInput) => BatchPayloadPromise;
+  upsertFollow: (args: {
+    where: FollowWhereUniqueInput;
+    create: FollowCreateInput;
+    update: FollowUpdateInput;
+  }) => FollowPromise;
+  deleteFollow: (where: FollowWhereUniqueInput) => FollowPromise;
+  deleteManyFollows: (where?: FollowWhereInput) => BatchPayloadPromise;
   createNotes: (data: NotesCreateInput) => NotesPromise;
   updateNotes: (args: {
     data: NotesUpdateInput;
@@ -160,9 +160,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
-  favorite: (
-    where?: FavoriteSubscriptionWhereInput
-  ) => FavoriteSubscriptionPayloadSubscription;
+  follow: (
+    where?: FollowSubscriptionWhereInput
+  ) => FollowSubscriptionPayloadSubscription;
   notes: (
     where?: NotesSubscriptionWhereInput
   ) => NotesSubscriptionPayloadSubscription;
@@ -179,6 +179,12 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type FollowOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "githubID_ASC"
+  | "githubID_DESC";
+
 export type NotesOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -186,12 +192,6 @@ export type NotesOrderByInput =
   | "title_DESC"
   | "body_ASC"
   | "body_DESC";
-
-export type FavoriteOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "login_ASC"
-  | "login_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -201,10 +201,85 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type FavoriteWhereUniqueInput = AtLeastOne<{
+export type FollowWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
-  login?: Maybe<String>;
+  githubID?: Maybe<String>;
 }>;
+
+export interface FollowWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  followed?: Maybe<UserWhereInput>;
+  githubID?: Maybe<String>;
+  githubID_not?: Maybe<String>;
+  githubID_in?: Maybe<String[] | String>;
+  githubID_not_in?: Maybe<String[] | String>;
+  githubID_lt?: Maybe<String>;
+  githubID_lte?: Maybe<String>;
+  githubID_gt?: Maybe<String>;
+  githubID_gte?: Maybe<String>;
+  githubID_contains?: Maybe<String>;
+  githubID_not_contains?: Maybe<String>;
+  githubID_starts_with?: Maybe<String>;
+  githubID_not_starts_with?: Maybe<String>;
+  githubID_ends_with?: Maybe<String>;
+  githubID_not_ends_with?: Maybe<String>;
+  notes_every?: Maybe<NotesWhereInput>;
+  notes_some?: Maybe<NotesWhereInput>;
+  notes_none?: Maybe<NotesWhereInput>;
+  AND?: Maybe<FollowWhereInput[] | FollowWhereInput>;
+  OR?: Maybe<FollowWhereInput[] | FollowWhereInput>;
+  NOT?: Maybe<FollowWhereInput[] | FollowWhereInput>;
+}
+
+export interface UserWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  githubID?: Maybe<String>;
+  githubID_not?: Maybe<String>;
+  githubID_in?: Maybe<String[] | String>;
+  githubID_not_in?: Maybe<String[] | String>;
+  githubID_lt?: Maybe<String>;
+  githubID_lte?: Maybe<String>;
+  githubID_gt?: Maybe<String>;
+  githubID_gte?: Maybe<String>;
+  githubID_contains?: Maybe<String>;
+  githubID_not_contains?: Maybe<String>;
+  githubID_starts_with?: Maybe<String>;
+  githubID_not_starts_with?: Maybe<String>;
+  githubID_ends_with?: Maybe<String>;
+  githubID_not_ends_with?: Maybe<String>;
+  following_every?: Maybe<FollowWhereInput>;
+  following_some?: Maybe<FollowWhereInput>;
+  following_none?: Maybe<FollowWhereInput>;
+  AND?: Maybe<UserWhereInput[] | UserWhereInput>;
+  OR?: Maybe<UserWhereInput[] | UserWhereInput>;
+  NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
+}
 
 export interface NotesWhereInput {
   id?: Maybe<ID_Input>;
@@ -221,6 +296,7 @@ export interface NotesWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  for?: Maybe<FollowWhereInput>;
   title?: Maybe<String>;
   title_not?: Maybe<String>;
   title_in?: Maybe<String[] | String>;
@@ -254,43 +330,6 @@ export interface NotesWhereInput {
   NOT?: Maybe<NotesWhereInput[] | NotesWhereInput>;
 }
 
-export interface FavoriteWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  login?: Maybe<String>;
-  login_not?: Maybe<String>;
-  login_in?: Maybe<String[] | String>;
-  login_not_in?: Maybe<String[] | String>;
-  login_lt?: Maybe<String>;
-  login_lte?: Maybe<String>;
-  login_gt?: Maybe<String>;
-  login_gte?: Maybe<String>;
-  login_contains?: Maybe<String>;
-  login_not_contains?: Maybe<String>;
-  login_starts_with?: Maybe<String>;
-  login_not_starts_with?: Maybe<String>;
-  login_ends_with?: Maybe<String>;
-  login_not_ends_with?: Maybe<String>;
-  notes_every?: Maybe<NotesWhereInput>;
-  notes_some?: Maybe<NotesWhereInput>;
-  notes_none?: Maybe<NotesWhereInput>;
-  AND?: Maybe<FavoriteWhereInput[] | FavoriteWhereInput>;
-  OR?: Maybe<FavoriteWhereInput[] | FavoriteWhereInput>;
-  NOT?: Maybe<FavoriteWhereInput[] | FavoriteWhereInput>;
-}
-
 export type NotesWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
@@ -300,99 +339,90 @@ export type UserWhereUniqueInput = AtLeastOne<{
   githubID?: Maybe<String>;
 }>;
 
-export interface UserWhereInput {
+export interface FollowCreateInput {
   id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  githubID?: Maybe<String>;
-  githubID_not?: Maybe<String>;
-  githubID_in?: Maybe<String[] | String>;
-  githubID_not_in?: Maybe<String[] | String>;
-  githubID_lt?: Maybe<String>;
-  githubID_lte?: Maybe<String>;
-  githubID_gt?: Maybe<String>;
-  githubID_gte?: Maybe<String>;
-  githubID_contains?: Maybe<String>;
-  githubID_not_contains?: Maybe<String>;
-  githubID_starts_with?: Maybe<String>;
-  githubID_not_starts_with?: Maybe<String>;
-  githubID_ends_with?: Maybe<String>;
-  githubID_not_ends_with?: Maybe<String>;
-  favorites_every?: Maybe<FavoriteWhereInput>;
-  favorites_some?: Maybe<FavoriteWhereInput>;
-  favorites_none?: Maybe<FavoriteWhereInput>;
-  AND?: Maybe<UserWhereInput[] | UserWhereInput>;
-  OR?: Maybe<UserWhereInput[] | UserWhereInput>;
-  NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
+  followed: UserCreateOneWithoutFollowingInput;
+  githubID: String;
+  notes?: Maybe<NotesCreateManyWithoutForInput>;
 }
 
-export interface FavoriteCreateInput {
-  id?: Maybe<ID_Input>;
-  login: String;
-  notes?: Maybe<NotesCreateManyInput>;
+export interface UserCreateOneWithoutFollowingInput {
+  create?: Maybe<UserCreateWithoutFollowingInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface NotesCreateManyInput {
-  create?: Maybe<NotesCreateInput[] | NotesCreateInput>;
+export interface UserCreateWithoutFollowingInput {
+  id?: Maybe<ID_Input>;
+  githubID: String;
+}
+
+export interface NotesCreateManyWithoutForInput {
+  create?: Maybe<NotesCreateWithoutForInput[] | NotesCreateWithoutForInput>;
   connect?: Maybe<NotesWhereUniqueInput[] | NotesWhereUniqueInput>;
 }
 
-export interface NotesCreateInput {
+export interface NotesCreateWithoutForInput {
   id?: Maybe<ID_Input>;
   title: String;
   body: String;
 }
 
-export interface FavoriteUpdateInput {
-  login?: Maybe<String>;
-  notes?: Maybe<NotesUpdateManyInput>;
+export interface FollowUpdateInput {
+  followed?: Maybe<UserUpdateOneRequiredWithoutFollowingInput>;
+  githubID?: Maybe<String>;
+  notes?: Maybe<NotesUpdateManyWithoutForInput>;
 }
 
-export interface NotesUpdateManyInput {
-  create?: Maybe<NotesCreateInput[] | NotesCreateInput>;
-  update?: Maybe<
-    | NotesUpdateWithWhereUniqueNestedInput[]
-    | NotesUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | NotesUpsertWithWhereUniqueNestedInput[]
-    | NotesUpsertWithWhereUniqueNestedInput
-  >;
+export interface UserUpdateOneRequiredWithoutFollowingInput {
+  create?: Maybe<UserCreateWithoutFollowingInput>;
+  update?: Maybe<UserUpdateWithoutFollowingDataInput>;
+  upsert?: Maybe<UserUpsertWithoutFollowingInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutFollowingDataInput {
+  githubID?: Maybe<String>;
+}
+
+export interface UserUpsertWithoutFollowingInput {
+  update: UserUpdateWithoutFollowingDataInput;
+  create: UserCreateWithoutFollowingInput;
+}
+
+export interface NotesUpdateManyWithoutForInput {
+  create?: Maybe<NotesCreateWithoutForInput[] | NotesCreateWithoutForInput>;
   delete?: Maybe<NotesWhereUniqueInput[] | NotesWhereUniqueInput>;
   connect?: Maybe<NotesWhereUniqueInput[] | NotesWhereUniqueInput>;
   set?: Maybe<NotesWhereUniqueInput[] | NotesWhereUniqueInput>;
   disconnect?: Maybe<NotesWhereUniqueInput[] | NotesWhereUniqueInput>;
+  update?: Maybe<
+    | NotesUpdateWithWhereUniqueWithoutForInput[]
+    | NotesUpdateWithWhereUniqueWithoutForInput
+  >;
+  upsert?: Maybe<
+    | NotesUpsertWithWhereUniqueWithoutForInput[]
+    | NotesUpsertWithWhereUniqueWithoutForInput
+  >;
   deleteMany?: Maybe<NotesScalarWhereInput[] | NotesScalarWhereInput>;
   updateMany?: Maybe<
     NotesUpdateManyWithWhereNestedInput[] | NotesUpdateManyWithWhereNestedInput
   >;
 }
 
-export interface NotesUpdateWithWhereUniqueNestedInput {
+export interface NotesUpdateWithWhereUniqueWithoutForInput {
   where: NotesWhereUniqueInput;
-  data: NotesUpdateDataInput;
+  data: NotesUpdateWithoutForDataInput;
 }
 
-export interface NotesUpdateDataInput {
+export interface NotesUpdateWithoutForDataInput {
   title?: Maybe<String>;
   body?: Maybe<String>;
 }
 
-export interface NotesUpsertWithWhereUniqueNestedInput {
+export interface NotesUpsertWithWhereUniqueWithoutForInput {
   where: NotesWhereUniqueInput;
-  update: NotesUpdateDataInput;
-  create: NotesCreateInput;
+  update: NotesUpdateWithoutForDataInput;
+  create: NotesCreateWithoutForInput;
 }
 
 export interface NotesScalarWhereInput {
@@ -453,13 +483,49 @@ export interface NotesUpdateManyDataInput {
   body?: Maybe<String>;
 }
 
-export interface FavoriteUpdateManyMutationInput {
-  login?: Maybe<String>;
+export interface FollowUpdateManyMutationInput {
+  githubID?: Maybe<String>;
+}
+
+export interface NotesCreateInput {
+  id?: Maybe<ID_Input>;
+  for: FollowCreateOneWithoutNotesInput;
+  title: String;
+  body: String;
+}
+
+export interface FollowCreateOneWithoutNotesInput {
+  create?: Maybe<FollowCreateWithoutNotesInput>;
+  connect?: Maybe<FollowWhereUniqueInput>;
+}
+
+export interface FollowCreateWithoutNotesInput {
+  id?: Maybe<ID_Input>;
+  followed: UserCreateOneWithoutFollowingInput;
+  githubID: String;
 }
 
 export interface NotesUpdateInput {
+  for?: Maybe<FollowUpdateOneRequiredWithoutNotesInput>;
   title?: Maybe<String>;
   body?: Maybe<String>;
+}
+
+export interface FollowUpdateOneRequiredWithoutNotesInput {
+  create?: Maybe<FollowCreateWithoutNotesInput>;
+  update?: Maybe<FollowUpdateWithoutNotesDataInput>;
+  upsert?: Maybe<FollowUpsertWithoutNotesInput>;
+  connect?: Maybe<FollowWhereUniqueInput>;
+}
+
+export interface FollowUpdateWithoutNotesDataInput {
+  followed?: Maybe<UserUpdateOneRequiredWithoutFollowingInput>;
+  githubID?: Maybe<String>;
+}
+
+export interface FollowUpsertWithoutNotesInput {
+  update: FollowUpdateWithoutNotesDataInput;
+  create: FollowCreateWithoutNotesInput;
 }
 
 export interface NotesUpdateManyMutationInput {
@@ -470,57 +536,67 @@ export interface NotesUpdateManyMutationInput {
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
   githubID: String;
-  favorites?: Maybe<FavoriteCreateManyInput>;
+  following?: Maybe<FollowCreateManyWithoutFollowedInput>;
 }
 
-export interface FavoriteCreateManyInput {
-  create?: Maybe<FavoriteCreateInput[] | FavoriteCreateInput>;
-  connect?: Maybe<FavoriteWhereUniqueInput[] | FavoriteWhereUniqueInput>;
+export interface FollowCreateManyWithoutFollowedInput {
+  create?: Maybe<
+    FollowCreateWithoutFollowedInput[] | FollowCreateWithoutFollowedInput
+  >;
+  connect?: Maybe<FollowWhereUniqueInput[] | FollowWhereUniqueInput>;
+}
+
+export interface FollowCreateWithoutFollowedInput {
+  id?: Maybe<ID_Input>;
+  githubID: String;
+  notes?: Maybe<NotesCreateManyWithoutForInput>;
 }
 
 export interface UserUpdateInput {
   githubID?: Maybe<String>;
-  favorites?: Maybe<FavoriteUpdateManyInput>;
+  following?: Maybe<FollowUpdateManyWithoutFollowedInput>;
 }
 
-export interface FavoriteUpdateManyInput {
-  create?: Maybe<FavoriteCreateInput[] | FavoriteCreateInput>;
+export interface FollowUpdateManyWithoutFollowedInput {
+  create?: Maybe<
+    FollowCreateWithoutFollowedInput[] | FollowCreateWithoutFollowedInput
+  >;
+  delete?: Maybe<FollowWhereUniqueInput[] | FollowWhereUniqueInput>;
+  connect?: Maybe<FollowWhereUniqueInput[] | FollowWhereUniqueInput>;
+  set?: Maybe<FollowWhereUniqueInput[] | FollowWhereUniqueInput>;
+  disconnect?: Maybe<FollowWhereUniqueInput[] | FollowWhereUniqueInput>;
   update?: Maybe<
-    | FavoriteUpdateWithWhereUniqueNestedInput[]
-    | FavoriteUpdateWithWhereUniqueNestedInput
+    | FollowUpdateWithWhereUniqueWithoutFollowedInput[]
+    | FollowUpdateWithWhereUniqueWithoutFollowedInput
   >;
   upsert?: Maybe<
-    | FavoriteUpsertWithWhereUniqueNestedInput[]
-    | FavoriteUpsertWithWhereUniqueNestedInput
+    | FollowUpsertWithWhereUniqueWithoutFollowedInput[]
+    | FollowUpsertWithWhereUniqueWithoutFollowedInput
   >;
-  delete?: Maybe<FavoriteWhereUniqueInput[] | FavoriteWhereUniqueInput>;
-  connect?: Maybe<FavoriteWhereUniqueInput[] | FavoriteWhereUniqueInput>;
-  set?: Maybe<FavoriteWhereUniqueInput[] | FavoriteWhereUniqueInput>;
-  disconnect?: Maybe<FavoriteWhereUniqueInput[] | FavoriteWhereUniqueInput>;
-  deleteMany?: Maybe<FavoriteScalarWhereInput[] | FavoriteScalarWhereInput>;
+  deleteMany?: Maybe<FollowScalarWhereInput[] | FollowScalarWhereInput>;
   updateMany?: Maybe<
-    | FavoriteUpdateManyWithWhereNestedInput[]
-    | FavoriteUpdateManyWithWhereNestedInput
+    | FollowUpdateManyWithWhereNestedInput[]
+    | FollowUpdateManyWithWhereNestedInput
   >;
 }
 
-export interface FavoriteUpdateWithWhereUniqueNestedInput {
-  where: FavoriteWhereUniqueInput;
-  data: FavoriteUpdateDataInput;
+export interface FollowUpdateWithWhereUniqueWithoutFollowedInput {
+  where: FollowWhereUniqueInput;
+  data: FollowUpdateWithoutFollowedDataInput;
 }
 
-export interface FavoriteUpdateDataInput {
-  login?: Maybe<String>;
-  notes?: Maybe<NotesUpdateManyInput>;
+export interface FollowUpdateWithoutFollowedDataInput {
+  githubID?: Maybe<String>;
+  notes?: Maybe<NotesUpdateManyWithoutForInput>;
 }
 
-export interface FavoriteUpsertWithWhereUniqueNestedInput {
-  where: FavoriteWhereUniqueInput;
-  update: FavoriteUpdateDataInput;
-  create: FavoriteCreateInput;
+export interface FollowUpsertWithWhereUniqueWithoutFollowedInput {
+  where: FollowWhereUniqueInput;
+  update: FollowUpdateWithoutFollowedDataInput;
+  create: FollowCreateWithoutFollowedInput;
 }
 
-export interface FavoriteScalarWhereInput {
+export interface FollowScalarWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -535,51 +611,47 @@ export interface FavoriteScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  login?: Maybe<String>;
-  login_not?: Maybe<String>;
-  login_in?: Maybe<String[] | String>;
-  login_not_in?: Maybe<String[] | String>;
-  login_lt?: Maybe<String>;
-  login_lte?: Maybe<String>;
-  login_gt?: Maybe<String>;
-  login_gte?: Maybe<String>;
-  login_contains?: Maybe<String>;
-  login_not_contains?: Maybe<String>;
-  login_starts_with?: Maybe<String>;
-  login_not_starts_with?: Maybe<String>;
-  login_ends_with?: Maybe<String>;
-  login_not_ends_with?: Maybe<String>;
-  AND?: Maybe<FavoriteScalarWhereInput[] | FavoriteScalarWhereInput>;
-  OR?: Maybe<FavoriteScalarWhereInput[] | FavoriteScalarWhereInput>;
-  NOT?: Maybe<FavoriteScalarWhereInput[] | FavoriteScalarWhereInput>;
+  githubID?: Maybe<String>;
+  githubID_not?: Maybe<String>;
+  githubID_in?: Maybe<String[] | String>;
+  githubID_not_in?: Maybe<String[] | String>;
+  githubID_lt?: Maybe<String>;
+  githubID_lte?: Maybe<String>;
+  githubID_gt?: Maybe<String>;
+  githubID_gte?: Maybe<String>;
+  githubID_contains?: Maybe<String>;
+  githubID_not_contains?: Maybe<String>;
+  githubID_starts_with?: Maybe<String>;
+  githubID_not_starts_with?: Maybe<String>;
+  githubID_ends_with?: Maybe<String>;
+  githubID_not_ends_with?: Maybe<String>;
+  AND?: Maybe<FollowScalarWhereInput[] | FollowScalarWhereInput>;
+  OR?: Maybe<FollowScalarWhereInput[] | FollowScalarWhereInput>;
+  NOT?: Maybe<FollowScalarWhereInput[] | FollowScalarWhereInput>;
 }
 
-export interface FavoriteUpdateManyWithWhereNestedInput {
-  where: FavoriteScalarWhereInput;
-  data: FavoriteUpdateManyDataInput;
+export interface FollowUpdateManyWithWhereNestedInput {
+  where: FollowScalarWhereInput;
+  data: FollowUpdateManyDataInput;
 }
 
-export interface FavoriteUpdateManyDataInput {
-  login?: Maybe<String>;
+export interface FollowUpdateManyDataInput {
+  githubID?: Maybe<String>;
 }
 
 export interface UserUpdateManyMutationInput {
   githubID?: Maybe<String>;
 }
 
-export interface FavoriteSubscriptionWhereInput {
+export interface FollowSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<FavoriteWhereInput>;
-  AND?: Maybe<
-    FavoriteSubscriptionWhereInput[] | FavoriteSubscriptionWhereInput
-  >;
-  OR?: Maybe<FavoriteSubscriptionWhereInput[] | FavoriteSubscriptionWhereInput>;
-  NOT?: Maybe<
-    FavoriteSubscriptionWhereInput[] | FavoriteSubscriptionWhereInput
-  >;
+  node?: Maybe<FollowWhereInput>;
+  AND?: Maybe<FollowSubscriptionWhereInput[] | FollowSubscriptionWhereInput>;
+  OR?: Maybe<FollowSubscriptionWhereInput[] | FollowSubscriptionWhereInput>;
+  NOT?: Maybe<FollowSubscriptionWhereInput[] | FollowSubscriptionWhereInput>;
 }
 
 export interface NotesSubscriptionWhereInput {
@@ -608,14 +680,15 @@ export interface NodeNode {
   id: ID_Output;
 }
 
-export interface Favorite {
+export interface Follow {
   id: ID_Output;
-  login: String;
+  githubID: String;
 }
 
-export interface FavoritePromise extends Promise<Favorite>, Fragmentable {
+export interface FollowPromise extends Promise<Follow>, Fragmentable {
   id: () => Promise<ID_Output>;
-  login: () => Promise<String>;
+  followed: <T = UserPromise>() => T;
+  githubID: () => Promise<String>;
   notes: <T = FragmentableArray<Notes>>(args?: {
     where?: NotesWhereInput;
     orderBy?: NotesOrderByInput;
@@ -627,11 +700,12 @@ export interface FavoritePromise extends Promise<Favorite>, Fragmentable {
   }) => T;
 }
 
-export interface FavoriteSubscription
-  extends Promise<AsyncIterator<Favorite>>,
+export interface FollowSubscription
+  extends Promise<AsyncIterator<Follow>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  login: () => Promise<AsyncIterator<String>>;
+  followed: <T = UserSubscription>() => T;
+  githubID: () => Promise<AsyncIterator<String>>;
   notes: <T = Promise<AsyncIterator<NotesSubscription>>>(args?: {
     where?: NotesWhereInput;
     orderBy?: NotesOrderByInput;
@@ -643,14 +717,66 @@ export interface FavoriteSubscription
   }) => T;
 }
 
-export interface FavoriteNullablePromise
-  extends Promise<Favorite | null>,
+export interface FollowNullablePromise
+  extends Promise<Follow | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  login: () => Promise<String>;
+  followed: <T = UserPromise>() => T;
+  githubID: () => Promise<String>;
   notes: <T = FragmentableArray<Notes>>(args?: {
     where?: NotesWhereInput;
     orderBy?: NotesOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface User {
+  id: ID_Output;
+  githubID: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  githubID: () => Promise<String>;
+  following: <T = FragmentableArray<Follow>>(args?: {
+    where?: FollowWhereInput;
+    orderBy?: FollowOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  githubID: () => Promise<AsyncIterator<String>>;
+  following: <T = Promise<AsyncIterator<FollowSubscription>>>(args?: {
+    where?: FollowWhereInput;
+    orderBy?: FollowOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  githubID: () => Promise<String>;
+  following: <T = FragmentableArray<Follow>>(args?: {
+    where?: FollowWhereInput;
+    orderBy?: FollowOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -667,6 +793,7 @@ export interface Notes {
 
 export interface NotesPromise extends Promise<Notes>, Fragmentable {
   id: () => Promise<ID_Output>;
+  for: <T = FollowPromise>() => T;
   title: () => Promise<String>;
   body: () => Promise<String>;
 }
@@ -675,6 +802,7 @@ export interface NotesSubscription
   extends Promise<AsyncIterator<Notes>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  for: <T = FollowSubscription>() => T;
   title: () => Promise<AsyncIterator<String>>;
   body: () => Promise<AsyncIterator<String>>;
 }
@@ -683,29 +811,30 @@ export interface NotesNullablePromise
   extends Promise<Notes | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  for: <T = FollowPromise>() => T;
   title: () => Promise<String>;
   body: () => Promise<String>;
 }
 
-export interface FavoriteConnection {
+export interface FollowConnection {
   pageInfo: PageInfo;
-  edges: FavoriteEdge[];
+  edges: FollowEdge[];
 }
 
-export interface FavoriteConnectionPromise
-  extends Promise<FavoriteConnection>,
+export interface FollowConnectionPromise
+  extends Promise<FollowConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<FavoriteEdge>>() => T;
-  aggregate: <T = AggregateFavoritePromise>() => T;
+  edges: <T = FragmentableArray<FollowEdge>>() => T;
+  aggregate: <T = AggregateFollowPromise>() => T;
 }
 
-export interface FavoriteConnectionSubscription
-  extends Promise<AsyncIterator<FavoriteConnection>>,
+export interface FollowConnectionSubscription
+  extends Promise<AsyncIterator<FollowConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<FavoriteEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateFavoriteSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<FollowEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateFollowSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -731,37 +860,35 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface FavoriteEdge {
-  node: Favorite;
+export interface FollowEdge {
+  node: Follow;
   cursor: String;
 }
 
-export interface FavoriteEdgePromise
-  extends Promise<FavoriteEdge>,
-    Fragmentable {
-  node: <T = FavoritePromise>() => T;
+export interface FollowEdgePromise extends Promise<FollowEdge>, Fragmentable {
+  node: <T = FollowPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface FavoriteEdgeSubscription
-  extends Promise<AsyncIterator<FavoriteEdge>>,
+export interface FollowEdgeSubscription
+  extends Promise<AsyncIterator<FollowEdge>>,
     Fragmentable {
-  node: <T = FavoriteSubscription>() => T;
+  node: <T = FollowSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateFavorite {
+export interface AggregateFollow {
   count: Int;
 }
 
-export interface AggregateFavoritePromise
-  extends Promise<AggregateFavorite>,
+export interface AggregateFollowPromise
+  extends Promise<AggregateFollow>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateFavoriteSubscription
-  extends Promise<AsyncIterator<AggregateFavorite>>,
+export interface AggregateFollowSubscription
+  extends Promise<AsyncIterator<AggregateFollow>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -818,57 +945,6 @@ export interface AggregateNotesSubscription
   extends Promise<AsyncIterator<AggregateNotes>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface User {
-  id: ID_Output;
-  githubID: String;
-}
-
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  githubID: () => Promise<String>;
-  favorites: <T = FragmentableArray<Favorite>>(args?: {
-    where?: FavoriteWhereInput;
-    orderBy?: FavoriteOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  githubID: () => Promise<AsyncIterator<String>>;
-  favorites: <T = Promise<AsyncIterator<FavoriteSubscription>>>(args?: {
-    where?: FavoriteWhereInput;
-    orderBy?: FavoriteOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface UserNullablePromise
-  extends Promise<User | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  githubID: () => Promise<String>;
-  favorites: <T = FragmentableArray<Favorite>>(args?: {
-    where?: FavoriteWhereInput;
-    orderBy?: FavoriteOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
 }
 
 export interface UserConnection {
@@ -941,48 +1017,48 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
-export interface FavoriteSubscriptionPayload {
+export interface FollowSubscriptionPayload {
   mutation: MutationType;
-  node: Favorite;
+  node: Follow;
   updatedFields: String[];
-  previousValues: FavoritePreviousValues;
+  previousValues: FollowPreviousValues;
 }
 
-export interface FavoriteSubscriptionPayloadPromise
-  extends Promise<FavoriteSubscriptionPayload>,
+export interface FollowSubscriptionPayloadPromise
+  extends Promise<FollowSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = FavoritePromise>() => T;
+  node: <T = FollowPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = FavoritePreviousValuesPromise>() => T;
+  previousValues: <T = FollowPreviousValuesPromise>() => T;
 }
 
-export interface FavoriteSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<FavoriteSubscriptionPayload>>,
+export interface FollowSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<FollowSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = FavoriteSubscription>() => T;
+  node: <T = FollowSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = FavoritePreviousValuesSubscription>() => T;
+  previousValues: <T = FollowPreviousValuesSubscription>() => T;
 }
 
-export interface FavoritePreviousValues {
+export interface FollowPreviousValues {
   id: ID_Output;
-  login: String;
+  githubID: String;
 }
 
-export interface FavoritePreviousValuesPromise
-  extends Promise<FavoritePreviousValues>,
+export interface FollowPreviousValuesPromise
+  extends Promise<FollowPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  login: () => Promise<String>;
+  githubID: () => Promise<String>;
 }
 
-export interface FavoritePreviousValuesSubscription
-  extends Promise<AsyncIterator<FavoritePreviousValues>>,
+export interface FollowPreviousValuesSubscription
+  extends Promise<AsyncIterator<FollowPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  login: () => Promise<AsyncIterator<String>>;
+  githubID: () => Promise<AsyncIterator<String>>;
 }
 
 export interface NotesSubscriptionPayload {
@@ -1109,7 +1185,7 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "Favorite",
+    name: "Follow",
     embedded: false
   },
   {
