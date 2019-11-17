@@ -30,7 +30,7 @@ const store = environment.database
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors({
-    origin: ['http://localhost:3000'],
+    origin: ['http://localhost:3000', environment.loginRedirect],
     methods: ['GET', 'POST', 'PUT'],
     credentials: true,
   });
