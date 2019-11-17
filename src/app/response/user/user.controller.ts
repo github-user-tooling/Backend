@@ -1,14 +1,19 @@
-import { Controller, Get, Post, Param } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body } from '@nestjs/common';
 
-import { IActiveUser, ICalendarDTO, ITendenciesDTO } from 'models';
+import { Note } from '@prisma';
+import { IActiveUser, ICalendarDTO, ITendenciesDTO, CreateNoteDTO } from 'models';
 import { IProfile, IUser } from 'github/queries';
-import { IFollow, IUnfollow } from 'github/mutations';
+
 import { User } from 'common/decorators';
 import { GithubService } from 'github/github.service';
+import { NotesService } from 'notes/notes.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly github: GithubService) {}
+  constructor(
+    private readonly github: GithubService,
+    private readonly notesService: NotesService
+  ) {}
 
   @Get('/profile')
   public async getProfile(
@@ -66,19 +71,17 @@ export class UserController {
     return await this.github.tendencies(accessToken, id);
   }
 
-  @Post('/follow/:id')
-  public async followUser(
-    @User() { accessToken, githubID }: IActiveUser,
-    @Param('id') id: string
-  ): Promise<IFollow['followUser']['user']> {
-    return await this.github.follow(accessToken, githubID, id);
+  @Get('/:id/notes')
+  public async getNotes(@User() { id }: IActiveUser, @Param('id') forID: string): Promise<Note[]> {
+    return await this.notesService.getNotes(id, forID);
   }
 
-  @Post('/unfollow/:id')
-  public async unfollowUser(
-    @User() { accessToken, githubID }: IActiveUser,
-    @Param('id') id: string
-  ): Promise<IUnfollow['unfollowUser']['user']> {
-    return await this.github.unfollow(accessToken, githubID, id);
+  @Post('/:id/notes')
+  public async createNote(
+    @User() { id }: IActiveUser,
+    @Param('id') forID: string,
+    @Body() note: CreateNoteDTO
+  ): Promise<Note> {
+    return await this.notesService.createNote(id, forID, note);
   }
 }
