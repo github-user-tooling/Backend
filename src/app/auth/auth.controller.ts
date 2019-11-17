@@ -24,7 +24,7 @@ export class AuthController {
   }
 
   @Public()
-  @Post('/logout')
+  @Get('/logout')
   @Redirect(environment.loginRedirect)
   public logout(@Req() req: Request) {
     req.logout();
