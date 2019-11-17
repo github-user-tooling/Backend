@@ -1,9 +1,9 @@
 import { Controller, UseGuards, Get, Post, Req, Redirect } from '@nestjs/common';
 import { Request } from 'express';
 
+import { environment } from '@env';
 import { Public } from 'common/decorators';
 import { GithubGuard } from 'common/guards';
-import { environment } from '../../environment';
 
 @Controller('auth')
 export class AuthController {
@@ -24,8 +24,9 @@ export class AuthController {
   }
 
   @Public()
-  @Post('/logout')
-  public logout(@Req() req: Request): void {
+  @Get('/logout')
+  @Redirect(environment.loginRedirect)
+  public logout(@Req() req: Request) {
     req.logout();
   }
 }
