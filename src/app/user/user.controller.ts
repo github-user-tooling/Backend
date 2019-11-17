@@ -1,7 +1,8 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Post, Param } from '@nestjs/common';
 
 import { IActiveUser, ICalendarDTO, ITendenciesDTO } from 'models';
 import { IProfile, IUser } from 'github/queries';
+import { IFollow, IUnfollow } from 'github/mutations';
 import { User } from 'common/decorators';
 import { GithubService } from 'github/github.service';
 
@@ -18,8 +19,8 @@ export class UserController {
 
   @Get('/:id/profile')
   public async getSpecificProfile(
-    @Param('id') id: string,
-    @User() { accessToken }: IActiveUser
+    @User() { accessToken }: IActiveUser,
+    @Param('id') id: string
   ): Promise<IProfile['node']> {
     return await this.github.profile(accessToken, id);
   }
@@ -31,8 +32,8 @@ export class UserController {
 
   @Get('/:id/calendar')
   public async getSpecificCalendar(
-    @Param('id') id: string,
-    @User() { accessToken }: IActiveUser
+    @User() { accessToken }: IActiveUser,
+    @Param('id') id: string
   ): Promise<ICalendarDTO> {
     return await this.github.calendar(accessToken, id);
   }
@@ -44,8 +45,8 @@ export class UserController {
 
   @Get('/:id/following')
   public async getSpecificFollowing(
-    @Param('id') id: string,
-    @User() { accessToken }: IActiveUser
+    @User() { accessToken }: IActiveUser,
+    @Param('id') id: string
   ): Promise<IUser[]> {
     return await this.github.following(accessToken, id);
   }
@@ -59,9 +60,25 @@ export class UserController {
 
   @Get('/:id/tendencies')
   public async getSpecificTendencies(
-    @Param('id') id: string,
-    @User() { accessToken }: IActiveUser
+    @User() { accessToken }: IActiveUser,
+    @Param('id') id: string
   ): Promise<ITendenciesDTO> {
     return await this.github.tendencies(accessToken, id);
+  }
+
+  @Post('/follow/:id')
+  public async followUser(
+    @User() { accessToken }: IActiveUser,
+    @Param('id') id: string
+  ): Promise<IFollow['followUser']['user']> {
+    return await this.github.follow(accessToken, id);
+  }
+
+  @Post('/unfollow/:id')
+  public async unfollowUser(
+    @User() { accessToken }: IActiveUser,
+    @Param('id') id: string
+  ): Promise<IUnfollow['unfollowUser']['user']> {
+    return await this.github.unfollow(accessToken, id);
   }
 }
