@@ -1,14 +1,14 @@
 type User {
   id: ID! @id
   githubID: String! @unique
-  following: [Follow!]
+  following: [Follow!] @relation(onDelete: CASCADE)
 }
 
 type Follow {
   id: ID! @id
   followed: User!
   githubID: String! @unique
-  notes: [Notes!]
+  notes: [Notes!] @relation(onDelete: CASCADE)
 }
 
 type Notes {
