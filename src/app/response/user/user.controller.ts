@@ -1,8 +1,7 @@
-import { Controller, Get, Post, Param } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 
 import { IActiveUser, ICalendarDTO, ITendenciesDTO } from 'models';
 import { IProfile, IUser } from 'github/queries';
-import { IFollow, IUnfollow } from 'github/mutations';
 import { User } from 'common/decorators';
 import { GithubService } from 'github/github.service';
 
@@ -64,21 +63,5 @@ export class UserController {
     @Param('id') id: string
   ): Promise<ITendenciesDTO> {
     return await this.github.tendencies(accessToken, id);
-  }
-
-  @Post('/follow/:id')
-  public async followUser(
-    @User() { accessToken, githubID }: IActiveUser,
-    @Param('id') id: string
-  ): Promise<IFollow['followUser']['user']> {
-    return await this.github.follow(accessToken, githubID, id);
-  }
-
-  @Post('/unfollow/:id')
-  public async unfollowUser(
-    @User() { accessToken, githubID }: IActiveUser,
-    @Param('id') id: string
-  ): Promise<IUnfollow['unfollowUser']['user']> {
-    return await this.github.unfollow(accessToken, githubID, id);
   }
 }
