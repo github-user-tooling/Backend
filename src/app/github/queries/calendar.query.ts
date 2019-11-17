@@ -1,7 +1,7 @@
 import { identityTag as gql } from 'identity-tag';
 
 export interface ICalendar {
-  viewer: {
+  node: {
     contributionsCollection: {
       contributionCalendar: ICalendarPayload;
     };
@@ -20,10 +20,6 @@ export interface IWeek {
 export interface IDay {
   key: string;
   data: number;
-}
-
-export interface ICalendarVariables {
-  id: string;
 }
 
 export const calendar = gql`

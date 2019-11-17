@@ -21,8 +21,8 @@ export class SessionSerializer extends PassportSerializer {
     done: (err: Error, user?: IActiveUser) => void
   ) {
     try {
-      const id = await this.github.login(accessToken);
-      const user = await this.authService.findUser({ id });
+      const githubID = await this.github.login(accessToken);
+      const user = await this.authService.findUser({ githubID });
       done(null, { ...user, accessToken });
     } catch (err) {
       done(new LoginException());

@@ -1,4 +1,4 @@
-import { UnauthorizedException, HttpStatus } from '@nestjs/common';
+import { UnauthorizedException } from '@nestjs/common';
 
 export class LoginException extends UnauthorizedException {
   constructor() {
