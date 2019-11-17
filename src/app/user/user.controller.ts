@@ -23,4 +23,11 @@ export class UserController {
   public async getFollowing(@User() { accessToken }: IActiveUser): Promise<IUser[]> {
     return await this.github.following(accessToken);
   }
+
+  @Get('tendencies')
+  public async getTendencies(
+    @User() { accessToken, githubID }: IActiveUser
+  ): Promise<ITendenciesDTO> {
+    return await this.github.tendencies(accessToken, githubID);
+  }
 }

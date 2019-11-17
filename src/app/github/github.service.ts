@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { request } from 'graphql-request';
 
-import { ICalendarDTO } from 'models';
+import { ICalendarDTO, ITendenciesDTO } from 'models';
+import { mode } from 'utils/math.util';
 
 import { ILogon, logon } from './queries';
 import { IProfile, profile } from './queries';
 import { ICalendarVariables, ICalendar, IDay, ICalendarPayload, calendar } from './queries';
 import { IFollowers, IUser, followers } from './queries';
+import { ITendencies, IRepoCommits, IRepoLang, tendencies } from './queries';
 
 @Injectable()
 export class GithubService {
@@ -47,5 +49,45 @@ export class GithubService {
         new Array<IDay>()
       ),
     };
+  }
+
+  public async tendencies(accessToken: string, id: string): Promise<ITendenciesDTO> {
+    const { node } = await this.request<ITendencies>(accessToken, tendencies, { id });
+    const [mostOftenHour, mostOftenDay] = this.calculateDayTendencies(node.repositories.commits);
+    const mostUsedLang = this.calculateLangTendencies(node.repositories.langs);
+    return {
+      mostOftenHour,
+      mostOftenDay,
+      mostUsedLang,
+    };
+  }
+
+  private calculateDayTendencies(commits: IRepoCommits[]): [number, number] {
+    const dates = commits.reduce((repos, repo) => {
+      if (!repo.defaultBranchRef) return repos;
+
+      const { nodes } = repo.defaultBranchRef.target.history;
+      const datesOfRepo = nodes.reduce(
+        (result, commit) => [...result, commit.committedDate],
+        Array<string>()
+      );
+
+      return [...repos, ...datesOfRepo];
+    }, Array<string>());
+
+    const formatted = dates.map((date) => new Date(date));
+    const hours = formatted.map((date) => date.getHours());
+    const daysOfWeek = formatted.map((date) => date.getDay());
+
+    return [mode<number>(hours), mode<number>(daysOfWeek)];
+  }
+
+  private calculateLangTendencies(langs: IRepoLang[]): string {
+    const result = langs.reduce((all, lang) => {
+      if (!lang.primaryLanguage) return all;
+      return [...all, lang.primaryLanguage.name];
+    }, Array<string>());
+
+    return mode<string>(result);
   }
 }
