@@ -6,7 +6,7 @@ export const typeDefs = /* GraphQL */ `type AggregateFollow {
   count: Int!
 }
 
-type AggregateNotes {
+type AggregateNote {
   count: Int!
 }
 
@@ -22,7 +22,7 @@ type Follow {
   id: ID!
   followed: User!
   githubID: String!
-  notes(where: NotesWhereInput, orderBy: NotesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Notes!]
+  notes(where: NoteWhereInput, orderBy: NoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Note!]
 }
 
 type FollowConnection {
@@ -35,7 +35,7 @@ input FollowCreateInput {
   id: ID
   followed: UserCreateOneWithoutFollowingInput!
   githubID: String!
-  notes: NotesCreateManyWithoutForInput
+  notes: NoteCreateManyWithoutForInput
 }
 
 input FollowCreateManyWithoutFollowedInput {
@@ -51,7 +51,7 @@ input FollowCreateOneWithoutNotesInput {
 input FollowCreateWithoutFollowedInput {
   id: ID
   githubID: String!
-  notes: NotesCreateManyWithoutForInput
+  notes: NoteCreateManyWithoutForInput
 }
 
 input FollowCreateWithoutNotesInput {
@@ -132,7 +132,7 @@ input FollowSubscriptionWhereInput {
 input FollowUpdateInput {
   followed: UserUpdateOneRequiredWithoutFollowingInput
   githubID: String
-  notes: NotesUpdateManyWithoutForInput
+  notes: NoteUpdateManyWithoutForInput
 }
 
 input FollowUpdateManyDataInput {
@@ -169,7 +169,7 @@ input FollowUpdateOneRequiredWithoutNotesInput {
 
 input FollowUpdateWithoutFollowedDataInput {
   githubID: String
-  notes: NotesUpdateManyWithoutForInput
+  notes: NoteUpdateManyWithoutForInput
 }
 
 input FollowUpdateWithoutNotesDataInput {
@@ -223,9 +223,9 @@ input FollowWhereInput {
   githubID_not_starts_with: String
   githubID_ends_with: String
   githubID_not_ends_with: String
-  notes_every: NotesWhereInput
-  notes_some: NotesWhereInput
-  notes_none: NotesWhereInput
+  notes_every: NoteWhereInput
+  notes_some: NoteWhereInput
+  notes_none: NoteWhereInput
   AND: [FollowWhereInput!]
   OR: [FollowWhereInput!]
   NOT: [FollowWhereInput!]
@@ -245,12 +245,12 @@ type Mutation {
   upsertFollow(where: FollowWhereUniqueInput!, create: FollowCreateInput!, update: FollowUpdateInput!): Follow!
   deleteFollow(where: FollowWhereUniqueInput!): Follow
   deleteManyFollows(where: FollowWhereInput): BatchPayload!
-  createNotes(data: NotesCreateInput!): Notes!
-  updateNotes(data: NotesUpdateInput!, where: NotesWhereUniqueInput!): Notes
-  updateManyNoteses(data: NotesUpdateManyMutationInput!, where: NotesWhereInput): BatchPayload!
-  upsertNotes(where: NotesWhereUniqueInput!, create: NotesCreateInput!, update: NotesUpdateInput!): Notes!
-  deleteNotes(where: NotesWhereUniqueInput!): Notes
-  deleteManyNoteses(where: NotesWhereInput): BatchPayload!
+  createNote(data: NoteCreateInput!): Note!
+  updateNote(data: NoteUpdateInput!, where: NoteWhereUniqueInput!): Note
+  updateManyNotes(data: NoteUpdateManyMutationInput!, where: NoteWhereInput): BatchPayload!
+  upsertNote(where: NoteWhereUniqueInput!, create: NoteCreateInput!, update: NoteUpdateInput!): Note!
+  deleteNote(where: NoteWhereUniqueInput!): Note
+  deleteManyNotes(where: NoteWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -269,43 +269,43 @@ interface Node {
   id: ID!
 }
 
-type Notes {
+type Note {
   id: ID!
   for: Follow!
   title: String!
   body: String!
 }
 
-type NotesConnection {
+type NoteConnection {
   pageInfo: PageInfo!
-  edges: [NotesEdge]!
-  aggregate: AggregateNotes!
+  edges: [NoteEdge]!
+  aggregate: AggregateNote!
 }
 
-input NotesCreateInput {
+input NoteCreateInput {
   id: ID
   for: FollowCreateOneWithoutNotesInput!
   title: String!
   body: String!
 }
 
-input NotesCreateManyWithoutForInput {
-  create: [NotesCreateWithoutForInput!]
-  connect: [NotesWhereUniqueInput!]
+input NoteCreateManyWithoutForInput {
+  create: [NoteCreateWithoutForInput!]
+  connect: [NoteWhereUniqueInput!]
 }
 
-input NotesCreateWithoutForInput {
+input NoteCreateWithoutForInput {
   id: ID
   title: String!
   body: String!
 }
 
-type NotesEdge {
-  node: Notes!
+type NoteEdge {
+  node: Note!
   cursor: String!
 }
 
-enum NotesOrderByInput {
+enum NoteOrderByInput {
   id_ASC
   id_DESC
   title_ASC
@@ -314,13 +314,13 @@ enum NotesOrderByInput {
   body_DESC
 }
 
-type NotesPreviousValues {
+type NotePreviousValues {
   id: ID!
   title: String!
   body: String!
 }
 
-input NotesScalarWhereInput {
+input NoteScalarWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -363,79 +363,79 @@ input NotesScalarWhereInput {
   body_not_starts_with: String
   body_ends_with: String
   body_not_ends_with: String
-  AND: [NotesScalarWhereInput!]
-  OR: [NotesScalarWhereInput!]
-  NOT: [NotesScalarWhereInput!]
+  AND: [NoteScalarWhereInput!]
+  OR: [NoteScalarWhereInput!]
+  NOT: [NoteScalarWhereInput!]
 }
 
-type NotesSubscriptionPayload {
+type NoteSubscriptionPayload {
   mutation: MutationType!
-  node: Notes
+  node: Note
   updatedFields: [String!]
-  previousValues: NotesPreviousValues
+  previousValues: NotePreviousValues
 }
 
-input NotesSubscriptionWhereInput {
+input NoteSubscriptionWhereInput {
   mutation_in: [MutationType!]
   updatedFields_contains: String
   updatedFields_contains_every: [String!]
   updatedFields_contains_some: [String!]
-  node: NotesWhereInput
-  AND: [NotesSubscriptionWhereInput!]
-  OR: [NotesSubscriptionWhereInput!]
-  NOT: [NotesSubscriptionWhereInput!]
+  node: NoteWhereInput
+  AND: [NoteSubscriptionWhereInput!]
+  OR: [NoteSubscriptionWhereInput!]
+  NOT: [NoteSubscriptionWhereInput!]
 }
 
-input NotesUpdateInput {
+input NoteUpdateInput {
   for: FollowUpdateOneRequiredWithoutNotesInput
   title: String
   body: String
 }
 
-input NotesUpdateManyDataInput {
+input NoteUpdateManyDataInput {
   title: String
   body: String
 }
 
-input NotesUpdateManyMutationInput {
+input NoteUpdateManyMutationInput {
   title: String
   body: String
 }
 
-input NotesUpdateManyWithoutForInput {
-  create: [NotesCreateWithoutForInput!]
-  delete: [NotesWhereUniqueInput!]
-  connect: [NotesWhereUniqueInput!]
-  set: [NotesWhereUniqueInput!]
-  disconnect: [NotesWhereUniqueInput!]
-  update: [NotesUpdateWithWhereUniqueWithoutForInput!]
-  upsert: [NotesUpsertWithWhereUniqueWithoutForInput!]
-  deleteMany: [NotesScalarWhereInput!]
-  updateMany: [NotesUpdateManyWithWhereNestedInput!]
+input NoteUpdateManyWithoutForInput {
+  create: [NoteCreateWithoutForInput!]
+  delete: [NoteWhereUniqueInput!]
+  connect: [NoteWhereUniqueInput!]
+  set: [NoteWhereUniqueInput!]
+  disconnect: [NoteWhereUniqueInput!]
+  update: [NoteUpdateWithWhereUniqueWithoutForInput!]
+  upsert: [NoteUpsertWithWhereUniqueWithoutForInput!]
+  deleteMany: [NoteScalarWhereInput!]
+  updateMany: [NoteUpdateManyWithWhereNestedInput!]
 }
 
-input NotesUpdateManyWithWhereNestedInput {
-  where: NotesScalarWhereInput!
-  data: NotesUpdateManyDataInput!
+input NoteUpdateManyWithWhereNestedInput {
+  where: NoteScalarWhereInput!
+  data: NoteUpdateManyDataInput!
 }
 
-input NotesUpdateWithoutForDataInput {
+input NoteUpdateWithoutForDataInput {
   title: String
   body: String
 }
 
-input NotesUpdateWithWhereUniqueWithoutForInput {
-  where: NotesWhereUniqueInput!
-  data: NotesUpdateWithoutForDataInput!
+input NoteUpdateWithWhereUniqueWithoutForInput {
+  where: NoteWhereUniqueInput!
+  data: NoteUpdateWithoutForDataInput!
 }
 
-input NotesUpsertWithWhereUniqueWithoutForInput {
-  where: NotesWhereUniqueInput!
-  update: NotesUpdateWithoutForDataInput!
-  create: NotesCreateWithoutForInput!
+input NoteUpsertWithWhereUniqueWithoutForInput {
+  where: NoteWhereUniqueInput!
+  update: NoteUpdateWithoutForDataInput!
+  create: NoteCreateWithoutForInput!
 }
 
-input NotesWhereInput {
+input NoteWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -479,12 +479,12 @@ input NotesWhereInput {
   body_not_starts_with: String
   body_ends_with: String
   body_not_ends_with: String
-  AND: [NotesWhereInput!]
-  OR: [NotesWhereInput!]
-  NOT: [NotesWhereInput!]
+  AND: [NoteWhereInput!]
+  OR: [NoteWhereInput!]
+  NOT: [NoteWhereInput!]
 }
 
-input NotesWhereUniqueInput {
+input NoteWhereUniqueInput {
   id: ID
 }
 
@@ -499,9 +499,9 @@ type Query {
   follow(where: FollowWhereUniqueInput!): Follow
   follows(where: FollowWhereInput, orderBy: FollowOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Follow]!
   followsConnection(where: FollowWhereInput, orderBy: FollowOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FollowConnection!
-  notes(where: NotesWhereUniqueInput!): Notes
-  noteses(where: NotesWhereInput, orderBy: NotesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Notes]!
-  notesesConnection(where: NotesWhereInput, orderBy: NotesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): NotesConnection!
+  note(where: NoteWhereUniqueInput!): Note
+  notes(where: NoteWhereInput, orderBy: NoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Note]!
+  notesConnection(where: NoteWhereInput, orderBy: NoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): NoteConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -510,7 +510,7 @@ type Query {
 
 type Subscription {
   follow(where: FollowSubscriptionWhereInput): FollowSubscriptionPayload
-  notes(where: NotesSubscriptionWhereInput): NotesSubscriptionPayload
+  note(where: NoteSubscriptionWhereInput): NoteSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 

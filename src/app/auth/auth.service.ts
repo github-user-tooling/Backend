@@ -8,9 +8,11 @@ export class AuthService {
   constructor(private readonly prisma: PrismaService) {}
 
   public async upsertUser(payload: Omit<User, 'id'>) {
-    const user =
-      (await this.prisma.client.user(payload)) || (await this.prisma.client.createUser(payload));
-
+    const user = await this.prisma.client.upsertUser({
+      create: payload,
+      update: payload,
+      where: { githubID: payload.githubID },
+    });
     return { ...user };
   }
 

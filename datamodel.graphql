@@ -8,10 +8,10 @@ type Follow {
   id: ID! @id
   followed: User!
   githubID: String! @unique
-  notes: [Notes!] @relation(onDelete: CASCADE)
+  notes: [Note!] @relation(onDelete: CASCADE)
 }
 
-type Notes {
+type Note {
   id: ID! @id
   for: Follow!
   title: String!

@@ -17,7 +17,7 @@ export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
   follow: (where?: FollowWhereInput) => Promise<boolean>;
-  notes: (where?: NotesWhereInput) => Promise<boolean>;
+  note: (where?: NoteWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
@@ -59,25 +59,25 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => FollowConnectionPromise;
-  notes: (where: NotesWhereUniqueInput) => NotesNullablePromise;
-  noteses: (args?: {
-    where?: NotesWhereInput;
-    orderBy?: NotesOrderByInput;
+  note: (where: NoteWhereUniqueInput) => NoteNullablePromise;
+  notes: (args?: {
+    where?: NoteWhereInput;
+    orderBy?: NoteOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FragmentableArray<Notes>;
-  notesesConnection: (args?: {
-    where?: NotesWhereInput;
-    orderBy?: NotesOrderByInput;
+  }) => FragmentableArray<Note>;
+  notesConnection: (args?: {
+    where?: NoteWhereInput;
+    orderBy?: NoteOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => NotesConnectionPromise;
+  }) => NoteConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserNullablePromise;
   users: (args?: {
     where?: UserWhereInput;
@@ -119,22 +119,22 @@ export interface Prisma {
   }) => FollowPromise;
   deleteFollow: (where: FollowWhereUniqueInput) => FollowPromise;
   deleteManyFollows: (where?: FollowWhereInput) => BatchPayloadPromise;
-  createNotes: (data: NotesCreateInput) => NotesPromise;
-  updateNotes: (args: {
-    data: NotesUpdateInput;
-    where: NotesWhereUniqueInput;
-  }) => NotesPromise;
-  updateManyNoteses: (args: {
-    data: NotesUpdateManyMutationInput;
-    where?: NotesWhereInput;
+  createNote: (data: NoteCreateInput) => NotePromise;
+  updateNote: (args: {
+    data: NoteUpdateInput;
+    where: NoteWhereUniqueInput;
+  }) => NotePromise;
+  updateManyNotes: (args: {
+    data: NoteUpdateManyMutationInput;
+    where?: NoteWhereInput;
   }) => BatchPayloadPromise;
-  upsertNotes: (args: {
-    where: NotesWhereUniqueInput;
-    create: NotesCreateInput;
-    update: NotesUpdateInput;
-  }) => NotesPromise;
-  deleteNotes: (where: NotesWhereUniqueInput) => NotesPromise;
-  deleteManyNoteses: (where?: NotesWhereInput) => BatchPayloadPromise;
+  upsertNote: (args: {
+    where: NoteWhereUniqueInput;
+    create: NoteCreateInput;
+    update: NoteUpdateInput;
+  }) => NotePromise;
+  deleteNote: (where: NoteWhereUniqueInput) => NotePromise;
+  deleteManyNotes: (where?: NoteWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (args: {
     data: UserUpdateInput;
@@ -163,9 +163,9 @@ export interface Subscription {
   follow: (
     where?: FollowSubscriptionWhereInput
   ) => FollowSubscriptionPayloadSubscription;
-  notes: (
-    where?: NotesSubscriptionWhereInput
-  ) => NotesSubscriptionPayloadSubscription;
+  note: (
+    where?: NoteSubscriptionWhereInput
+  ) => NoteSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -185,7 +185,7 @@ export type FollowOrderByInput =
   | "githubID_ASC"
   | "githubID_DESC";
 
-export type NotesOrderByInput =
+export type NoteOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "title_ASC"
@@ -236,9 +236,9 @@ export interface FollowWhereInput {
   githubID_not_starts_with?: Maybe<String>;
   githubID_ends_with?: Maybe<String>;
   githubID_not_ends_with?: Maybe<String>;
-  notes_every?: Maybe<NotesWhereInput>;
-  notes_some?: Maybe<NotesWhereInput>;
-  notes_none?: Maybe<NotesWhereInput>;
+  notes_every?: Maybe<NoteWhereInput>;
+  notes_some?: Maybe<NoteWhereInput>;
+  notes_none?: Maybe<NoteWhereInput>;
   AND?: Maybe<FollowWhereInput[] | FollowWhereInput>;
   OR?: Maybe<FollowWhereInput[] | FollowWhereInput>;
   NOT?: Maybe<FollowWhereInput[] | FollowWhereInput>;
@@ -281,7 +281,7 @@ export interface UserWhereInput {
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
-export interface NotesWhereInput {
+export interface NoteWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -325,12 +325,12 @@ export interface NotesWhereInput {
   body_not_starts_with?: Maybe<String>;
   body_ends_with?: Maybe<String>;
   body_not_ends_with?: Maybe<String>;
-  AND?: Maybe<NotesWhereInput[] | NotesWhereInput>;
-  OR?: Maybe<NotesWhereInput[] | NotesWhereInput>;
-  NOT?: Maybe<NotesWhereInput[] | NotesWhereInput>;
+  AND?: Maybe<NoteWhereInput[] | NoteWhereInput>;
+  OR?: Maybe<NoteWhereInput[] | NoteWhereInput>;
+  NOT?: Maybe<NoteWhereInput[] | NoteWhereInput>;
 }
 
-export type NotesWhereUniqueInput = AtLeastOne<{
+export type NoteWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
@@ -343,7 +343,7 @@ export interface FollowCreateInput {
   id?: Maybe<ID_Input>;
   followed: UserCreateOneWithoutFollowingInput;
   githubID: String;
-  notes?: Maybe<NotesCreateManyWithoutForInput>;
+  notes?: Maybe<NoteCreateManyWithoutForInput>;
 }
 
 export interface UserCreateOneWithoutFollowingInput {
@@ -356,12 +356,12 @@ export interface UserCreateWithoutFollowingInput {
   githubID: String;
 }
 
-export interface NotesCreateManyWithoutForInput {
-  create?: Maybe<NotesCreateWithoutForInput[] | NotesCreateWithoutForInput>;
-  connect?: Maybe<NotesWhereUniqueInput[] | NotesWhereUniqueInput>;
+export interface NoteCreateManyWithoutForInput {
+  create?: Maybe<NoteCreateWithoutForInput[] | NoteCreateWithoutForInput>;
+  connect?: Maybe<NoteWhereUniqueInput[] | NoteWhereUniqueInput>;
 }
 
-export interface NotesCreateWithoutForInput {
+export interface NoteCreateWithoutForInput {
   id?: Maybe<ID_Input>;
   title: String;
   body: String;
@@ -370,7 +370,7 @@ export interface NotesCreateWithoutForInput {
 export interface FollowUpdateInput {
   followed?: Maybe<UserUpdateOneRequiredWithoutFollowingInput>;
   githubID?: Maybe<String>;
-  notes?: Maybe<NotesUpdateManyWithoutForInput>;
+  notes?: Maybe<NoteUpdateManyWithoutForInput>;
 }
 
 export interface UserUpdateOneRequiredWithoutFollowingInput {
@@ -389,43 +389,43 @@ export interface UserUpsertWithoutFollowingInput {
   create: UserCreateWithoutFollowingInput;
 }
 
-export interface NotesUpdateManyWithoutForInput {
-  create?: Maybe<NotesCreateWithoutForInput[] | NotesCreateWithoutForInput>;
-  delete?: Maybe<NotesWhereUniqueInput[] | NotesWhereUniqueInput>;
-  connect?: Maybe<NotesWhereUniqueInput[] | NotesWhereUniqueInput>;
-  set?: Maybe<NotesWhereUniqueInput[] | NotesWhereUniqueInput>;
-  disconnect?: Maybe<NotesWhereUniqueInput[] | NotesWhereUniqueInput>;
+export interface NoteUpdateManyWithoutForInput {
+  create?: Maybe<NoteCreateWithoutForInput[] | NoteCreateWithoutForInput>;
+  delete?: Maybe<NoteWhereUniqueInput[] | NoteWhereUniqueInput>;
+  connect?: Maybe<NoteWhereUniqueInput[] | NoteWhereUniqueInput>;
+  set?: Maybe<NoteWhereUniqueInput[] | NoteWhereUniqueInput>;
+  disconnect?: Maybe<NoteWhereUniqueInput[] | NoteWhereUniqueInput>;
   update?: Maybe<
-    | NotesUpdateWithWhereUniqueWithoutForInput[]
-    | NotesUpdateWithWhereUniqueWithoutForInput
+    | NoteUpdateWithWhereUniqueWithoutForInput[]
+    | NoteUpdateWithWhereUniqueWithoutForInput
   >;
   upsert?: Maybe<
-    | NotesUpsertWithWhereUniqueWithoutForInput[]
-    | NotesUpsertWithWhereUniqueWithoutForInput
+    | NoteUpsertWithWhereUniqueWithoutForInput[]
+    | NoteUpsertWithWhereUniqueWithoutForInput
   >;
-  deleteMany?: Maybe<NotesScalarWhereInput[] | NotesScalarWhereInput>;
+  deleteMany?: Maybe<NoteScalarWhereInput[] | NoteScalarWhereInput>;
   updateMany?: Maybe<
-    NotesUpdateManyWithWhereNestedInput[] | NotesUpdateManyWithWhereNestedInput
+    NoteUpdateManyWithWhereNestedInput[] | NoteUpdateManyWithWhereNestedInput
   >;
 }
 
-export interface NotesUpdateWithWhereUniqueWithoutForInput {
-  where: NotesWhereUniqueInput;
-  data: NotesUpdateWithoutForDataInput;
+export interface NoteUpdateWithWhereUniqueWithoutForInput {
+  where: NoteWhereUniqueInput;
+  data: NoteUpdateWithoutForDataInput;
 }
 
-export interface NotesUpdateWithoutForDataInput {
+export interface NoteUpdateWithoutForDataInput {
   title?: Maybe<String>;
   body?: Maybe<String>;
 }
 
-export interface NotesUpsertWithWhereUniqueWithoutForInput {
-  where: NotesWhereUniqueInput;
-  update: NotesUpdateWithoutForDataInput;
-  create: NotesCreateWithoutForInput;
+export interface NoteUpsertWithWhereUniqueWithoutForInput {
+  where: NoteWhereUniqueInput;
+  update: NoteUpdateWithoutForDataInput;
+  create: NoteCreateWithoutForInput;
 }
 
-export interface NotesScalarWhereInput {
+export interface NoteScalarWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -468,17 +468,17 @@ export interface NotesScalarWhereInput {
   body_not_starts_with?: Maybe<String>;
   body_ends_with?: Maybe<String>;
   body_not_ends_with?: Maybe<String>;
-  AND?: Maybe<NotesScalarWhereInput[] | NotesScalarWhereInput>;
-  OR?: Maybe<NotesScalarWhereInput[] | NotesScalarWhereInput>;
-  NOT?: Maybe<NotesScalarWhereInput[] | NotesScalarWhereInput>;
+  AND?: Maybe<NoteScalarWhereInput[] | NoteScalarWhereInput>;
+  OR?: Maybe<NoteScalarWhereInput[] | NoteScalarWhereInput>;
+  NOT?: Maybe<NoteScalarWhereInput[] | NoteScalarWhereInput>;
 }
 
-export interface NotesUpdateManyWithWhereNestedInput {
-  where: NotesScalarWhereInput;
-  data: NotesUpdateManyDataInput;
+export interface NoteUpdateManyWithWhereNestedInput {
+  where: NoteScalarWhereInput;
+  data: NoteUpdateManyDataInput;
 }
 
-export interface NotesUpdateManyDataInput {
+export interface NoteUpdateManyDataInput {
   title?: Maybe<String>;
   body?: Maybe<String>;
 }
@@ -487,7 +487,7 @@ export interface FollowUpdateManyMutationInput {
   githubID?: Maybe<String>;
 }
 
-export interface NotesCreateInput {
+export interface NoteCreateInput {
   id?: Maybe<ID_Input>;
   for: FollowCreateOneWithoutNotesInput;
   title: String;
@@ -505,7 +505,7 @@ export interface FollowCreateWithoutNotesInput {
   githubID: String;
 }
 
-export interface NotesUpdateInput {
+export interface NoteUpdateInput {
   for?: Maybe<FollowUpdateOneRequiredWithoutNotesInput>;
   title?: Maybe<String>;
   body?: Maybe<String>;
@@ -528,7 +528,7 @@ export interface FollowUpsertWithoutNotesInput {
   create: FollowCreateWithoutNotesInput;
 }
 
-export interface NotesUpdateManyMutationInput {
+export interface NoteUpdateManyMutationInput {
   title?: Maybe<String>;
   body?: Maybe<String>;
 }
@@ -549,7 +549,7 @@ export interface FollowCreateManyWithoutFollowedInput {
 export interface FollowCreateWithoutFollowedInput {
   id?: Maybe<ID_Input>;
   githubID: String;
-  notes?: Maybe<NotesCreateManyWithoutForInput>;
+  notes?: Maybe<NoteCreateManyWithoutForInput>;
 }
 
 export interface UserUpdateInput {
@@ -587,7 +587,7 @@ export interface FollowUpdateWithWhereUniqueWithoutFollowedInput {
 
 export interface FollowUpdateWithoutFollowedDataInput {
   githubID?: Maybe<String>;
-  notes?: Maybe<NotesUpdateManyWithoutForInput>;
+  notes?: Maybe<NoteUpdateManyWithoutForInput>;
 }
 
 export interface FollowUpsertWithWhereUniqueWithoutFollowedInput {
@@ -654,15 +654,15 @@ export interface FollowSubscriptionWhereInput {
   NOT?: Maybe<FollowSubscriptionWhereInput[] | FollowSubscriptionWhereInput>;
 }
 
-export interface NotesSubscriptionWhereInput {
+export interface NoteSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<NotesWhereInput>;
-  AND?: Maybe<NotesSubscriptionWhereInput[] | NotesSubscriptionWhereInput>;
-  OR?: Maybe<NotesSubscriptionWhereInput[] | NotesSubscriptionWhereInput>;
-  NOT?: Maybe<NotesSubscriptionWhereInput[] | NotesSubscriptionWhereInput>;
+  node?: Maybe<NoteWhereInput>;
+  AND?: Maybe<NoteSubscriptionWhereInput[] | NoteSubscriptionWhereInput>;
+  OR?: Maybe<NoteSubscriptionWhereInput[] | NoteSubscriptionWhereInput>;
+  NOT?: Maybe<NoteSubscriptionWhereInput[] | NoteSubscriptionWhereInput>;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -689,9 +689,9 @@ export interface FollowPromise extends Promise<Follow>, Fragmentable {
   id: () => Promise<ID_Output>;
   followed: <T = UserPromise>() => T;
   githubID: () => Promise<String>;
-  notes: <T = FragmentableArray<Notes>>(args?: {
-    where?: NotesWhereInput;
-    orderBy?: NotesOrderByInput;
+  notes: <T = FragmentableArray<Note>>(args?: {
+    where?: NoteWhereInput;
+    orderBy?: NoteOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -706,9 +706,9 @@ export interface FollowSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   followed: <T = UserSubscription>() => T;
   githubID: () => Promise<AsyncIterator<String>>;
-  notes: <T = Promise<AsyncIterator<NotesSubscription>>>(args?: {
-    where?: NotesWhereInput;
-    orderBy?: NotesOrderByInput;
+  notes: <T = Promise<AsyncIterator<NoteSubscription>>>(args?: {
+    where?: NoteWhereInput;
+    orderBy?: NoteOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -723,9 +723,9 @@ export interface FollowNullablePromise
   id: () => Promise<ID_Output>;
   followed: <T = UserPromise>() => T;
   githubID: () => Promise<String>;
-  notes: <T = FragmentableArray<Notes>>(args?: {
-    where?: NotesWhereInput;
-    orderBy?: NotesOrderByInput;
+  notes: <T = FragmentableArray<Note>>(args?: {
+    where?: NoteWhereInput;
+    orderBy?: NoteOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -785,21 +785,21 @@ export interface UserNullablePromise
   }) => T;
 }
 
-export interface Notes {
+export interface Note {
   id: ID_Output;
   title: String;
   body: String;
 }
 
-export interface NotesPromise extends Promise<Notes>, Fragmentable {
+export interface NotePromise extends Promise<Note>, Fragmentable {
   id: () => Promise<ID_Output>;
   for: <T = FollowPromise>() => T;
   title: () => Promise<String>;
   body: () => Promise<String>;
 }
 
-export interface NotesSubscription
-  extends Promise<AsyncIterator<Notes>>,
+export interface NoteSubscription
+  extends Promise<AsyncIterator<Note>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   for: <T = FollowSubscription>() => T;
@@ -807,8 +807,8 @@ export interface NotesSubscription
   body: () => Promise<AsyncIterator<String>>;
 }
 
-export interface NotesNullablePromise
-  extends Promise<Notes | null>,
+export interface NoteNullablePromise
+  extends Promise<Note | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   for: <T = FollowPromise>() => T;
@@ -893,56 +893,56 @@ export interface AggregateFollowSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface NotesConnection {
+export interface NoteConnection {
   pageInfo: PageInfo;
-  edges: NotesEdge[];
+  edges: NoteEdge[];
 }
 
-export interface NotesConnectionPromise
-  extends Promise<NotesConnection>,
+export interface NoteConnectionPromise
+  extends Promise<NoteConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<NotesEdge>>() => T;
-  aggregate: <T = AggregateNotesPromise>() => T;
+  edges: <T = FragmentableArray<NoteEdge>>() => T;
+  aggregate: <T = AggregateNotePromise>() => T;
 }
 
-export interface NotesConnectionSubscription
-  extends Promise<AsyncIterator<NotesConnection>>,
+export interface NoteConnectionSubscription
+  extends Promise<AsyncIterator<NoteConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<NotesEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateNotesSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<NoteEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateNoteSubscription>() => T;
 }
 
-export interface NotesEdge {
-  node: Notes;
+export interface NoteEdge {
+  node: Note;
   cursor: String;
 }
 
-export interface NotesEdgePromise extends Promise<NotesEdge>, Fragmentable {
-  node: <T = NotesPromise>() => T;
+export interface NoteEdgePromise extends Promise<NoteEdge>, Fragmentable {
+  node: <T = NotePromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface NotesEdgeSubscription
-  extends Promise<AsyncIterator<NotesEdge>>,
+export interface NoteEdgeSubscription
+  extends Promise<AsyncIterator<NoteEdge>>,
     Fragmentable {
-  node: <T = NotesSubscription>() => T;
+  node: <T = NoteSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateNotes {
+export interface AggregateNote {
   count: Int;
 }
 
-export interface AggregateNotesPromise
-  extends Promise<AggregateNotes>,
+export interface AggregateNotePromise
+  extends Promise<AggregateNote>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateNotesSubscription
-  extends Promise<AsyncIterator<AggregateNotes>>,
+export interface AggregateNoteSubscription
+  extends Promise<AsyncIterator<AggregateNote>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -1061,47 +1061,47 @@ export interface FollowPreviousValuesSubscription
   githubID: () => Promise<AsyncIterator<String>>;
 }
 
-export interface NotesSubscriptionPayload {
+export interface NoteSubscriptionPayload {
   mutation: MutationType;
-  node: Notes;
+  node: Note;
   updatedFields: String[];
-  previousValues: NotesPreviousValues;
+  previousValues: NotePreviousValues;
 }
 
-export interface NotesSubscriptionPayloadPromise
-  extends Promise<NotesSubscriptionPayload>,
+export interface NoteSubscriptionPayloadPromise
+  extends Promise<NoteSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = NotesPromise>() => T;
+  node: <T = NotePromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = NotesPreviousValuesPromise>() => T;
+  previousValues: <T = NotePreviousValuesPromise>() => T;
 }
 
-export interface NotesSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<NotesSubscriptionPayload>>,
+export interface NoteSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<NoteSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = NotesSubscription>() => T;
+  node: <T = NoteSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = NotesPreviousValuesSubscription>() => T;
+  previousValues: <T = NotePreviousValuesSubscription>() => T;
 }
 
-export interface NotesPreviousValues {
+export interface NotePreviousValues {
   id: ID_Output;
   title: String;
   body: String;
 }
 
-export interface NotesPreviousValuesPromise
-  extends Promise<NotesPreviousValues>,
+export interface NotePreviousValuesPromise
+  extends Promise<NotePreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
   body: () => Promise<String>;
 }
 
-export interface NotesPreviousValuesSubscription
-  extends Promise<AsyncIterator<NotesPreviousValues>>,
+export interface NotePreviousValuesSubscription
+  extends Promise<AsyncIterator<NotePreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
@@ -1189,7 +1189,7 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "Notes",
+    name: "Note",
     embedded: false
   }
 ];
