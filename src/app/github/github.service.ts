@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { request } from 'graphql-request';
 
-import { ICalendarDTO } from '../models/CalendarDTO';
+import { ICalendarDTO } from 'models';
+
 import { ILogon, logon } from './queries';
 import { IProfile, profile } from './queries';
 import { ICalendarVariables, ICalendar, IDay, ICalendarPayload, calendar } from './queries';
+import { IFollowers, IUser, followers } from './queries';
 
 @Injectable()
 export class GithubService {
@@ -24,11 +26,16 @@ export class GithubService {
     return viewer;
   }
 
+  public async following(accessToken: string): Promise<IUser[]> {
+    const { viewer } = await this.request<IFollowers>(accessToken, followers);
+    return viewer.following.nodes;
+  }
+
   public async calendar(accessToken: string, id: string): Promise<ICalendarDTO> {
-    const { viewer } = await this.request<ICalendar>(accessToken, calendar, {
+    const { node } = await this.request<ICalendar>(accessToken, calendar, {
       id,
     } as ICalendarVariables);
-    const payload = this.formatCalendar(viewer.contributionsCollection.contributionCalendar);
+    const payload = this.formatCalendar(node.contributionsCollection.contributionCalendar);
     return payload;
   }
 

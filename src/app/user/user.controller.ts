@@ -1,10 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
 
-import { IActiveUser } from 'models';
+import { IActiveUser, ICalendarDTO, ITendenciesDTO } from 'models';
+import { IProfile, IUser } from 'github/queries';
 import { User } from 'common/decorators';
 import { GithubService } from 'github/github.service';
-import { IProfile } from 'github/queries';
-import { ICalendarDTO } from '../models/CalendarDTO';
 
 @Controller('user')
 export class UserController {
@@ -16,7 +15,12 @@ export class UserController {
   }
 
   @Get('calendar')
-  public async getCalendar(@User() { accessToken, id }: IActiveUser): Promise<ICalendarDTO> {
-    return await this.github.calendar(accessToken, id);
+  public async getCalendar(@User() { accessToken, githubID }: IActiveUser): Promise<ICalendarDTO> {
+    return await this.github.calendar(accessToken, githubID);
+  }
+
+  @Get('following')
+  public async getFollowing(@User() { accessToken }: IActiveUser): Promise<IUser[]> {
+    return await this.github.following(accessToken);
   }
 }
