@@ -3,6 +3,7 @@ import { Request } from 'express';
 
 import { Public } from 'common/decorators';
 import { GithubGuard } from 'common/guards';
+import { environment } from '../../environment';
 
 @Controller('auth')
 export class AuthController {
@@ -14,7 +15,7 @@ export class AuthController {
   @Public()
   @UseGuards(GithubGuard)
   @Get('/callback')
-  @Redirect('/user/profile')
+  @Redirect(environment.loginRedirect)
   public callback() {}
 
   @Get('/active')

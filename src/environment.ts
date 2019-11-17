@@ -11,4 +11,5 @@ export const environment = {
   githubClientID: process.env.GITHUB_CLIENT_ID,
   githubClientSecret: process.env.GITHUB_CLIENT_SECRET,
   githubCallbackURL: process.env.GITHUB_CALLBACK_URL,
+  loginRedirect: process.env.LOGIN_REDIRECT,
 };
