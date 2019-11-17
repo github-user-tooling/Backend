@@ -22,10 +22,6 @@ export interface IDay {
   data: number;
 }
 
-export interface ICalendarVariables {
-  id: string;
-}
-
 export const calendar = gql`
   query calendar($id: ID!) {
     node(id: $id) {

@@ -1,7 +1,7 @@
 import { identityTag as gql } from 'identity-tag';
 
-export interface IFollowers {
-  viewer: {
+export interface IFollowing {
+  node: {
     following: {
       nodes: IUser[];
     };
@@ -16,16 +16,18 @@ export interface IUser {
   name: string;
 }
 
-export const followers = gql`
-  {
-    viewer {
-      following(first: 20) {
-        nodes {
-          id
-          login
-          url
-          avatarUrl
-          name
+export const following = gql`
+  query following($id: ID!) {
+    node(id: $id) {
+      ... on User {
+        following(first: 20) {
+          nodes {
+            id
+            login
+            url
+            avatarUrl
+            name
+          }
         }
       }
     }

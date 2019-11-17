@@ -6,8 +6,8 @@ import { mode } from 'utils/math.util';
 
 import { ILogon, logon } from './queries';
 import { IProfile, profile } from './queries';
-import { ICalendarVariables, ICalendar, IDay, ICalendarPayload, calendar } from './queries';
-import { IFollowers, IUser, followers } from './queries';
+import { ICalendar, IDay, ICalendarPayload, calendar } from './queries';
+import { IFollowing, IUser, following } from './queries';
 import { ITendencies, IRepoCommits, IRepoLang, tendencies } from './queries';
 
 @Injectable()
@@ -23,20 +23,20 @@ export class GithubService {
     return viewer.id;
   }
 
-  public async profile(accessToken: string): Promise<IProfile['viewer']> {
-    const { viewer } = await this.request<IProfile>(accessToken, profile);
-    return viewer;
+  public async profile(accessToken: string, id: string): Promise<IProfile['node']> {
+    const { node } = await this.request<IProfile>(accessToken, profile, { id });
+    return node;
   }
 
-  public async following(accessToken: string): Promise<IUser[]> {
-    const { viewer } = await this.request<IFollowers>(accessToken, followers);
-    return viewer.following.nodes;
+  public async following(accessToken: string, id: string): Promise<IUser[]> {
+    const { node } = await this.request<IFollowing>(accessToken, following, { id });
+    return node.following.nodes;
   }
 
   public async calendar(accessToken: string, id: string): Promise<ICalendarDTO> {
     const { node } = await this.request<ICalendar>(accessToken, calendar, {
       id,
-    } as ICalendarVariables);
+    });
     const payload = this.formatCalendar(node.contributionsCollection.contributionCalendar);
     return payload;
   }

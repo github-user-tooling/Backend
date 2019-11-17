@@ -1,7 +1,7 @@
 import { identityTag as gql } from 'identity-tag';
 
 export interface IProfile {
-  viewer: {
+  node: {
     login: string;
     avatarUrl: string;
     bio: string;
@@ -12,14 +12,16 @@ export interface IProfile {
 }
 
 export const profile = gql`
-  {
-    viewer {
-      login
-      avatarUrl
-      bio
-      location
-      name
-      url
+  query profile($id: ID!) {
+    node(id: $id) {
+      ... on User {
+        login
+        avatarUrl
+        bio
+        location
+        name
+        url
+      }
     }
   }
 `;
