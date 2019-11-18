@@ -10,8 +10,8 @@ export class NotesController {
   constructor(private readonly notesService: NotesService) {}
 
   @Get('/:note')
-  public async getNote(@User() { id }: IActiveUser, @Param('note') noteID: string) {
-    this.notesService.getNote(id, noteID);
+  public async getNote(@User() { id }: IActiveUser, @Param('note') noteID: string): Promise<Note> {
+    return await this.notesService.getNote(id, noteID);
   }
 
   @Put('/:note')
