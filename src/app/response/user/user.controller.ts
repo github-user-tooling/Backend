@@ -1,8 +1,15 @@
 import { Controller, Get, Post, Param, Body } from '@nestjs/common';
 
 import { Note } from '@prisma';
-import { IActiveUser, IProfileDTO, ICalendarDTO, ITendenciesDTO, CreateNoteDTO } from 'models';
-import { IUser, IRepo, ICommit } from 'github/queries';
+import { IUserNode, IRepo, ICommit, IProfileNode } from 'github/queries';
+import {
+  IActiveUser,
+  ICalendarDTO,
+  ITendenciesDTO,
+  IUserDTO,
+  IDashboard,
+  CreateNoteDTO,
+} from 'models';
 
 import { User } from 'common/decorators';
 import { GithubService } from 'github/github.service';
@@ -15,8 +22,13 @@ export class UserController {
     private readonly notesService: NotesService
   ) {}
 
+  @Get('/dashboard')
+  public async getDashboard(@User() { accessToken, githubID }: IActiveUser): Promise<IDashboard> {
+    return await this.github.dashboard(accessToken, githubID, true);
+  }
+
   @Get('/profile')
-  public async getProfile(@User() { accessToken, githubID }: IActiveUser): Promise<IProfileDTO> {
+  public async getProfile(@User() { accessToken, githubID }: IActiveUser): Promise<IProfileNode> {
     return await this.github.profile(accessToken, githubID);
   }
 
@@ -24,7 +36,7 @@ export class UserController {
   public async getSpecificProfile(
     @User() { accessToken }: IActiveUser,
     @Param('id') id: string
-  ): Promise<IProfileDTO> {
+  ): Promise<IProfileNode> {
     return await this.github.profile(accessToken, id);
   }
 
@@ -42,7 +54,7 @@ export class UserController {
   }
 
   @Get('/following')
-  public async getFollowing(@User() { accessToken, githubID }: IActiveUser): Promise<IUser[]> {
+  public async getFollowing(@User() { accessToken, githubID }: IActiveUser): Promise<IUserDTO[]> {
     return await this.github.following(accessToken, githubID, true);
   }
 
@@ -50,7 +62,7 @@ export class UserController {
   public async getSpecificFollowing(
     @User() { accessToken }: IActiveUser,
     @Param('id') id: string
-  ): Promise<IUser[]> {
+  ): Promise<IUserDTO[]> {
     return await this.github.following(accessToken, id, false);
   }
 

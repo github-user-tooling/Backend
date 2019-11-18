@@ -3,17 +3,21 @@ import { identityTag as gql } from 'identity-tag';
 export interface IFollowing {
   node: {
     following: {
-      nodes: IUser[];
+      nodes: IUserNode[];
     };
   };
 }
 
-export interface IUser {
+export interface IUserNode {
   id: string;
   login: string;
   url: string;
   avatarUrl: string;
   name: string;
+  followers: { count: number };
+  following: { count: number };
+  repos: { count: number };
+  commits: { count: number };
 }
 
 export const following = gql`
@@ -27,6 +31,18 @@ export const following = gql`
             url
             avatarUrl
             name
+            followers {
+              count: totalCount
+            }
+            following {
+              count: totalCount
+            }
+            repos: repositories {
+              count: totalCount
+            }
+            commits: contributionsCollection {
+              count: totalCommitContributions
+            }
           }
         }
       }
