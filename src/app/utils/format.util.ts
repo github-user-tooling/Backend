@@ -1,5 +1,6 @@
 import { IProfileDTO, ICalendarDTO, IMonthlyContributions } from 'models';
-import { IProfileNode, ICalendarPayload, IWeek, IDay } from 'github/queries';
+import { IProfileNode } from 'github/queries';
+import { ICalendarPayload, IWeek, IDay } from 'github/queries';
 import { IRepoCommits, IRepoLang } from 'github/queries';
 
 import { mode } from './arr.util';

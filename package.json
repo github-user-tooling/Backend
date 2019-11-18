@@ -70,12 +70,20 @@
     "typescript": "^3.7.2"
   },
   "jest": {
+    "moduleNameMapper": {
+      "^@prisma": "<rootDir>/../prisma",
+      "^@env": "<rootDir>/../environment"
+    },
     "moduleFileExtensions": [
       "js",
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "moduleDirectories": [
+      "node_modules",
+      "src/app"
+    ],
+    "rootDir": "src/app/",
     "testRegex": ".spec.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"

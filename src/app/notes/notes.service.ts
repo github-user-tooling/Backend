@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 
-import { Note, Follow } from '@prisma';
+import { Note } from '@prisma';
 import { CreateNoteDTO } from 'models';
 import { IUser } from 'github/queries';
 import { differences } from 'utils';

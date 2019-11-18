@@ -2,12 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { request } from 'graphql-request';
 
 import { IProfileDTO, ICalendarDTO, ITendenciesDTO } from 'models';
-import {
-  formatProfile,
-  formatCalendar,
-  calculateLangTendencies,
-  calculateDateTendencies,
-} from 'utils';
+import { formatProfile } from 'utils';
+import { formatCalendar } from 'utils';
+import { calculateLangTendencies, calculateDateTendencies } from 'utils';
 import { NotesService } from 'notes/notes.service';
 
 import { ILogon, logon } from './queries';
