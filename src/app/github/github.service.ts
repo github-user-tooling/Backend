@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { request } from 'graphql-request';
 
 import { ICalendarDTO, ITendenciesDTO } from 'models';
-import { formatCalendar, calculateLangTendencies, calculateDayTendencies } from 'utils';
+import { formatCalendar, calculateLangTendencies, calculateDateTendencies } from 'utils';
 import { NotesService } from 'notes/notes.service';
 
 import { ILogon, logon } from './queries';
@@ -13,6 +13,8 @@ import { ITendencies, tendencies } from './queries';
 
 import { IFollow, follow } from './mutations';
 import { IUnfollow, unfollow } from './mutations';
+import { IRepos, IRepo, repos } from './queries';
+import { ICommit, ICommits, commits } from './queries';
 
 @Injectable()
 export class GithubService {
@@ -51,13 +53,26 @@ export class GithubService {
 
   public async tendencies(accessToken: string, id: string): Promise<ITendenciesDTO> {
     const { node } = await this.request<ITendencies>(accessToken, tendencies, { id });
-    const [mostOftenHour, mostOftenDay] = calculateDayTendencies(node.repositories.commits);
+    const [mostOftenHour, mostOftenDay] = calculateDateTendencies(node.repositories.commits);
     const mostUsedLang = calculateLangTendencies(node.repositories.langs);
     return {
       mostOftenHour,
       mostOftenDay,
       mostUsedLang,
     };
+  }
+
+  public async repos(accessToken: string, id: string): Promise<IRepo[]> {
+    const { node } = await this.request<IRepos>(accessToken, repos, { id });
+    return node.repositories.nodes;
+  }
+
+  public async commits(accessToken: string, id: string): Promise<ICommit[]> {
+    const { node } = await this.request<ICommits>(accessToken, commits, { id });
+    return node.repositories.nodes.reduce(
+      (all, repo) => [...all, ...repo.defaultBranchRef.target.history.nodes],
+      new Array<ICommit>()
+    );
   }
 
   public async follow(

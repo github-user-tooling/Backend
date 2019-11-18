@@ -2,7 +2,7 @@ import { Controller, Get, Post, Param, Body } from '@nestjs/common';
 
 import { Note } from '@prisma';
 import { IActiveUser, ICalendarDTO, ITendenciesDTO, CreateNoteDTO } from 'models';
-import { IProfile, IUser } from 'github/queries';
+import { IProfile, IUser, IRepo, ICommit } from 'github/queries';
 
 import { User } from 'common/decorators';
 import { GithubService } from 'github/github.service';
@@ -54,6 +54,32 @@ export class UserController {
     @Param('id') id: string
   ): Promise<IUser[]> {
     return await this.github.following(accessToken, id, false);
+  }
+
+  @Get('/repos')
+  public async getRepos(@User() { accessToken, githubID }: IActiveUser): Promise<IRepo[]> {
+    return await this.github.repos(accessToken, githubID);
+  }
+
+  @Get('/:id/repos')
+  public async getSpecificRepos(
+    @User() { accessToken }: IActiveUser,
+    @Param('id') id: string
+  ): Promise<IRepo[]> {
+    return await this.github.repos(accessToken, id);
+  }
+
+  @Get('/commits')
+  public async getCommits(@User() { accessToken, githubID }: IActiveUser): Promise<ICommit[]> {
+    return await this.github.commits(accessToken, githubID);
+  }
+
+  @Get('/:id/commits')
+  public async getSpecificCommits(
+    @User() { accessToken }: IActiveUser,
+    @Param('id') id: string
+  ): Promise<ICommit[]> {
+    return await this.github.commits(accessToken, id);
   }
 
   @Get('/tendencies')

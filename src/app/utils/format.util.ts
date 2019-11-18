@@ -16,7 +16,7 @@ export const formatCalendar: (contributionCalendar: ICalendarPayload) => ICalend
   };
 };
 
-export const calculateDayTendencies: (
+export const calculateDateTendencies: (
   commits: IRepoCommits[]
 ) => [number | string, number | string] = (commits) => {
   const dates = commits.reduce((repos, repo) => {
