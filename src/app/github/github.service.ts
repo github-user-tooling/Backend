@@ -15,6 +15,7 @@ import { IFollow, follow } from './mutations';
 import { IUnfollow, unfollow } from './mutations';
 import { IRepos, IRepo, repos } from './queries';
 import { ICommit, ICommits, commits } from './queries';
+import { IResult, ISearch, findUser } from './queries';
 
 @Injectable()
 export class GithubService {
@@ -73,6 +74,11 @@ export class GithubService {
       (all, repo) => [...all, ...repo.defaultBranchRef.target.history.nodes],
       new Array<ICommit>()
     );
+  }
+
+  public async search(accessToken: string, query: string): Promise<IResult[]> {
+    const { search } = await this.request<ISearch>(accessToken, findUser, { query });
+    return search.nodes;
   }
 
   public async follow(
