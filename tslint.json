@@ -1,15 +1,11 @@
 {
   "defaultSeverity": "error",
-  "extends": [
-    "tslint:recommended",
-    "tslint-plugin-prettier",
-    "tslint-config-prettier"
-  ],
+  "extends": ["tslint:recommended", "tslint-plugin-prettier", "tslint-config-prettier"],
   "jsRules": {
     "no-unused-expression": true
   },
   "rules": {
-    "prettier": true,
+    "prettier": false,
     "quotemark": [true, "single"],
     "member-access": [true],
     "ordered-imports": [false],

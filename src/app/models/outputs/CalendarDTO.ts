@@ -1,6 +1,4 @@
-import { IDay } from 'github/queries';
-
 export interface ICalendarDTO {
-  colors: string[];
-  data: IDay[];
+  months: string[];
+  commits: number[];
 }

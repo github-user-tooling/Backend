@@ -1,20 +1,41 @@
-import { ICalendarDTO } from 'models';
-import { ICalendarPayload, IDay } from 'github/queries';
+import { ICalendarDTO, IMonthlyContributions } from 'models';
+import { ICalendarPayload, IWeek, IDay } from 'github/queries';
 import { IRepoCommits, IRepoLang } from 'github/queries';
 
 import { mode } from './arr.util';
 
-export const formatCalendar: (contributionCalendar: ICalendarPayload) => ICalendarDTO = (
-  contributionCalendar
-) => {
-  return {
-    colors: contributionCalendar.colors,
-    data: contributionCalendar.weeks.reduce(
-      (days, week) => days.concat(...week.contributionDays),
-      new Array<IDay>()
-    ),
-  };
+export const formatCalendar: ({ weeks }: ICalendarPayload) => ICalendarDTO = ({ weeks }) => {
+  const dataSet = groupWeeks(weeks);
+  const months = Object.keys(dataSet);
+  const commits = Object.values(dataSet);
+  return { months, commits };
 };
+
+const groupWeeks: (weeks: IWeek[]) => IMonthlyContributions = (month) => {
+  return month.reduce((weeks, { contributionDays }) => {
+    const week = groupDays(contributionDays);
+
+    for (const [key, count] of Object.entries(week)) {
+      weeks[key] = (weeks[key] || 0) + count;
+    }
+
+    return weeks;
+  }, {});
+};
+
+const groupDays: (week: IDay[]) => IMonthlyContributions = (week) => {
+  return week.reduce((days, { count, date }) => {
+    const formatedDate = new Date(date);
+    const month = monthName(formatedDate);
+    const year = formatedDate.getFullYear();
+    const key = `${month}-${year}`;
+
+    days[key] = (days[key] || 0) + count;
+    return days;
+  }, {});
+};
+
+const monthName = (date: Date) => date.toLocaleString('en-us', { month: 'short' });
 
 export const calculateDateTendencies: (
   commits: IRepoCommits[]
