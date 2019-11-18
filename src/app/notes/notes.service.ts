@@ -2,7 +2,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 
 import { Note } from '@prisma';
 import { CreateNoteDTO } from 'models';
-import { IUser } from 'github/queries';
+import { IUserNode } from 'github/queries';
 import { differences } from 'utils';
 import { PrismaService } from 'prisma/prisma.service';
 
@@ -25,7 +25,7 @@ export class NotesService {
     await this.prisma.client.deleteFollow({ id });
   }
 
-  public async syncFollows(follower: string, followingUsers: IUser[]) {
+  public async syncFollows(follower: string, followingUsers: IUserNode[]) {
     const dbFollowings = await this.getDBFollowings(follower);
     const followings = followingUsers.map((user) => user.id);
     differences(dbFollowings, followings, (following) => this.removeFollow(follower, following));

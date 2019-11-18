@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { request } from 'graphql-request';
 
-import { IProfileDTO, ICalendarDTO, ITendenciesDTO } from 'models';
-import { formatProfile } from 'utils';
+import { IDashboard, ICalendarDTO, ITendenciesDTO, IUserDTO } from 'models';
+import { formatUser } from 'utils';
 import { formatCalendar } from 'utils';
 import { calculateLangTendencies, calculateDateTendencies } from 'utils';
 import { NotesService } from 'notes/notes.service';
 
 import { ILogon, logon } from './queries';
-import { IProfile, profile } from './queries';
+import { IProfile, IProfileNode, profile } from './queries';
 import { ICalendar, calendar } from './queries';
-import { IFollowing, IUser, following } from './queries';
+import { IFollowing, IUserNode, following } from './queries';
 import { ITendencies, tendencies } from './queries';
 
 import { IFollow, follow } from './mutations';
@@ -34,17 +34,30 @@ export class GithubService {
     return viewer.id;
   }
 
-  public async profile(accessToken: string, id: string): Promise<IProfileDTO> {
+  public async profile(accessToken: string, id: string): Promise<IProfileNode> {
     const { node } = await this.request<IProfile>(accessToken, profile, { id });
-    const formatedProfile = formatProfile(node);
-    return formatedProfile;
+    return node;
   }
 
-  public async following(accessToken: string, id: string, isActiveUser: boolean): Promise<IUser[]> {
+  public async following(
+    accessToken: string,
+    id: string,
+    isActiveUser: boolean
+  ): Promise<IUserDTO[]> {
     const { node } = await this.request<IFollowing>(accessToken, following, { id });
     if (isActiveUser) this.notes.syncFollows(id, node.following.nodes);
+    return node.following.nodes.map((user) => formatUser(user));
+  }
 
-    return node.following.nodes;
+  public async dashboard(
+    accessToken: string,
+    id: string,
+    isActiveUser: boolean
+  ): Promise<IDashboard> {
+    return {
+      user: await this.profile(accessToken, id),
+      following: await this.following(accessToken, id, isActiveUser),
+    };
   }
 
   public async calendar(accessToken: string, id: string): Promise<ICalendarDTO> {
