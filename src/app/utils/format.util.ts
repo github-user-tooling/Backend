@@ -1,18 +1,26 @@
-import { IUserDTO, ICalendarDTO, IMonthlyContributions } from 'models';
-import { IUserNode } from 'github/queries';
+import { IProfileDTO, IUserDTO, ICalendarDTO, IMonthlyContributions } from 'models';
+import { IUserNode, IProfileNode } from 'github/queries';
 import { ICalendarPayload, IWeek, IDay } from 'github/queries';
 import { IRepoCommits, IRepoLang } from 'github/queries';
 
 import { mode } from './arr.util';
 
-export const formatUser: (profile: IUserNode) => IUserDTO = (profile) => {
-  const { repos, commits, followers, following, ...generalDetails } = profile;
+export const formatUser: (user: IUserNode) => IUserDTO = (user) => {
+  const { repos, commits, followers, following, ...generalDetails } = user;
   return {
     ...generalDetails,
     followerCount: followers.count,
     followingCount: following.count,
     repoCount: repos.count,
     commitCount: commits.count,
+  };
+};
+
+export const formatProfile: (profile: IProfileNode) => IProfileDTO = (profile) => {
+  const { repos, ...generalDetails } = profile;
+  return {
+    ...generalDetails,
+    repoCount: repos.count,
   };
 };
 

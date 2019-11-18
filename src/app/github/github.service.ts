@@ -1,23 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { request } from 'graphql-request';
 
-import { IDashboard, ICalendarDTO, ITendenciesDTO, IUserDTO } from 'models';
-import { formatUser } from 'utils';
+import { IProfileDTO, IDashboard, ICalendarDTO, ITendenciesDTO, IUserDTO } from 'models';
+import { formatUser, formatProfile } from 'utils';
 import { formatCalendar } from 'utils';
 import { calculateLangTendencies, calculateDateTendencies } from 'utils';
 import { NotesService } from 'notes/notes.service';
 
 import { ILogon, logon } from './queries';
-import { IProfile, IProfileNode, profile } from './queries';
+import { IProfileShort, IProfileShortNode, profileShort } from './queries';
+import { IProfile, profile } from './queries';
 import { ICalendar, calendar } from './queries';
-import { IFollowing, IUserNode, following } from './queries';
+import { IFollowing, following } from './queries';
 import { ITendencies, tendencies } from './queries';
+import { ICommit, ICommits, commits } from './queries';
+import { IResult, ISearch, findUser } from './queries';
 
 import { IFollow, follow } from './mutations';
 import { IUnfollow, unfollow } from './mutations';
 import { IRepos, IRepo, repos } from './queries';
-import { ICommit, ICommits, commits } from './queries';
-import { IResult, ISearch, findUser } from './queries';
 
 @Injectable()
 export class GithubService {
@@ -34,8 +35,13 @@ export class GithubService {
     return viewer.id;
   }
 
-  public async profile(accessToken: string, id: string): Promise<IProfileNode> {
+  public async profile(accessToken: string, id: string): Promise<IProfileDTO> {
     const { node } = await this.request<IProfile>(accessToken, profile, { id });
+    return formatProfile(node);
+  }
+
+  public async profileShort(accessToken: string, id: string): Promise<IProfileShortNode> {
+    const { node } = await this.request<IProfileShort>(accessToken, profileShort, { id });
     return node;
   }
 
@@ -55,7 +61,7 @@ export class GithubService {
     isActiveUser: boolean
   ): Promise<IDashboard> {
     return {
-      user: await this.profile(accessToken, id),
+      user: await this.profileShort(accessToken, id),
       following: await this.following(accessToken, id, isActiveUser),
     };
   }

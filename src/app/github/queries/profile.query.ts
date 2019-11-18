@@ -7,6 +7,11 @@ export interface IProfile {
 export interface IProfileNode {
   login: string;
   name: string;
+  avatarUrl: string;
+  bio: string;
+  location: string;
+  url: string;
+  repos: { count: number };
 }
 
 export const profile = gql`
@@ -15,6 +20,13 @@ export const profile = gql`
       ... on User {
         login
         name
+        avatarUrl
+        bio
+        location
+        url
+        repos: repositories {
+          count: totalCount
+        }
       }
     }
   }
