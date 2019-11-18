@@ -1,6 +1,7 @@
 export * from './internal/ActiveUser';
 export * from './internal/ContributionWeek';
 
+export * from './outputs/ProfileDTO';
 export * from './outputs/CalendarDTO';
 export * from './outputs/DashboardDTO';
 export * from './outputs/UserDTO';
