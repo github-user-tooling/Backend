@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Param, Body } from '@nestjs/common';
 
 import { Note } from '@prisma';
-import { IActiveUser, ICalendarDTO, ITendenciesDTO, CreateNoteDTO } from 'models';
-import { IProfile, IUser, IRepo, ICommit } from 'github/queries';
+import { IActiveUser, IProfileDTO, ICalendarDTO, ITendenciesDTO, CreateNoteDTO } from 'models';
+import { IUser, IRepo, ICommit } from 'github/queries';
 
 import { User } from 'common/decorators';
 import { GithubService } from 'github/github.service';
@@ -16,9 +16,7 @@ export class UserController {
   ) {}
 
   @Get('/profile')
-  public async getProfile(
-    @User() { accessToken, githubID }: IActiveUser
-  ): Promise<IProfile['node']> {
+  public async getProfile(@User() { accessToken, githubID }: IActiveUser): Promise<IProfileDTO> {
     return await this.github.profile(accessToken, githubID);
   }
 
@@ -26,7 +24,7 @@ export class UserController {
   public async getSpecificProfile(
     @User() { accessToken }: IActiveUser,
     @Param('id') id: string
-  ): Promise<IProfile['node']> {
+  ): Promise<IProfileDTO> {
     return await this.github.profile(accessToken, id);
   }
 

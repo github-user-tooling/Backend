@@ -1,8 +1,13 @@
-import { ICalendarDTO, IMonthlyContributions } from 'models';
-import { ICalendarPayload, IWeek, IDay } from 'github/queries';
+import { IProfileDTO, ICalendarDTO, IMonthlyContributions } from 'models';
+import { IProfileNode, ICalendarPayload, IWeek, IDay } from 'github/queries';
 import { IRepoCommits, IRepoLang } from 'github/queries';
 
 import { mode } from './arr.util';
+
+export const formatProfile: (profile: IProfileNode) => IProfileDTO = (profile) => {
+  const { repos, commits, ...generalDetails } = profile;
+  return { ...generalDetails, repos: repos.count, commits: commits.count };
+};
 
 export const formatCalendar: ({ weeks }: ICalendarPayload) => ICalendarDTO = ({ weeks }) => {
   const dataSet = groupWeeks(weeks);
