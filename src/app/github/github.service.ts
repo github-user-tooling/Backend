@@ -1,8 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { request } from 'graphql-request';
 
-import { ICalendarDTO, ITendenciesDTO } from 'models';
-import { formatCalendar, calculateLangTendencies, calculateDateTendencies } from 'utils';
+import { IProfileDTO, ICalendarDTO, ITendenciesDTO } from 'models';
+import {
+  formatProfile,
+  formatCalendar,
+  calculateLangTendencies,
+  calculateDateTendencies,
+} from 'utils';
 import { NotesService } from 'notes/notes.service';
 
 import { ILogon, logon } from './queries';
@@ -32,9 +37,10 @@ export class GithubService {
     return viewer.id;
   }
 
-  public async profile(accessToken: string, id: string): Promise<IProfile['node']> {
+  public async profile(accessToken: string, id: string): Promise<IProfileDTO> {
     const { node } = await this.request<IProfile>(accessToken, profile, { id });
-    return node;
+    const formatedProfile = formatProfile(node);
+    return formatedProfile;
   }
 
   public async following(accessToken: string, id: string, isActiveUser: boolean): Promise<IUser[]> {
