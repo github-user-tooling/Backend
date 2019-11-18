@@ -9,7 +9,6 @@ export interface ICalendar {
 }
 
 export interface ICalendarPayload {
-  colors: string[];
   weeks: IWeek[];
 }
 
@@ -18,8 +17,8 @@ export interface IWeek {
 }
 
 export interface IDay {
-  key: string;
-  data: number;
+  date: string;
+  count: number;
 }
 
 export const calendar = gql`
@@ -28,11 +27,10 @@ export const calendar = gql`
       ... on User {
         contributionsCollection {
           contributionCalendar {
-            colors
             weeks {
               contributionDays {
-                key: date
-                data: contributionCount
+                date: date
+                count: contributionCount
               }
             }
           }
