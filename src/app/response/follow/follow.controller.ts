@@ -8,6 +8,7 @@ import { GithubService } from 'github/github.service';
 @Controller()
 export class FollowController {
   constructor(private readonly github: GithubService) {}
+
   @Post('/follow/:id')
   public async followUser(
     @User() { accessToken, githubID }: IActiveUser,

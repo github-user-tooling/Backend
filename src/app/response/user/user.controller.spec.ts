@@ -1,4 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
+
+import { GithubModule } from 'github/github.module';
+import { NotesModule } from 'notes/notes.module';
 import { UserController } from './user.controller';
 
 describe('User Controller', () => {
@@ -6,6 +9,7 @@ describe('User Controller', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [GithubModule, NotesModule],
       controllers: [UserController],
     }).compile();
 
