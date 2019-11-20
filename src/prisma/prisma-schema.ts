@@ -233,7 +233,6 @@ input FollowWhereInput {
 
 input FollowWhereUniqueInput {
   id: ID
-  githubID: String
 }
 
 scalar Long

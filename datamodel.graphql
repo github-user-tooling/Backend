@@ -7,7 +7,7 @@ type User {
 type Follow {
   id: ID! @id
   followed: User!
-  githubID: String! @unique
+  githubID: String!
   notes: [Note!] @relation(onDelete: CASCADE)
 }
 

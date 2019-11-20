@@ -203,7 +203,6 @@ export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
 export type FollowWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
-  githubID?: Maybe<String>;
 }>;
 
 export interface FollowWhereInput {
