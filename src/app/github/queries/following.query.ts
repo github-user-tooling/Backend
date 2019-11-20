@@ -3,6 +3,11 @@ import { identityTag as gql } from 'identity-tag';
 export interface IFollowing {
   node: {
     following: {
+      pageInfo: {
+        hasNextPage: boolean;
+        endCursor: string;
+      };
+
       nodes: IUserNode[];
     };
   };
@@ -21,10 +26,15 @@ export interface IUserNode {
 }
 
 export const following = gql`
-  query following($id: ID!) {
+  query following($id: ID!, $after: String) {
     node(id: $id) {
       ... on User {
-        following(first: 20) {
+        following(first: 20, after: $after) {
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
+
           nodes {
             id
             login

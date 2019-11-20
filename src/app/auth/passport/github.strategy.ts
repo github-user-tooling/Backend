@@ -15,6 +15,7 @@ export class GitHubStrategy extends PassportStrategy(Strategy) {
       clientID: environment.githubClientID,
       clientSecret: environment.githubClientSecret,
       callbackURL: environment.githubCallbackURL,
+      scope: ['read:user', 'user:follow'],
     });
   }
 
