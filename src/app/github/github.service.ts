@@ -67,11 +67,8 @@ export class GithubService {
   }
 
   public async calendar(accessToken: string, id: string): Promise<ICalendarDTO> {
-    const { node } = await this.request<ICalendar>(accessToken, calendar, {
-      id,
-    });
-    const payload = formatCalendar(node.contributionsCollection.contributionCalendar);
-    return payload;
+    const { node } = await this.request<ICalendar>(accessToken, calendar, { id });
+    return formatCalendar(node.contributionsCollection.contributionCalendar);
   }
 
   public async tendencies(accessToken: string, id: string): Promise<ITendenciesDTO> {
