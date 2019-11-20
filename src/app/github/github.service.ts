@@ -11,7 +11,7 @@ import { ILogon, logon } from './queries';
 import { IProfileShort, IProfileShortNode, profileShort } from './queries';
 import { IProfile, profile } from './queries';
 import { ICalendar, calendar } from './queries';
-import { IFollowing, following } from './queries';
+import { IFollowing, IUserNode, following } from './queries';
 import { ITendencies, tendencies } from './queries';
 import { ICommit, ICommits, commits } from './queries';
 import { IResult, ISearch, findUser } from './queries';
@@ -50,9 +50,18 @@ export class GithubService {
     id: string,
     isActiveUser: boolean
   ): Promise<IUserDTO[]> {
-    const { node } = await this.request<IFollowing>(accessToken, following, { id });
-    if (isActiveUser) this.notes.syncFollows(id, node.following.nodes);
-    return node.following.nodes.map((user) => formatUser(user));
+    let nodes: IUserNode[] = [];
+    let response: IFollowing;
+    let after: string = null;
+
+    do {
+      response = await this.request<IFollowing>(accessToken, following, { id, after });
+      nodes = [...nodes, ...response.node.following.nodes];
+      after = response.node.following.pageInfo.endCursor;
+    } while (response.node.following.pageInfo.hasNextPage);
+
+    if (isActiveUser) this.notes.syncFollows(id, nodes);
+    return nodes.map((user) => formatUser(user));
   }
 
   public async dashboard(
