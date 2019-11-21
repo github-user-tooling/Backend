@@ -5,6 +5,7 @@ export interface IProfile {
 }
 
 export interface IProfileNode {
+  id: string;
   login: string;
   name: string;
   avatarUrl: string;
@@ -18,6 +19,7 @@ export const profile = gql`
   query profile($id: ID!) {
     node(id: $id) {
       ... on User {
+        id
         login
         name
         avatarUrl
