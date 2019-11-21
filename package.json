@@ -71,7 +71,7 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "^@prisma": "<rootDir>/../prisma",
+      "^@prisma": "<rootDir>/../prisma/generated",
       "^@env": "<rootDir>/../environment"
     },
     "moduleFileExtensions": [
