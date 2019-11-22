@@ -1,6 +1,6 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, ConflictException } from '@nestjs/common';
 
-import { Note, Follow } from '@prisma';
+import { Note } from '@prisma';
 import { CreateNoteDTO } from 'models';
 import { IUserNode } from 'github/queries';
 import { differences } from 'utils';
@@ -11,6 +11,12 @@ export class NotesService {
   constructor(private readonly prisma: PrismaService) {}
 
   public async createFollow(follower: string, following: string) {
+    const [follow] = await this.prisma.client.follows({
+      where: { githubID: following, followed: { githubID: follower } },
+    });
+
+    if (follow) throw new ConflictException('Follow already exist');
+
     await this.prisma.client.createFollow({
       followed: { connect: { githubID: follower } },
       githubID: following,
@@ -18,11 +24,13 @@ export class NotesService {
   }
 
   public async removeFollow(follower: string, following: string) {
-    const [{ id }] = await this.prisma.client.follows({
+    const [follow] = await this.prisma.client.follows({
       where: { githubID: following, followed: { githubID: follower } },
     });
 
-    await this.prisma.client.deleteFollow({ id });
+    if (!follow) throw new BadRequestException('Follow does not exist');
+
+    await this.prisma.client.deleteFollow({ id: follow.id });
   }
 
   public async syncFollows(follower: string, followingUsers: IUserNode[]) {

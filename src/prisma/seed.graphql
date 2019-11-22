@@ -1,0 +1,16 @@
+mutation {
+  createUser(
+    data: {
+      githubID: "wSedlacek"
+      following: {
+        create: {
+          githubID: "Cyndergate"
+          notes: { create: { title: "Title", body: "Body" } }
+        }
+      }
+    }
+  ) {
+    id
+  }
+}
+

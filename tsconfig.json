@@ -11,7 +11,7 @@
     "baseUrl": "./src/app",
     "incremental": true,
     "paths": {
-      "@prisma": ["../prisma"],
+      "@prisma": ["../prisma/generated"],
       "@env": ["../environment"]
     }
   },

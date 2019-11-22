@@ -11,7 +11,7 @@ export class PrismaService {
     this.client = new Prisma({
       endpoint: environment.prisma,
       secret: environment.secret,
-      debug: !environment.production,
+      debug: false,
     });
   }
 }
