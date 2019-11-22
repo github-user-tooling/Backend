@@ -12,4 +12,5 @@ export const environment = {
   githubClientSecret: process.env.GITHUB_CLIENT_SECRET || '',
   githubCallbackURL: process.env.GITHUB_CALLBACK_URL || '/',
   loginRedirect: process.env.LOGIN_REDIRECT || '/',
+  testingToken: process.env.TESTING_ACCESS_TOKEN || '',
 };
